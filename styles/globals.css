@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Gilroy-Regular';
+  src: url('/fonts/Gilroy-Regular.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+} 
+
+body {
+  font-family: 'Gilroy-Regular';
+}
+
+@layer components {
+  .p-standard {
+    @apply px-10
+  }
+  .card {
+    @apply bg-white rounded-sm rounded-t-md shadow-lg m-3 border-2 border-t-primary
+  }
+  .card-header {
+    @apply mb-2 text-lg shadow-sm p-2 w-full text-gray-700 bg-gray-50
+  }
+  .card-body {
+    @apply p-3 mt-3 bg-white
+  }
+  .btn {
+    @apply rounded-md px-6 py-2 text-white bg-indigo-600 text-sm hover:cursor-pointer
+  }
+  .btn-primary {
+    @apply bg-green-700 hover:cursor-pointer
+  }
+  .btn-danger {
+    @apply bg-red-700 hover:cursor-pointer
+  }
+  .form-item {
+    @apply py-1
+  }
+  .form-input {
+    @apply rounded-md px-3 py-2 border text-gray-500 w-full
+  }
+  .form-label {
+      @apply flex items-center font-semibold text-gray-500
+  }
+  .form-textarea {
+    @apply w-full border rounded-md
+  }
+}
+
+.magnifier-content {
+  display: flex;
+}
+.magnifier-content > div {
+  width: 50%;
+}
+.magnifier-zoom {
+  position: relative;
+}
+.magnifier-zoom div {
+  position: absolute!important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+.magnifier-zoom div:first-child {
+  opacity: 1;
+}
+
+.carousel-status {
+  display: none;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .custom-number-input input:focus {
+    outline: none !important;
+  }
+
+  .custom-number-input button:focus {
+    outline: none !important;
+  }
+
+  
+.ReactTags__tags {
+  position: relative;
+}
+
+/* Styles for the input */
+.ReactTags__tagInput {
+  width: 200px;
+  border-radius: 2px;
+  display: inline-block;
+}
+.ReactTags__tagInput input.ReactTags__tagInputField,
+.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+  height: 31px;
+  margin: 0;
+  font-size: 12px;
+  width: 100%;
+  border: 1px solid #eee;
+}
+
+/* Styles for selected tags */
+.ReactTags__selected span.ReactTags__tag {
+  border: 1px solid #ddd;
+  background: #63bcfd;
+  color: white;
+  font-size: 12px;
+  display: inline-block;
+  padding: 5px;
+  margin: 0 5px;
+  border-radius: 2px;
+}
+.ReactTags__selected a.ReactTags__remove {
+  color: #aaa;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+/* Styles for suggestions */
+.ReactTags__suggestions {
+  position: absolute;
+}
+.ReactTags__suggestions ul {
+  list-style-type: none;
+  box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+  background: white;
+  width: 200px;
+}
+.ReactTags__suggestions li {
+  border-bottom: 1px solid #ddd;
+  padding: 5px 10px;
+  margin: 0;
+}
+.ReactTags__suggestions li mark {
+  text-decoration: underline;
+  background: none;
+  font-weight: 600;
+}
+.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+  background: #b7cfe0;
+  cursor: pointer;
+}
+
+.ReactTags__remove {
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: white;
+}
+.tox-notifications-container, .tox-statusbar__branding {display: none !important;}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #e2e2e2;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #394045;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.rc-slider-mark-text{
+  display: none !important;
+}

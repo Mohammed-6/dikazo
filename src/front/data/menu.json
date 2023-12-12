@@ -1,0 +1,683 @@
+[
+  {
+    "menuName": "Men",
+    "slug": "Men-FSM01",
+    "menu": [
+      {
+        "menuName": "Topwear",
+        "slug": "Topwear-11",
+        "menu": [
+          { "menuName": "T-Shirts", "slug": "T-Shirts-01" },
+          { "menuName": "Casual Shirts", "slug": "CasualShirts-02" },
+          { "menuName": "Formal Shirts", "slug": "FormalShirts-03" },
+          { "menuName": "Sweatshirts", "slug": "Sweatshirts-04" },
+          { "menuName": "Sweaters", "slug": "Sweaters-05" },
+          { "menuName": "Jackets", "slug": "Jackets-06" },
+          { "menuName": "Blazers & Coats", "slug": "Blazers&Coats-07" },
+          { "menuName": "Suits", "slug": "Suits-08" },
+          { "menuName": "Rain Jackets", "slug": "RainJackets-09" }
+        ]
+      },
+      {
+        "menuName": "Bottomwear",
+        "slug": "Bottomwear-12",
+        "menu": [
+          { "menuName": "Jeans", "slug": "Jeans-10" },
+          { "menuName": "Casual Trousers", "slug": "CasualTrousers-11" },
+          { "menuName": "Formal Trousers", "slug": "FormalTrousers-12" },
+          { "menuName": "Shorts", "slug": "Shorts-13" },
+          {
+            "menuName": "Track Pants & Joggers",
+            "slug": "TrackPants&Joggers-14"
+          }
+        ]
+      },
+      {
+        "menuName": "Innerwear & Sleepwear",
+        "slug": "Innerwear&Sleepwear-13",
+        "menu": [
+          { "menuName": "Briefs & Trunks", "slug": "Briefs&Trunks-15" },
+          { "menuName": "Boxers", "slug": "Boxers-16" },
+          { "menuName": "Vests", "slug": "Vests-17" },
+          {
+            "menuName": "Sleepwear & Loungewear",
+            "slug": "Sleepwear&Loungewear-18"
+          },
+          { "menuName": "Thermals", "slug": "Thermals-19" }
+        ]
+      },
+      {
+        "menuName": "Indian & Festive Wear",
+        "slug": "Indian&FestiveWear-14",
+        "menu": [
+          { "menuName": "Kurtas & Kurta Sets", "slug": "Kurtas&KurtaSets-20" },
+          { "menuName": "Sherwanis", "slug": "Sherwanis-21" },
+          { "menuName": "Jackets", "slug": "Jackets-22" },
+          { "menuName": "Dhotis", "slug": "Dhotis-23" }
+        ]
+      },
+      {
+        "menuName": "Footwear",
+        "slug": "Footwear-15",
+        "menu": [
+          { "menuName": "Casual Shoes", "slug": "CasualShoes-24" },
+          { "menuName": "Sports Shoes", "slug": "SportsShoes-25" },
+          { "menuName": "Formal Shoes", "slug": "FormalShoes-26" },
+          { "menuName": "Sneakers", "slug": "Sneakers-27" },
+          { "menuName": "Sandals & Floaters", "slug": "Sandals&Floaters-28" },
+          { "menuName": "Flip Flops", "slug": "FlipFlops-29" },
+          { "menuName": "Socks", "slug": "Socks-30" }
+        ]
+      },
+      {
+        "menuName": "Sports & Active Wear",
+        "slug": "Sports&ActiveWear-16",
+        "menu": [
+          { "menuName": "Sports Shoes", "slug": "SportsShoes-31" },
+          { "menuName": "Sports Sandals", "slug": "SportsSandals-32" },
+          { "menuName": "Active T-Shirts", "slug": "ActiveT-Shirts-33" },
+          {
+            "menuName": "Track Pants & Shorts",
+            "slug": "TrackPants&Shorts-34"
+          },
+          { "menuName": "Tracksuits", "slug": "Tracksuits-35" },
+          {
+            "menuName": "Jackets & Sweatshirts",
+            "slug": "Jackets&Sweatshirts-36"
+          },
+          { "menuName": "Sports Accessories", "slug": "SportsAccessories-37" },
+          { "menuName": "Swimwear", "slug": "Swimwear-38" }
+        ]
+      },
+      {
+        "menuName": "Men Accessories",
+        "slug": "MenAccessories-17",
+        "menu": [
+          { "menuName": "Wallets", "slug": "Wallets-39" },
+          { "menuName": "Belts", "slug": "Belts-40" },
+          {
+            "menuName": "Perfumes & Body Mists",
+            "slug": "Perfumes&BodyMists-41"
+          },
+          { "menuName": "Trimmers", "slug": "Trimmers-42" },
+          { "menuName": "Deodorants", "slug": "Deodorants-43" },
+          {
+            "menuName": "Ties, Cufflinks & Pocket Squares",
+            "slug": "TiesCufflinks&PocketSquares-44"
+          },
+          { "menuName": "Smart Watches", "slug": "AccessoryGiftSets-45" },
+          { "menuName": "Caps & Hats", "slug": "Caps&Hats-46" },
+          {
+            "menuName": "Mufflers, Scarves & Gloves",
+            "slug": "MufflersScarves&Gloves-47"
+          },
+          { "menuName": "Bags & Backpacks", "slug": "Bags&Backpacks-389" }
+        ]
+      }
+    ]
+  },
+  {
+    "menuName": "Women",
+    "slug": "Women-WMN-02",
+    "menu": [
+      {
+        "menuName": "Indian & Fusion Wear",
+        "slug": "Indian&FusionWear-18",
+        "menu": [
+          { "menuName": "Kurtas & Suits", "slug": "Kurtas&Suits-50" },
+          {
+            "menuName": "Kurtis, Tunics & Tops",
+            "slug": "KurtisTunics&Tops-51"
+          },
+          { "menuName": "Sarees", "slug": "Sarees-52" },
+          { "menuName": "Ethnic Wear", "slug": "EthnicWear-53" },
+          {
+            "menuName": "Leggings, Salwars & Churidars",
+            "slug": "LeggingsSalwars&Churidars-54"
+          },
+          { "menuName": "Skirts & Palazzos", "slug": "Skirts&Palazzos-55" },
+          { "menuName": "Dress Materials", "slug": "DressMaterials-56" },
+          { "menuName": "Lehenga Cholis", "slug": "LehengaCholis-57" },
+          { "menuName": "Dupattas & Shawls", "slug": "Dupattas&Shawls-58" },
+          { "menuName": "Jackets", "slug": "Jackets-59" }
+        ]
+      },
+      {
+        "menuName": "Western Wear",
+        "slug": "WesternWear-19",
+        "menu": [
+          { "menuName": "Dresses", "slug": "Dresses-60" },
+          { "menuName": "Tops", "slug": "Tops-61" },
+          { "menuName": "Tshirts", "slug": "Tshirts-62" },
+          { "menuName": "Jeans", "slug": "Jeans-63" },
+          { "menuName": "Trousers & Capris", "slug": "Trousers&Capris-64" },
+          { "menuName": "Shorts & Skirts", "slug": "Shorts&Skirts-65" },
+          { "menuName": "Co-ords", "slug": "Co-ords-66" },
+          { "menuName": "Playsuits", "slug": "Playsuits-67" },
+          { "menuName": "Jumpsuits", "slug": "Jumpsuits-68" },
+          { "menuName": "Shrugs", "slug": "Shrugs-69" },
+          {
+            "menuName": "Sweaters & Sweatshirts",
+            "slug": "Sweaters&Sweatshirts-70"
+          },
+          { "menuName": "Jackets & Coats", "slug": "Jackets&Coats-71" },
+          {
+            "menuName": "Blazers & Waistcoats",
+            "slug": "Blazers&Waistcoats-72"
+          }
+        ]
+      },
+      {
+        "menuName": "Footwear",
+        "slug": "Footwear-20",
+        "menu": [
+          { "menuName": "Flats", "slug": "Flats-73" },
+          { "menuName": "Sandal", "slug": "CasualShoes-74" },
+          { "menuName": "Heels", "slug": "Heels-75" },
+          { "menuName": "Bellies", "slug": "Boots-76" },
+          {
+            "menuName": "Sports Shoes & Floaters",
+            "slug": "SportsShoes&Floaters-77"
+          }
+        ]
+      },
+      {
+        "menuName": "Lingerie & Sleepwear",
+        "slug": "Lingerie&Sleepwear-21",
+        "menu": [
+          { "menuName": "Bra", "slug": "Bra-78" },
+          { "menuName": "Briefs", "slug": "Briefs-79" },
+          { "menuName": "Panties", "slug": "Shapewear-80" },
+          {
+            "menuName": "Sleepwear & Loungewear",
+            "slug": "Sleepwear&Loungewear-81"
+          },
+          { "menuName": "Swimwear", "slug": "Swimwear-82" },
+          {
+            "menuName": "Camisoles & Thermals",
+            "slug": "Camisoles&Thermals-83"
+          }
+        ]
+      },
+      {
+        "menuName": "Women Accessories",
+        "slug": "WomenAccessories-22",
+        "menu": [
+          { "menuName": "Handbags", "slug": "Handbags-84" },
+          { "menuName": "Clutches", "slug": "Clutches-85" },
+          { "menuName": "Wallets", "slug": "Wallets-86" },
+          { "menuName": "Messenger Bag", "slug": "MessengerBag-87" },
+          {
+            "menuName": "Perfumes & Body Mists",
+            "slug": "Perfume&BodyMist-88"
+          },
+          { "menuName": "Bags & Backpacks", "slug": "Bags&Backpacks-390" },
+          { "menuName": "Deodorant", "slug": "Deodorant-89" },
+          { "menuName": "Accessories", "slug": "Accessories-p3vc2" }
+        ]
+      }
+    ]
+  },
+  {
+    "menuName": "Kids",
+    "slug": "Kids-KDS-23",
+    "menu": [
+      {
+        "menuName": "Boys Clothing",
+        "slug": "BoysClothing-90",
+        "menu": [
+          { "menuName": "T-Shirts", "slug": "T-Shirts-91" },
+          { "menuName": "Shirts", "slug": "Shirts-92" },
+          { "menuName": "Shorts", "slug": "Shorts-93" },
+          { "menuName": "Jeans", "slug": "Jeans-94" },
+          { "menuName": "Trousers", "slug": "Trousers-95" },
+          { "menuName": "Clothing Sets", "slug": "ClothingSets-96" },
+          { "menuName": "Ethnic Wear", "slug": "EthnicWear-97" },
+          {
+            "menuName": "Track Pants & Pyjamas",
+            "slug": "TrackPants&Pyjamas-98"
+          },
+          {
+            "menuName": "Jacket, Sweater & Sweatshirts",
+            "slug": "JacketSweater&Sweatshirts-99"
+          },
+          { "menuName": "Party Wear", "slug": "PartyWear-100" },
+          {
+            "menuName": "Innerwear & Thermals",
+            "slug": "Innerwear&Thermals-101"
+          },
+          {
+            "menuName": "Nightwear & Loungewear",
+            "slug": "Nightwear&Loungewear-102"
+          },
+          { "menuName": "Value Packs", "slug": "ValuePacks-103" }
+        ]
+      },
+      {
+        "menuName": "Girls Clothing",
+        "slug": "GirlsClothing-24",
+        "menu": [
+          { "menuName": "Dresses", "slug": "Dresses-104" },
+          { "menuName": "Tops", "slug": "Tops-105" },
+          { "menuName": "Tshirts", "slug": "Tshirts-106" },
+          { "menuName": "Clothing Sets", "slug": "ClothingSets-107" },
+          { "menuName": "Lehenga choli", "slug": "Lehengacholi-108" },
+          { "menuName": "Kurta Sets", "slug": "KurtaSets-109" },
+          { "menuName": "Party wear", "slug": "Partywear-110" },
+          {
+            "menuName": "Dungarees & Jumpsuits",
+            "slug": "Dungarees&Jumpsuits-111"
+          },
+          { "menuName": "Skirts & shorts", "slug": "Skirts&shorts-112" },
+          { "menuName": "Tights & Leggings", "slug": "Tights&Leggings-113" },
+          {
+            "menuName": "Jeans, Trousers & Capris",
+            "slug": "JeansTrousers&Capris-114"
+          },
+          {
+            "menuName": "Jacket, Sweater & Sweatshirts",
+            "slug": "JacketSweater&Sweatshirts-115"
+          },
+          {
+            "menuName": "Innerwear & Thermals",
+            "slug": "Innerwear&Thermals-116"
+          },
+          {
+            "menuName": "Nightwear & Loungewear",
+            "slug": "Nightwear&Loungewear-117"
+          },
+          { "menuName": "Value Packs", "slug": "ValuePacks-118" }
+        ]
+      },
+      {
+        "menuName": "Infants",
+        "slug": "Infants-25",
+        "menu": [
+          { "menuName": "Bodysuits", "slug": "Bodysuits-118" },
+          {
+            "menuName": "Rompers & Sleepsuits",
+            "slug": "Rompers&Sleepsuits-119"
+          },
+          { "menuName": "Clothing Sets", "slug": "ClothingSets-120" },
+          { "menuName": "Tshirts & Tops", "slug": "Tshirts&Tops-121" },
+          { "menuName": "Dresses", "slug": "Dresses-122" },
+          { "menuName": "Bottom wear", "slug": "Bottomwear-123" },
+          { "menuName": "Winter Wear", "slug": "WinterWear-124" },
+          {
+            "menuName": "Innerwear & Sleepwear",
+            "slug": "Innerwear&Sleepwear-125"
+          },
+          { "menuName": "Infant Care", "slug": "InfantCare-126" }
+        ]
+      },
+      {
+        "menuName": "Footwear",
+        "slug": "Footwear-26",
+        "menu": [
+          { "menuName": "Bellie", "slug": "CasualShoes-127" },
+          { "menuName": "Flipflops", "slug": "Flipflops-128" },
+          { "menuName": "Sports Shoes", "slug": "SportsShoes-129" },
+          { "menuName": "Flats", "slug": "Flats-130" },
+          { "menuName": "Sandals", "slug": "Sandals-131" },
+          { "menuName": "Heels", "slug": "Heels-132" },
+          { "menuName": "School Shoes", "slug": "SchoolShoes-133" },
+          { "menuName": "Socks", "slug": "Socks-134" }
+        ]
+      },
+      {
+        "menuName": "Kids Accessories",
+        "slug": "KidAccessories-27",
+        "menu": [
+          { "menuName": "Caps & Hats", "slug": "Caps&Hats-135" },
+          { "menuName": "Bags & Backpacks", "slug": "Bags&Backpacks-391" }
+        ]
+      }
+    ]
+  },
+  {
+    "menuName": "Home & Living",
+    "slug": "Home&Living-HML-03",
+    "menu": [
+      {
+        "menuName": "Bed Linen & Furnishing",
+        "slug": "Bed Linen & Furnishing-28",
+        "menu": [
+          { "menuName": "Bed Runners", "slug": "BedRunners-136" },
+          {
+            "menuName": "Mattress Protectors",
+            "slug": "MattressProtectors-137"
+          },
+          { "menuName": "Bedsheets", "slug": "Bedsheets-138" },
+          { "menuName": "Bedding Sets", "slug": "BeddingSets-139" },
+          {
+            "menuName": "Blankets, Quilts & Dohars",
+            "slug": "BlanketsQuilts&Dohars-140"
+          },
+          {
+            "menuName": "Pillows & Pillow Covers",
+            "slug": "Pillows&PillowCovers-141"
+          },
+          { "menuName": "Bed Covers", "slug": "BedCovers-142" },
+          { "menuName": "Diwan Sets", "slug": "DiwanSets-143" },
+          { "menuName": "Chair Pads & Covers", "slug": "ChairPads&Covers-144" },
+          {
+            "menuName": "Cushions & Cushion Covers",
+            "slug": "Cushions&CushionCovers-187"
+          },
+          { "menuName": "Curtains", "slug": "Curtains-188" },
+          { "menuName": "Sofa Covers", "slug": "SofaCovers-145" }
+        ]
+      },
+      {
+        "menuName": "Flooring",
+        "slug": "Flooring-29",
+        "menu": [
+          { "menuName": "Floor Runners", "slug": "FloorRunners-146" },
+          { "menuName": "Carpets", "slug": "Carpets-147" },
+          {
+            "menuName": "Floor Mats & Dhurries",
+            "slug": "FloorMats&Dhurries-148"
+          },
+          { "menuName": "Door Mats", "slug": "DoorMats-149" }
+        ]
+      },
+      {
+        "menuName": "Bath",
+        "slug": "Bath-30",
+        "menu": [
+          { "menuName": "Bath Towels", "slug": "BathTowels-150" },
+          { "menuName": "Hand & Face Towels", "slug": "Hand&FaceTowels-151" },
+          { "menuName": "Beach Towels", "slug": "BeachTowels-152" },
+          { "menuName": "Towels Set", "slug": "TowelsSet-153" },
+          { "menuName": "Bath Rugs", "slug": "BathRugs-154" },
+          { "menuName": "Bath Robes", "slug": "BathRobes-155" },
+          {
+            "menuName": "Bathroom Accessories",
+            "slug": "BathroomAccessories-156"
+          },
+          { "menuName": "Shower Curtains", "slug": "ShowerCurtains-157" }
+        ]
+      },
+      {
+        "menuName": "Home Decor",
+        "slug": "HomeD\u00e9cor-31",
+        "menu": [
+          { "menuName": "Plants & Planters", "slug": "Plants&Planters-158" },
+          { "menuName": "Aromas & Candles", "slug": "Aromas&Candles-159" },
+          { "menuName": "Clocks", "slug": "Clocks-160" },
+          { "menuName": "Mirrors", "slug": "Mirrors-161" },
+          { "menuName": "Wall D\u00e9cor", "slug": "WallD\u00e9cor-162" },
+          { "menuName": "Festive Decor", "slug": "FestiveD\u00e9cor-163" },
+          { "menuName": "Pooja Essentials", "slug": "PoojaEssentials-164" },
+          { "menuName": "Wall Shelves", "slug": "WallShelves-165" },
+          { "menuName": "Fountains", "slug": "Fountains-166" },
+          { "menuName": "Showpieces & Vases", "slug": "Showpieces&Vases-167" },
+          { "menuName": "Ottoman", "slug": "Ottoman-168" },
+          { "menuName": "Vehicle Covers", "slug": "Vehicle-Covers-b8wAr" }
+        ]
+      },
+      {
+        "menuName": "Lamps & Lighting",
+        "slug": "Lamps&Lighting-32",
+        "menu": [
+          { "menuName": "Floor Lamps", "slug": "FloorLamps-169" },
+          { "menuName": "Ceiling Lamps", "slug": "CeilingLamps-170" },
+          { "menuName": "Table Lamps", "slug": "TableLamps-171" },
+          { "menuName": "Wall Lamps", "slug": "WallLamps-172" },
+          { "menuName": "Outdoor Lamps", "slug": "OutdoorLamps-173" },
+          { "menuName": "String Lights", "slug": "StringLights-174" }
+        ]
+      },
+      {
+        "menuName": "Kitchen & Table",
+        "slug": "Kitchen&Table-33",
+        "menu": [
+          { "menuName": "Table Runners", "slug": "TableRunners-175" },
+          {
+            "menuName": "Dinnerware & Serveware",
+            "slug": "Dinnerware&Serveware-176"
+          },
+          {
+            "menuName": "Cups & Mugs & Tumbler",
+            "slug": "Cups&Mugs&Tumbler-177"
+          },
+          {
+            "menuName": "Bakeware & Cookware",
+            "slug": "Bakeware&Cookware-178"
+          },
+          {
+            "menuName": "Kitchen Storage & Tools",
+            "slug": "KitchenStorage&Tools-179"
+          },
+          { "menuName": "Bar & Drinkware", "slug": "Bar&Drinkware-180" },
+          {
+            "menuName": "Table Covers & Furnishings",
+            "slug": "TableCovers&Furnishings-181"
+          }
+        ]
+      },
+      {
+        "menuName": "Storage",
+        "slug": "Storage-34",
+        "menu": [
+          { "menuName": "Bins", "slug": "Bins-182" },
+          { "menuName": "Hangers", "slug": "Hangers-183" },
+          { "menuName": "Organisers", "slug": "Organisers-184" },
+          { "menuName": "Hooks & Holders", "slug": "Hooks&Holders-185" },
+          { "menuName": "Laundry Bags", "slug": "LaundryBags-186" }
+        ]
+      }
+    ]
+  },
+  {
+    "menuName": "Beauty",
+    "slug": "Beauty-BET-04",
+    "menu": [
+      {
+        "menuName": "Makeup",
+        "slug": "Makeup-35",
+        "menu": [
+          { "menuName": "Lipstick", "slug": "Lipstick-189" },
+          { "menuName": "Lip Gloss", "slug": "LipGloss-190" },
+          { "menuName": "Lip Liner", "slug": "LipLiner-191" },
+          { "menuName": "Mascara", "slug": "Mascara-192" },
+          { "menuName": "Eyeliner", "slug": "Eyeliner-193" },
+          { "menuName": "Kajal", "slug": "Kajal-194" },
+          { "menuName": "Eyeshadow", "slug": "Eyeshadow-195" },
+          { "menuName": "Foundation", "slug": "Foundation-196" },
+          { "menuName": "Primer", "slug": "Primer-197" },
+          { "menuName": "Concealer", "slug": "Concealer-198" },
+          { "menuName": "Compact", "slug": "Compact-199" },
+          { "menuName": "Nail Polish", "slug": "NailPolish-200" }
+        ]
+      },
+      {
+        "menuName": "Skincare, Bath & Body",
+        "slug": "SkincareBath&Body-36",
+        "menu": [
+          { "menuName": "Face Moisturiser", "slug": "FaceMoisturiser-201" },
+          { "menuName": "Cleanser", "slug": "Cleanser-202" },
+          { "menuName": "Masks & Peel", "slug": "Masks&Peel-203" },
+          { "menuName": "Sunscreen", "slug": "Sunscreen-204" },
+          { "menuName": "Serum", "slug": "Serum-205" },
+          { "menuName": "Face Wash", "slug": "FaceWash-206" },
+          { "menuName": "Eye Cream", "slug": "EyeCream-207" },
+          { "menuName": "Lip Balm", "slug": "LipBalm-208" },
+          { "menuName": "Body Lotion", "slug": "BodyLotion-209" },
+          { "menuName": "Body Wash", "slug": "BodyWash-210" },
+          { "menuName": "Body Scrub", "slug": "BodyScrub-211" },
+          { "menuName": "Hand Cream", "slug": "HandCream-212" }
+        ]
+      },
+      {
+        "menuName": "Haircare",
+        "slug": "Haircare-37",
+        "menu": [
+          { "menuName": "Shampoo", "slug": "Shampoo-213" },
+          { "menuName": "Conditioner", "slug": "Conditioner-214" },
+          { "menuName": "Hair Cream", "slug": "HairCream-215" },
+          { "menuName": "Hair Oil", "slug": "HairOil-216" },
+          { "menuName": "Hair Gel", "slug": "HairGel-217" },
+          { "menuName": "Hair Color", "slug": "HairColor-218" },
+          { "menuName": "Hair Serum", "slug": "HairSerum-219" },
+          { "menuName": "Hair Accessory", "slug": "HairAccessory-220" }
+        ]
+      },
+      {
+        "menuName": "Fragrances",
+        "slug": "Fragrances-38",
+        "menu": [
+          { "menuName": "Perfume", "slug": "Perfume-221" },
+          { "menuName": "Deodorant", "slug": "Deodorant-222" },
+          { "menuName": "Body Mist", "slug": "Body Mist-223" }
+        ]
+      },
+      {
+        "menuName": "Appliances",
+        "slug": "Appliances-39",
+        "menu": [
+          { "menuName": "Hair Straightener", "slug": "HairStraightener-224" },
+          { "menuName": "Hair Dryer", "slug": "HairDryer-225" },
+          { "menuName": "Epilator", "slug": "Epilator=226" }
+        ]
+      },
+      {
+        "menuName": "Men's Grooming",
+        "slug": "Men'sGrooming-40",
+        "menu": [
+          { "menuName": "Trimmers", "slug": "Trimmers-227" },
+          { "menuName": "Beard Oil", "slug": "BeardOil-228" },
+          { "menuName": "Hair Wax", "slug": "HairWax-229" }
+        ]
+      },
+      {
+        "menuName": "Beauty Gift & Makeup Set",
+        "slug": "BeautyGift&MakeupSet-41",
+        "menu": [
+          { "menuName": "Beauty Gift", "slug": "BeautyGift-230" },
+          { "menuName": "Makeup Kit", "slug": "MakeupKit-231" }
+        ]
+      },
+      {
+        "menuName": "Baby Care",
+        "slug": "BabyCare-42",
+        "menu": [
+          {
+            "menuName": "Diaper & Potty Training",
+            "slug": "Diaper&PottyTraining-232"
+          },
+          {
+            "menuName": "Bath,Hair & Skin Care",
+            "slug": "Bath,Hair&SkinCare-233"
+          },
+          { "menuName": "Baby Food", "slug": "BabyFood-234" },
+          {
+            "menuName": "Feeding Bottle & Utensils",
+            "slug": "FeedingBottle&Utensils-235"
+          },
+          { "menuName": "Baby Oral Care", "slug": "BabyOralCare-236" },
+          { "menuName": "Bedding & Gear", "slug": "Bedding&Gear-237" },
+          {
+            "menuName": "Baby Medical & Health Care",
+            "slug": "BabyMedical&HealthCare-238"
+          },
+          {
+            "menuName": "Baby Proofing & Safety",
+            "slug": "BabyProofing&Safety-239"
+          },
+          {
+            "menuName": "Baby Cleaners & Detergents",
+            "slug": "BabyCleaners&Detergents-240"
+          },
+          { "menuName": "Maternity Care", "slug": "MaternityCare-241" },
+          {
+            "menuName": "Baby Bathing Accessories",
+            "slug": "BabyBathingAccessories-242"
+          },
+          {
+            "menuName": "Nursing & Breast Feeding",
+            "slug": "Nursing&BreastFeeding-243"
+          },
+          {
+            "menuName": "Baby Gift Sets & Combo",
+            "slug": "BabyGiftSets&Combo-244"
+          },
+          { "menuName": "Show less", "slug": "Showless-245" }
+        ]
+      }
+    ]
+  },
+  {
+    "menuName": "Mobile & Accessories",
+    "slug": "Mobile&Accessories-MOAC-05",
+    "menu": [
+      {
+        "menuName": "Mobiles",
+        "slug": "Mobile-43",
+        "menu": [{ "menuName": "Mobile", "slug": "Mobiles-246" }]
+      },
+      {
+        "menuName": "Mobile Accessories",
+        "slug": "MobileAccessories-44",
+        "menu": [
+          { "menuName": "Cases & Covers", "slug": "Cases&Covers-247" },
+          { "menuName": "Screen guards", "slug": "Screenguards-248" },
+          { "menuName": "Power Banks", "slug": "PowerBanks-249" },
+          { "menuName": "Headsets", "slug": "Headsets-250" },
+          { "menuName": "Data Cables", "slug": "DataCables-251" },
+          { "menuName": "Chargers", "slug": "Chargers-252" },
+          { "menuName": "Selfie Sticks", "slug": "SelfieSticks-253" },
+          { "menuName": "Skin Stickers", "slug": "SkinStickers-254" },
+          { "menuName": "Internal Batteries", "slug": "InternalBatteries-255" },
+          { "menuName": "Mounts & Stands", "slug": "Mounts&Stands-256" },
+          { "menuName": "Lens Kits", "slug": "LensKits-257" },
+          { "menuName": "Replacement Parts", "slug": "ReplacementParts-258" }
+        ]
+      }
+    ]
+  },
+  {
+    "menuName": "Laptop & Accessories",
+    "slug": "Laptop&Accessories-LAAC-06",
+    "menu": [
+      {
+        "menuName": "Laptops",
+        "slug": "Laptops-45",
+        "menu": [{ "menuName": "Laptop", "slug": "Laptop-259" }]
+      },
+      {
+        "menuName": "Tablets",
+        "slug": "Tablets-46",
+        "menu": [{ "menuName": "Tablet", "slug": "Tablet-260" }]
+      },
+      {
+        "menuName": "PC Accessories",
+        "slug": "PC Accessories-47",
+        "menu": [
+          { "menuName": "Keyboards", "slug": "Keyboards-261" },
+          { "menuName": "Mice", "slug": "Mice-262" },
+          { "menuName": "Laptop Bags", "slug": "Laptop Bags-263" },
+          { "menuName": "PC Speakers", "slug": "PCSpeakers-264" },
+          { "menuName": "Batteries", "slug": "Batteries-265" },
+          { "menuName": "Cables", "slug": "Cables-266" },
+          { "menuName": "Mouse", "slug": "Mouse-267" },
+          { "menuName": "Game Zones", "slug": "GameZone-268" }
+        ]
+      },
+      {
+        "menuName": "Data storage",
+        "slug": "Datastorage-48",
+        "menu": [
+          { "menuName": "Memory cards", "slug": "Memorycards-269" },
+          { "menuName": "Pen Drives", "slug": "PenDrives-270" },
+          { "menuName": "Hard Drives", "slug": "HardDrives-271" },
+          { "menuName": "Solid State Drives", "slug": "SolidStateDrives-272" },
+          {
+            "menuName": "Network Attached Storage",
+            "slug": "NetworkAttachedStorage-273"
+          }
+        ]
+      }
+    ]
+  }
+]
