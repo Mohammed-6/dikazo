@@ -6,6 +6,7 @@ import {
   detailProps,
   rowGridProps,
 } from "@/src/admin/types/grid";
+import { ImageElement, TextElement } from "./elements/index";
 
 const Homepage = () => {
   const [structureid, setstructureid] = useState<string>();
@@ -54,14 +55,20 @@ const Content = (props: contentProps) => {
     <>
       {loading ? (
         <>
-          {collectdata.map((col: any) => {
+          {collectdata.map((rw: any) => {
             return (
-              <Details
-                parent={col.parent}
-                edit={true}
-                editdata={col}
-                colname=""
-              />
+              <>
+                <div
+                  className={`${`grid-cols-${rw.rowStyle?.mobileGrid} sm:grid-cols-${rw.rowStyle?.tabletGrid} lg:grid-cols-12 gap-x-[${rw.rowStyle?.gapX}] gap-y-[${rw.rowStyle?.gapY}] text-${rw.rowStyle?.color}-${rw.rowStyle?.colorWeight} bg-${rw.rowStyle?.bgColor}-${rw.rowStyle?.bgColorWeight} ${rw.rowStyle?.roundedValue} text-[${rw.rowStyle?.fontSize}] ${rw.rowStyle?.fontWeight} ml-[${rw.rowStyle?.marginLeft}] mr-[${rw.rowStyle?.marginRight}] mt-[${rw.rowStyle?.marginTop}] mb-[${rw.rowStyle?.marginBottom}] pl-[${rw.rowStyle?.paddingLeft}] pr-[${rw.rowStyle?.paddingRight}] pt-[${rw.rowStyle?.paddingTop}] pb-[${rw.rowStyle?.paddingBottom}] height-[${rw.rowStyle?.height}] weight-[${rw.rowStyle?.width}] ${rw.rowStyle?.className}`}`}
+                >
+                  <Details
+                    parent={rw.parent}
+                    edit={true}
+                    editdata={rw}
+                    colname=""
+                  />
+                </div>
+              </>
             );
           })}
         </>
@@ -93,63 +100,45 @@ const Details = (props: detailProps) => {
         <div className="">
           {row.map((rw: rowGridProps, i: number) => (
             <>
-              <div
-                className={`grid grid-cols-12 ${
-                  rw.rowStyle ? `gap-x-[${rw.rowStyle.gapX}]` : ""
-                }`}
-              >
+              <div className={`grid`}>
                 {rw.grid.map((rr: any, x: number) => (
                   <>
                     <div
                       className={`border-2 border-dashed col-span-${rr.col}`}
                     >
-                      <div className="flex justify-between">
-                        <div className="flex items-center gap-x-0 justify-end my-0">
-                          <div>
-                            <select
-                              className="appearance-none p-0"
-                              value={rr.col}
-                            >
-                              <option value="">Select cols</option>
-                              <option value="1">col 1</option>
-                              <option value="2">col 2</option>
-                              <option value="3">col 3</option>
-                              <option value="4">col 4</option>
-                              <option value="5">col 5</option>
-                              <option value="6">col 6</option>
-                              <option value="7">col 7</option>
-                              <option value="8">col 8</option>
-                              <option value="9">col 9</option>
-                              <option value="10">col 10</option>
-                              <option value="11">col 11</option>
-                              <option value="12">col 12</option>
-                              <option value="row">New Row</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-
                       <div className="grid">
                         {rr.cols !== undefined &&
                           rr.cols.map((gr: any, g: number) => {
                             let sel = "";
+                            let properties = {};
                             selectedelement.map((ex: any) => {
                               if (ex.colid === gr.name) {
                                 sel = ex.elementType;
+                                properties = ex.properties;
                               }
                             });
                             return (
-                              <select
-                                className="p-0 appearance-none"
-                                value={sel}
-                              >
-                                <option value="">{gr.name}</option>
-                                <option value="image">Image</option>
-                                <option value="text">Text</option>
-                                <option value="button">Button</option>
-                                <option value="slider">Slider</option>
-                                <option value="product">Product</option>
-                              </select>
+                              <>
+                                <div className="text-red-500">{gr.name}</div>
+                                {sel === "image" ? (
+                                  <ImageElement data={properties} />
+                                ) : sel === "text" ? (
+                                  <TextElement data={properties} />
+                                ) : (
+                                  <ImageElement data={properties} />
+                                )}
+                              </>
+                              // <select
+                              //   className="p-0 appearance-none"
+                              //   value={sel}
+                              // >
+                              //   <option value="">{gr.name}</option>
+                              //   <option value="image">Image</option>
+                              //   <option value="text">Text</option>
+                              //   <option value="button">Button</option>
+                              //   <option value="slider">Slider</option>
+                              //   <option value="product">Product</option>
+                              // </select>
                             );
                           })}
                       </div>

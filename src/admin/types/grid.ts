@@ -3,6 +3,8 @@ export type rowGridProps = {
     colid:number
     grid: [],
     rowStyle: {
+        mobileGrid: number,
+        tabletGrid: number,
         gapX:number,
         gapY: number,
         className: string,

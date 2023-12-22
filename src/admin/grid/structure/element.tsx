@@ -8,16 +8,17 @@ export const ImageElement = (props: elementProps) => {
     elementType: "image",
     imageWebUrl: "",
     imageMobileUrl: "",
+    link: "",
     className: "",
     height: "auto",
     width: "auto",
     maxHeight: "auto",
     maxWidth: "auto",
-    border: false,
+    border: "0px",
     borderRadius: 0,
     objectFit: "contain",
     boxShadow: "none",
-    opacity: 1,
+    opacity: 100,
   });
 
   useEffect(() => {
@@ -73,6 +74,20 @@ export const ImageElement = (props: elementProps) => {
                         autoComplete="off"
                         placeholder=""
                         value={collectdata.imageMobileUrl}
+                        onChange={changeForm}
+                      />
+                    </div>
+                  </div>
+                  <div className="form-item">
+                    <label className="form-label mb-1">Link</label>
+                    <div className="">
+                      <input
+                        className="form-input"
+                        type="text"
+                        name="link"
+                        autoComplete="off"
+                        placeholder=""
+                        value={collectdata.link}
                         onChange={changeForm}
                       />
                     </div>
@@ -154,7 +169,7 @@ export const ImageElement = (props: elementProps) => {
                     <div className="">
                       <input
                         className="form-input"
-                        type="number"
+                        type="text"
                         name="border"
                         autoComplete="off"
                         placeholder=""
@@ -172,7 +187,7 @@ export const ImageElement = (props: elementProps) => {
                         name="borderRadius"
                         className="w-full"
                       >
-                        <option value="none"></option>
+                        <option value="none">None</option>
                         <option value="xs">Xtra Small</option>
                         <option value="sm">Small</option>
                         <option value="md">Medium</option>
@@ -204,7 +219,7 @@ export const ImageElement = (props: elementProps) => {
                         name="boxShadow"
                         className="w-full"
                       >
-                        <option value="none"></option>
+                        <option value="none">None</option>
                         <option value="sm">Small</option>
                         <option value="md">Medium</option>
                         <option value="lg">Large</option>
@@ -221,16 +236,16 @@ export const ImageElement = (props: elementProps) => {
                         className="w-full"
                       >
                         <option value=""></option>
-                        <option value="0.1">0.1</option>
-                        <option value="0.2">0.2</option>
-                        <option value="0.3">0.3</option>
-                        <option value="0.4">0.4</option>
-                        <option value="0.5">0.5</option>
-                        <option value="0.6">0.6</option>
-                        <option value="0.7">0.7</option>
-                        <option value="0.8">0.8</option>
-                        <option value="0.9">0.9</option>
-                        <option value="1">1</option>
+                        <option value="10">0.1</option>
+                        <option value="20">0.2</option>
+                        <option value="30">0.3</option>
+                        <option value="40">0.4</option>
+                        <option value="50">0.5</option>
+                        <option value="60">0.6</option>
+                        <option value="70">0.7</option>
+                        <option value="80">0.8</option>
+                        <option value="90">0.9</option>
+                        <option value="100">1</option>
                       </select>
                     </div>
                   </div>
@@ -254,10 +269,10 @@ export const TextElement = (props: elementProps) => {
   const [collectdata, setcollectdata] = useState<any>({
     elementType: "text",
     elementText: "",
+    link: "",
     elementContainer: "div",
-    color: "black",
+    color: "#000000",
     colorWeight: "900",
-    fontFamily: "",
     fontSize: "16px",
     className: "",
     fontWeight: "font-normal",
@@ -314,66 +329,18 @@ export const TextElement = (props: elementProps) => {
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-2 gap-x-4">
-                    <div className="form-item">
-                      <label className="form-label mb-1">Color</label>
-                      <div className="">
-                        <select
-                          onChange={changeForm}
-                          value={collectdata.color}
-                          name="color"
-                          className="w-full"
-                        >
-                          <option value="black">black</option>
-                          <option value="white">white</option>
-                          <option value="red">red</option>
-                          <option value="orange">orange</option>
-                          <option value="amber">amber</option>
-                          <option value="yellow">yellow</option>
-                          <option value="green">green</option>
-                          <option value="lime">lime</option>
-                          <option value="emerald">emerald</option>
-                          <option value="teal">teal</option>
-                          <option value="cyan">cyan</option>
-                          <option value="sky">sky</option>
-                          <option value="blue">blue</option>
-                          <option value="violet">violet</option>
-                          <option value="indigo">indigo</option>
-                          <option value="purple">purple</option>
-                          <option value="fuchsia">fuchsia</option>
-                          <option value="pink">pink</option>
-                          <option value="rose">rose</option>
-                          <option value="transparent">transparent</option>
-                          <option value="indigo">indigo</option>
-                          <option value="slate">slate</option>
-                          <option value="gray">gray</option>
-                          <option value="zinc">zinc</option>
-                          <option value="neutral">neutral</option>
-                          <option value="stone">stone</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="form-item">
-                      <label className="form-label mb-1">Color weight</label>
-                      <div className="">
-                        <select
-                          onChange={changeForm}
-                          value={collectdata.colorWeight}
-                          name="colorWeight"
-                          className="w-full"
-                        >
-                          <option value="900">900</option>
-                          <option value="800">800</option>
-                          <option value="700">700</option>
-                          <option value="600">600</option>
-                          <option value="500">500</option>
-                          <option value="400">400</option>
-                          <option value="300">300</option>
-                          <option value="200">200</option>
-                          <option value="100">100</option>
-                          <option value=""></option>
-                        </select>
-                      </div>
+                  <div className="form-item">
+                    <label className="form-label mb-1">Color</label>
+                    <div className="">
+                      <input
+                        className="form-input"
+                        type="color"
+                        name="color"
+                        autoComplete="off"
+                        placeholder=""
+                        value={collectdata.color}
+                        onChange={changeForm}
+                      />
                     </div>
                   </div>
                   <div className="form-item">
@@ -395,19 +362,20 @@ export const TextElement = (props: elementProps) => {
                         <option value="h5">h5</option>
                         <option value="h6">h6</option>
                         <option value="p">p</option>
+                        <option value="a">a</option>
                       </select>
                     </div>
                   </div>
                   <div className="form-item">
-                    <label className="form-label mb-1">Font family</label>
+                    <label className="form-label mb-1">Link</label>
                     <div className="">
                       <input
                         className="form-input"
                         type="text"
-                        name="fontFamily"
+                        name="link"
                         autoComplete="off"
                         placeholder=""
-                        value={collectdata.fontFamily}
+                        value={collectdata.link}
                         onChange={changeForm}
                       />
                     </div>
@@ -583,10 +551,11 @@ export const ButtonElement = (props: elementProps) => {
   const [collectdata, setcollectdata] = useState<any>({
     elementType: "button",
     elementText: "",
+    link: "",
     className: "",
-    color: "black",
+    color: "#ffffff",
     colorWeight: "900",
-    bgColor: "black",
+    bgColor: "#000000",
     bgColorWeight: "900",
     roundedValue: "rounded-none",
     fontSize: "16px",
@@ -653,129 +622,37 @@ export const ButtonElement = (props: elementProps) => {
                     <div className="form-item">
                       <label className="form-label mb-1">Color</label>
                       <div className="">
-                        <select
-                          onChange={changeForm}
-                          value={collectdata.color}
+                        <input
+                          className="form-input"
+                          type="color"
                           name="color"
-                          className="w-full"
-                        >
-                          <option value="black">black</option>
-                          <option value="white">white</option>
-                          <option value="red">red</option>
-                          <option value="orange">orange</option>
-                          <option value="amber">amber</option>
-                          <option value="yellow">yellow</option>
-                          <option value="green">green</option>
-                          <option value="lime">lime</option>
-                          <option value="emerald">emerald</option>
-                          <option value="teal">teal</option>
-                          <option value="cyan">cyan</option>
-                          <option value="sky">sky</option>
-                          <option value="blue">blue</option>
-                          <option value="violet">violet</option>
-                          <option value="indigo">indigo</option>
-                          <option value="purple">purple</option>
-                          <option value="fuchsia">fuchsia</option>
-                          <option value="pink">pink</option>
-                          <option value="rose">rose</option>
-                          <option value="transparent">transparent</option>
-                          <option value="indigo">indigo</option>
-                          <option value="slate">slate</option>
-                          <option value="gray">gray</option>
-                          <option value="zinc">zinc</option>
-                          <option value="neutral">neutral</option>
-                          <option value="stone">stone</option>
-                        </select>
+                          autoComplete="off"
+                          placeholder=""
+                          value={collectdata.color}
+                          onChange={changeForm}
+                        />
                       </div>
                     </div>
-                    <div className="form-item">
-                      <label className="form-label mb-1">Color weight</label>
-                      <div className="">
-                        <select
-                          onChange={changeForm}
-                          value={collectdata.colorWeight}
-                          name="colorWeight"
-                          className="w-full"
-                        >
-                          <option value="900">900</option>
-                          <option value="800">800</option>
-                          <option value="700">700</option>
-                          <option value="600">600</option>
-                          <option value="500">500</option>
-                          <option value="400">400</option>
-                          <option value="300">300</option>
-                          <option value="200">200</option>
-                          <option value="100">100</option>
-                          <option value=""></option>
-                        </select>
+                    <div>
+                      <div className="form-item">
+                        <label className="form-label mb-1">
+                          Background Color
+                        </label>
+                        <div className="">
+                          <input
+                            className="form-input"
+                            type="color"
+                            name="bgColor"
+                            autoComplete="off"
+                            placeholder=""
+                            value={collectdata.bgColor}
+                            onChange={changeForm}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-x-4">
-                    <div className="form-item">
-                      <label className="form-label mb-1">
-                        Background Color
-                      </label>
-                      <div className="">
-                        <select
-                          onChange={changeForm}
-                          value={collectdata.bgColor}
-                          name="bgColor"
-                          className="w-full"
-                        >
-                          <option value="black">black</option>
-                          <option value="white">white</option>
-                          <option value="red">red</option>
-                          <option value="orange">orange</option>
-                          <option value="amber">amber</option>
-                          <option value="yellow">yellow</option>
-                          <option value="green">green</option>
-                          <option value="lime">lime</option>
-                          <option value="emerald">emerald</option>
-                          <option value="teal">teal</option>
-                          <option value="cyan">cyan</option>
-                          <option value="sky">sky</option>
-                          <option value="blue">blue</option>
-                          <option value="violet">violet</option>
-                          <option value="indigo">indigo</option>
-                          <option value="purple">purple</option>
-                          <option value="fuchsia">fuchsia</option>
-                          <option value="pink">pink</option>
-                          <option value="rose">rose</option>
-                          <option value="transparent">transparent</option>
-                          <option value="indigo">indigo</option>
-                          <option value="slate">slate</option>
-                          <option value="gray">gray</option>
-                          <option value="zinc">zinc</option>
-                          <option value="neutral">neutral</option>
-                          <option value="stone">stone</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="form-item">
-                      <label className="form-label mb-1">Color weight</label>
-                      <div className="">
-                        <select
-                          onChange={changeForm}
-                          value={collectdata.bgColorWeight}
-                          name="bgColorWeight"
-                          className="w-full"
-                        >
-                          <option value="900">900</option>
-                          <option value="800">800</option>
-                          <option value="700">700</option>
-                          <option value="600">600</option>
-                          <option value="500">500</option>
-                          <option value="400">400</option>
-                          <option value="300">300</option>
-                          <option value="200">200</option>
-                          <option value="100">100</option>
-                          <option value=""></option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
                   <div className="form-item">
                     <label className="form-label mb-1">Rounded value</label>
                     <div className="">
@@ -794,6 +671,20 @@ export const ButtonElement = (props: elementProps) => {
                         <option value="rounded-3xl">rounded-3xl</option>
                         <option value="rounded-full">rounded-full</option>
                       </select>
+                    </div>
+                  </div>
+                  <div className="form-item">
+                    <label className="form-label mb-1">Link</label>
+                    <div className="">
+                      <input
+                        className="form-input"
+                        type="text"
+                        name="link"
+                        autoComplete="off"
+                        placeholder=""
+                        value={collectdata.link}
+                        onChange={changeForm}
+                      />
                     </div>
                   </div>
                   <div className="form-item">
@@ -1017,7 +908,7 @@ export const ButtonElement = (props: elementProps) => {
                   <div className="">
                     <input
                       className="form-input"
-                      type="number"
+                      type="text"
                       name="borderSize"
                       autoComplete="off"
                       placeholder=""
@@ -1065,6 +956,7 @@ export const SliderElement = (props: elementProps) => {
   const [collectdata, setcollectdata] = useState<any>({
     elementType: "slider",
     elementValue: "",
+    link: "",
     className: "",
     ariaLabel: "slider",
     axis: "horizontal",
@@ -1687,12 +1579,14 @@ export const ProductElement = (props: elementProps) => {
 export const RowElement = (props: elementProps) => {
   const [collectdata, setcollectdata] = useState<any>({
     elementType: "row",
-    gapX: 0,
-    gapY: 0,
+    gapX: "0px",
+    gapY: "0px",
+    tabletGrid: 3,
+    mobileGrid: 1,
     className: "",
-    color: "black",
+    color: "#000000",
     colorWeight: "900",
-    bgColor: "black",
+    bgColor: "#ffffff",
     bgColorWeight: "900",
     roundedValue: "rounded-none",
     fontSize: "16px",
@@ -1743,11 +1637,61 @@ export const RowElement = (props: elementProps) => {
                 <div>
                   <div className="grid grid-cols-2 gap-x-4">
                     <div className="form-item">
+                      <label className="form-label mb-1">Mobile Grid</label>
+                      <div className="">
+                        <select
+                          onChange={changeForm}
+                          value={collectdata.mobileGrid}
+                          name="mobileGrid"
+                          className="w-full"
+                        >
+                          <option value="12">12</option>
+                          <option value="11">11</option>
+                          <option value="10">10</option>
+                          <option value="9">9</option>
+                          <option value="8">8</option>
+                          <option value="7">7</option>
+                          <option value="6">6</option>
+                          <option value="5">5</option>
+                          <option value="4">4</option>
+                          <option value="3">3</option>
+                          <option value="2">2</option>
+                          <option value="1">1</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="form-item">
+                      <label className="form-label mb-1">Tablet Grid</label>
+                      <div className="">
+                        <select
+                          onChange={changeForm}
+                          value={collectdata.tabletGrid}
+                          name="tabletGrid"
+                          className="w-full"
+                        >
+                          <option value="12">12</option>
+                          <option value="11">11</option>
+                          <option value="10">10</option>
+                          <option value="9">9</option>
+                          <option value="8">8</option>
+                          <option value="7">7</option>
+                          <option value="6">6</option>
+                          <option value="5">5</option>
+                          <option value="4">4</option>
+                          <option value="3">3</option>
+                          <option value="2">2</option>
+                          <option value="1">1</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4">
+                    <div className="form-item">
                       <label className="form-label mb-1">Gap Y(px)</label>
                       <div className="">
                         <input
                           className="form-input"
-                          type="number"
+                          type="text"
                           name="gapY"
                           autoComplete="off"
                           placeholder=""
@@ -1761,7 +1705,7 @@ export const RowElement = (props: elementProps) => {
                       <div className="">
                         <input
                           className="form-input"
-                          type="number"
+                          type="text"
                           name="gapX"
                           autoComplete="off"
                           placeholder=""
@@ -1771,130 +1715,36 @@ export const RowElement = (props: elementProps) => {
                       </div>
                     </div>
                   </div>
+
                   <div className="grid grid-cols-2 gap-x-4">
                     <div className="form-item">
                       <label className="form-label mb-1">Color</label>
                       <div className="">
-                        <select
-                          onChange={changeForm}
-                          value={collectdata.color}
+                        <input
+                          className="form-input"
+                          type="color"
                           name="color"
-                          className="w-full"
-                        >
-                          <option value="black">black</option>
-                          <option value="white">white</option>
-                          <option value="red">red</option>
-                          <option value="orange">orange</option>
-                          <option value="amber">amber</option>
-                          <option value="yellow">yellow</option>
-                          <option value="green">green</option>
-                          <option value="lime">lime</option>
-                          <option value="emerald">emerald</option>
-                          <option value="teal">teal</option>
-                          <option value="cyan">cyan</option>
-                          <option value="sky">sky</option>
-                          <option value="blue">blue</option>
-                          <option value="violet">violet</option>
-                          <option value="indigo">indigo</option>
-                          <option value="purple">purple</option>
-                          <option value="fuchsia">fuchsia</option>
-                          <option value="pink">pink</option>
-                          <option value="rose">rose</option>
-                          <option value="transparent">transparent</option>
-                          <option value="indigo">indigo</option>
-                          <option value="slate">slate</option>
-                          <option value="gray">gray</option>
-                          <option value="zinc">zinc</option>
-                          <option value="neutral">neutral</option>
-                          <option value="stone">stone</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="form-item">
-                      <label className="form-label mb-1">Color weight</label>
-                      <div className="">
-                        <select
+                          autoComplete="off"
+                          placeholder=""
+                          value={collectdata.color}
                           onChange={changeForm}
-                          value={collectdata.colorWeight}
-                          name="colorWeight"
-                          className="w-full"
-                        >
-                          <option value="900">900</option>
-                          <option value="800">800</option>
-                          <option value="700">700</option>
-                          <option value="600">600</option>
-                          <option value="500">500</option>
-                          <option value="400">400</option>
-                          <option value="300">300</option>
-                          <option value="200">200</option>
-                          <option value="100">100</option>
-                          <option value=""></option>
-                        </select>
+                        />
                       </div>
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-x-4">
                     <div className="form-item">
                       <label className="form-label mb-1">
                         Background Color
                       </label>
                       <div className="">
-                        <select
-                          onChange={changeForm}
-                          value={collectdata.bgColor}
+                        <input
+                          className="form-input"
+                          type="color"
                           name="bgColor"
-                          className="w-full"
-                        >
-                          <option value="black">black</option>
-                          <option value="white">white</option>
-                          <option value="red">red</option>
-                          <option value="orange">orange</option>
-                          <option value="amber">amber</option>
-                          <option value="yellow">yellow</option>
-                          <option value="green">green</option>
-                          <option value="lime">lime</option>
-                          <option value="emerald">emerald</option>
-                          <option value="teal">teal</option>
-                          <option value="cyan">cyan</option>
-                          <option value="sky">sky</option>
-                          <option value="blue">blue</option>
-                          <option value="violet">violet</option>
-                          <option value="indigo">indigo</option>
-                          <option value="purple">purple</option>
-                          <option value="fuchsia">fuchsia</option>
-                          <option value="pink">pink</option>
-                          <option value="rose">rose</option>
-                          <option value="transparent">transparent</option>
-                          <option value="indigo">indigo</option>
-                          <option value="slate">slate</option>
-                          <option value="gray">gray</option>
-                          <option value="zinc">zinc</option>
-                          <option value="neutral">neutral</option>
-                          <option value="stone">stone</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="form-item">
-                      <label className="form-label mb-1">Color weight</label>
-                      <div className="">
-                        <select
+                          autoComplete="off"
+                          placeholder=""
+                          value={collectdata.bgColor}
                           onChange={changeForm}
-                          value={collectdata.bgColorWeight}
-                          name="bgColorWeight"
-                          className="w-full"
-                        >
-                          <option value="900">900</option>
-                          <option value="800">800</option>
-                          <option value="700">700</option>
-                          <option value="600">600</option>
-                          <option value="500">500</option>
-                          <option value="400">400</option>
-                          <option value="300">300</option>
-                          <option value="200">200</option>
-                          <option value="100">100</option>
-                          <option value=""></option>
-                        </select>
+                        />
                       </div>
                     </div>
                   </div>

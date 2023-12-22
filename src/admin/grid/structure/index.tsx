@@ -332,17 +332,21 @@ const Details = (props: detailProps) => {
     i: string
   ) => {
     const evt = e.currentTarget;
-    if (evt.value !== "") {
+    showSelectEvent(evt.value, i);
+  };
+
+  const showSelectEvent = (value: string, i: string) => {
+    if (value !== "") {
       const tempColId = i;
       const index = selectedelement.findIndex(
         (se: any) => se.colid === tempColId
       );
       if (index !== -1) {
         const temp = [...selectedelement];
-        temp[index].elementType = evt.value;
+        temp[index].elementType = value;
         setselectedelement(temp);
         setshowelement({
-          elementType: evt.value,
+          elementType: value,
           colid: tempColId,
           isShow: true,
           properties: temp[index].properties,
@@ -350,10 +354,10 @@ const Details = (props: detailProps) => {
       } else {
         setselectedelement([
           ...selectedelement,
-          { colid: tempColId, elementType: evt.value, properties: [] },
+          { colid: tempColId, elementType: value, properties: [] },
         ]);
         setshowelement({
-          elementType: evt.value,
+          elementType: value,
           colid: tempColId,
           isShow: true,
           properties: [],
@@ -392,6 +396,7 @@ const Details = (props: detailProps) => {
   };
 
   const returnRowData = (data: any) => {
+    console.log(data);
     const colte = {
       structureName: structurename,
       rowStyle: data,
@@ -551,7 +556,7 @@ const Details = (props: detailProps) => {
                         </div>
                       </div>
 
-                      <div className="grid">
+                      <div className="grid grid-cols-12">
                         {rr.cols !== undefined &&
                           rr.cols.map((gr: any, g: number) => {
                             let sel = "";
@@ -561,19 +566,35 @@ const Details = (props: detailProps) => {
                               }
                             });
                             return (
-                              <select
-                                className="p-0 appearance-none"
-                                value={sel}
-                                onChange={(e) => selectElement(e, gr.name)}
-                                onDoubleClick={(e) => selectElement(e, gr.name)}
-                              >
-                                <option value="">{gr.name}</option>
-                                <option value="image">Image</option>
-                                <option value="text">Text</option>
-                                <option value="button">Button</option>
-                                <option value="slider">Slider</option>
-                                <option value="product">Product</option>
-                              </select>
+                              <>
+                                <div className="col-span-11">
+                                  <select
+                                    className="p-0 appearance-none w-full"
+                                    value={sel}
+                                    onChange={(e) => selectElement(e, gr.name)}
+                                    onDoubleClick={(e) =>
+                                      selectElement(e, gr.name)
+                                    }
+                                  >
+                                    <option value="">{gr.name}</option>
+                                    <option value="image">Image</option>
+                                    <option value="text">Text</option>
+                                    <option value="button">Button</option>
+                                    <option value="slider">Slider</option>
+                                    <option value="product">Product</option>
+                                  </select>
+                                </div>
+                                <div className="col-span-1">
+                                  <button
+                                    className="bg-orange-500 p-0.5 rounded-sm"
+                                    onClick={() =>
+                                      showSelectEvent(sel as any, gr.name)
+                                    }
+                                  >
+                                    <PencilIcon className="w-6 p-0.5 stroke-white" />
+                                  </button>
+                                </div>
+                              </>
                             );
                           })}
                       </div>
