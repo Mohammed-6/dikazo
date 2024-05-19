@@ -6,7 +6,14 @@ import {
   detailProps,
   rowGridProps,
 } from "@/src/admin/types/grid";
-import { ImageElement, TextElement } from "./elements/index";
+import {
+  ButtonElement,
+  ImageElement,
+  ProductGridElement,
+  ProductSliderElement,
+  SliderElement,
+  TextElement,
+} from "./elements/index";
 
 const Homepage = () => {
   const [structureid, setstructureid] = useState<string>();
@@ -59,7 +66,7 @@ const Content = (props: contentProps) => {
             return (
               <>
                 <div
-                  className={`${`grid-cols-${rw.rowStyle?.mobileGrid} sm:grid-cols-${rw.rowStyle?.tabletGrid} lg:grid-cols-12 gap-x-[${rw.rowStyle?.gapX}] gap-y-[${rw.rowStyle?.gapY}] text-${rw.rowStyle?.color}-${rw.rowStyle?.colorWeight} bg-${rw.rowStyle?.bgColor}-${rw.rowStyle?.bgColorWeight} ${rw.rowStyle?.roundedValue} text-[${rw.rowStyle?.fontSize}] ${rw.rowStyle?.fontWeight} ml-[${rw.rowStyle?.marginLeft}] mr-[${rw.rowStyle?.marginRight}] mt-[${rw.rowStyle?.marginTop}] mb-[${rw.rowStyle?.marginBottom}] pl-[${rw.rowStyle?.paddingLeft}] pr-[${rw.rowStyle?.paddingRight}] pt-[${rw.rowStyle?.paddingTop}] pb-[${rw.rowStyle?.paddingBottom}] height-[${rw.rowStyle?.height}] weight-[${rw.rowStyle?.width}] ${rw.rowStyle?.className}`}`}
+                  className={`${`grid-cols-12 gap-x-[${rw.rowStyle?.gapX}] gap-y-[${rw.rowStyle?.gapY}] text-[${rw.rowStyle?.color}]-${rw.rowStyle?.colorWeight} bg-[${rw.rowStyle?.bgColor}]-${rw.rowStyle?.bgColorWeight} ${rw.rowStyle?.roundedValue} text-[${rw.rowStyle?.fontSize}] ${rw.rowStyle?.fontWeight} ml-[${rw.rowStyle?.marginLeft}] mr-[${rw.rowStyle?.marginRight}] mt-[${rw.rowStyle?.marginTop}] mb-[${rw.rowStyle?.marginBottom}] pl-[${rw.rowStyle?.paddingLeft}] pr-[${rw.rowStyle?.paddingRight}] pt-[${rw.rowStyle?.paddingTop}] pb-[${rw.rowStyle?.paddingBottom}] height-[${rw.rowStyle?.height}] weight-[${rw.rowStyle?.width}] ${rw.rowStyle?.className}`}`}
                 >
                   <Details
                     parent={rw.parent}
@@ -104,7 +111,7 @@ const Details = (props: detailProps) => {
                 {rw.grid.map((rr: any, x: number) => (
                   <>
                     <div
-                      className={`border-2 border-dashed col-span-${rr.col}`}
+                    // className={`border-2 border-dashed col-span-${rr.col}`}
                     >
                       <div className="grid">
                         {rr.cols !== undefined &&
@@ -119,13 +126,21 @@ const Details = (props: detailProps) => {
                             });
                             return (
                               <>
-                                <div className="text-red-500">{gr.name}</div>
+                                {/* <div className="text-red-500">{gr.name}</div> */}
                                 {sel === "image" ? (
                                   <ImageElement data={properties} />
                                 ) : sel === "text" ? (
                                   <TextElement data={properties} />
+                                ) : sel === "button" ? (
+                                  <ButtonElement data={properties} />
+                                ) : sel === "slider" ? (
+                                  <SliderElement data={properties} />
+                                ) : sel === "product" ? (
+                                  <ProductGridElement data={properties} />
+                                ) : sel === "productSlider" ? (
+                                  <ProductSliderElement data={properties} />
                                 ) : (
-                                  <ImageElement data={properties} />
+                                  ""
                                 )}
                               </>
                               // <select

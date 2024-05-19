@@ -9,7 +9,7 @@ import Layout from "../../layout/index";
 import Link from "next/link";
 
 import { deleteProps } from "../../types/basic";
-import { AlertAction } from "../../data/stuff";
+import { AlertAction, serverURL } from "../../data/stuff";
 import AddEdit from "./addEdit";
 const Category = () => {
   return (
@@ -177,39 +177,56 @@ const Details = () => {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {categorylist !== undefined &&
-                      categorylist.map((dd, k) => (
-                        <tr>
-                          <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                            {k + 1}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                            {dd.name}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                            <img src={dd.icon} className="w-auto" />
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                            <img src={dd.banner} className="w-auto" />
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                            <button
-                              className="btn btn-primary"
-                              onClick={() => editCategory(dd)}
-                            >
-                              Edit
-                            </button>{" "}
-                            <button
-                              className="btn btn-danger"
-                              onClick={() => {
-                                setdeleteid(dd._id);
-                                setdeleteaction(true);
-                              }}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
+                      categorylist.map((dd, k) => {
+                        const editProps = {
+                          _id: dd._id,
+                          name: dd.name,
+                          banner: dd.icon._id,
+                          icon: dd.icon._id,
+                          metaTitle: dd.metaTitle,
+                          metaDescription: dd.metaDescription,
+                          status: dd.status,
+                        };
+                        return (
+                          <tr>
+                            <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                              {k + 1}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                              {dd.name}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                              <img
+                                src={serverURL + "/" + dd.icon.path}
+                                className="w-6"
+                              />
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                              <img
+                                src={serverURL + "/" + dd.banner.path}
+                                className="w-6"
+                              />
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                              <button
+                                className="btn btn-primary"
+                                onClick={() => editCategory(editProps)}
+                              >
+                                Edit
+                              </button>{" "}
+                              <button
+                                className="btn btn-danger"
+                                onClick={() => {
+                                  setdeleteid(dd._id);
+                                  setdeleteaction(true);
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>

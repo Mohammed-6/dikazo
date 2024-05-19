@@ -332,13 +332,14 @@ const Content = () => {
   };
   const formReturnPIMG = (e: any) => {
     if (e.name == "images") {
-      const tmp = [...collectdata.productImages.images];
-      tmp.concat(e.val);
+      const tmp: any = [...collectdata.productImages.images];
+      tmp.push(e.val);
+      console.log(tmp);
       setcollectdata({
         ...collectdata,
         productImages: {
           ...collectdata.productImages,
-          [e.name]: [...collectdata.productImages.images, ...e.val],
+          [e.name]: [...collectdata.productImages.images, e.val],
         },
       });
     } else {
@@ -417,12 +418,12 @@ const Content = () => {
     });
     console.log(e);
   };
-  function createSlug(str:string) {
+  function createSlug(str: string) {
     return str
       .toLowerCase()
-      .replace(/[^\w\s]/gi, '') // Remove special characters
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+      .replace(/[^\w\s]/gi, "") // Remove special characters
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
       .trim(); // Trim leading/trailing spaces
   }
   const submitForm = () => {
@@ -460,29 +461,33 @@ const Content = () => {
       return;
     }
     const colte = collectdata;
-    if(colte.seoMetaTags.url === undefined || colte.seoMetaTags.url ==='') {
-      colte.seoMetaTags.url =  createSlug(colte.productInformation.name);
+    if (colte.seoMetaTags.url === undefined || colte.seoMetaTags.url === "") {
+      colte.seoMetaTags.url = createSlug(colte.productInformation.name);
     }
     if (collectdata._id !== "" && collectdata._id !== undefined) {
-      updateProduct(colte).then((resp) => {
-        settoasterdata(resp.data);
-        console.log(resp.data);
-        setshowtoaster(true);
-        setshowpreloader(false);
-        // props.closePopUp();
-      }).catch((error) => {
-        console.log(error) 
-      })
+      updateProduct(colte)
+        .then((resp) => {
+          settoasterdata(resp.data);
+          console.log(resp.data);
+          setshowtoaster(true);
+          setshowpreloader(false);
+          // props.closePopUp();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
-      createProduct(colte).then((resp) => {
-        settoasterdata(resp.data);
-        console.log(resp.data);
-        setshowtoaster(true);
-        setshowpreloader(false);
-        // props.closePopUp();
-      }).catch((error) => {
-        console.log(error) 
-      })
+      createProduct(colte)
+        .then((resp) => {
+          settoasterdata(resp.data);
+          console.log(resp.data);
+          setshowtoaster(true);
+          setshowpreloader(false);
+          // props.closePopUp();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
   return (
@@ -743,7 +748,7 @@ const ProductInformation = (props: componentProps) => {
                   <option value="">Select Seller</option>
                   {props.resource.seller.map((dd) => (
                     <option value={dd._id}>
-                      {dd.personalInfomration.name}
+                      {dd.shopInformation.shopName}
                     </option>
                   ))}
                 </select>
@@ -913,7 +918,7 @@ const ProductImages = (props: componentProps) => {
     if (file && file.length > 0) {
       const files = Array.from(file);
       uploadSingleFile(files as any).then((res) =>
-        props.returnData({ name: evt.name, val: res.data })
+        props.returnData({ name: evt.name, val: res.data.data })
       );
     }
   };
@@ -923,7 +928,7 @@ const ProductImages = (props: componentProps) => {
     if (file && file.length > 0) {
       const files = Array.from(file);
       uploadMultipleFile(files as any).then((res) =>
-        props.returnData({ name: evt.name, val: res.data })
+        props.returnData({ name: evt.name, val: res.data.data })
       );
     }
   };
@@ -1081,7 +1086,7 @@ const ProductVariation = (props: componentProps) => {
     if (props.stockData) {
       setconvertvarient(props.stockData);
     }
-    if (props.stockData===undefined || props.stockData.length === 0) {
+    if (props.stockData === undefined || props.stockData.length === 0) {
       const dd = [
         {
           variantName: "main",

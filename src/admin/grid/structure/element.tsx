@@ -1352,6 +1352,7 @@ export const ProductElement = (props: elementProps) => {
   });
   const [productlist, setproductlist] = useState<any>([]);
   const [stocklist, setstocklist] = useState<any>([]);
+  const [search, setsearch] = useState<string>("");
 
   useEffect(() => {
     if (
@@ -1375,7 +1376,11 @@ export const ProductElement = (props: elementProps) => {
   };
   const searchKU = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const evt = e.currentTarget;
-    searchProduct({ search: evt.value }).then((product) => {
+    setsearch(evt.value);
+  };
+  const searchProd = () => {
+    if (search.length === 0) return;
+    searchProduct({ search: search }).then((product) => {
       setproductlist(product.data.data);
       setstocklist(product.data.stock);
     });
@@ -1405,7 +1410,7 @@ export const ProductElement = (props: elementProps) => {
                 <div className="col-span-2">
                   <div className="form-item relative">
                     <label className="form-label mb-1">Search Product</label>
-                    <div className="">
+                    <div className="flex items-center gap-x-1">
                       <input
                         className="form-input"
                         type="text"
@@ -1413,6 +1418,12 @@ export const ProductElement = (props: elementProps) => {
                         placeholder="Search..."
                         onKeyUp={searchKU}
                       />
+                      <button
+                        className="text-white bg-primary px-4 mt-1 py-1 rounded-md"
+                        onClick={searchProd}
+                      >
+                        Search
+                      </button>
                     </div>
                     <div className="absolute z-50 shadow-lg rounded-lg top-16 bg-white w-full">
                       <ul>
@@ -1576,6 +1587,181 @@ export const ProductElement = (props: elementProps) => {
   );
 };
 
+export const ProductSliderElement = (props: elementProps) => {
+  const [collectdata, setcollectdata] = useState<any>({
+    elementType: "productSlider",
+    thumbnail: "",
+    className: "bg-white p-0",
+    productdata: [],
+  });
+  const [productlist, setproductlist] = useState<any>([]);
+  const [stocklist, setstocklist] = useState<any>([]);
+  const [search, setsearch] = useState<string>("");
+
+  useEffect(() => {
+    if (
+      props.properties !== undefined &&
+      props.properties.elementType !== null &&
+      props.properties.elementType === "productSlider"
+    ) {
+      setcollectdata(props.properties);
+    }
+  }, []);
+
+  const changeForm = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const event = e.currentTarget;
+    setcollectdata({ ...collectdata, [event.name]: event.value });
+  };
+
+  const submitForm = () => {
+    props.returnData({ colid: props.colid, data: collectdata });
+  };
+  const searchKU = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const evt = e.currentTarget;
+    setsearch(evt.value);
+  };
+  const searchProd = () => {
+    if (search.length === 0) return;
+    searchProduct({ search: search }).then((product) => {
+      setproductlist(product.data.data);
+      setstocklist(product.data.stock);
+    });
+  };
+  const selectProduct = (dd: any, i: number) => {
+    setcollectdata({
+      ...collectdata,
+      productdata: [
+        ...collectdata.productdata,
+        {
+          thumbnail: imageURL + dd.productImages.thumbnail,
+          className: "bg-white p-0",
+          title: dd.productInformation.name,
+          seoURL: dd.seoMetaTags.url,
+          brand: dd.productInformation.brand.name,
+          seller: dd.productInformation.seller.personalInfomration.name,
+          mrp: stocklist[i].mrp,
+          sellingPrice: stocklist[i].sellingPrice,
+        },
+      ],
+    });
+    setproductlist([]);
+  };
+
+  const deleteProd = (i: number) => {
+    const temp = [...collectdata.productdata];
+    const remove = temp.filter((x, y) => y !== i);
+    setcollectdata({ ...collectdata, productdata: remove });
+  };
+  return (
+    <>
+      <div className="fixed inset-0 bg-black/50 overflow-y-scroll">
+        <div className="max-w-4xl mx-auto relative top-3">
+          <div className="card">
+            <div className="card-header">Image Element</div>
+            <div className="card-body">
+              <div className="grid grid-cols-2 gap-x-4">
+                <div className="col-span-2">
+                  <div className="form-item relative">
+                    <label className="form-label mb-1">Search Product</label>
+                    <div className="flex items-center gap-x-1">
+                      <input
+                        className="form-input"
+                        type="text"
+                        autoComplete="off"
+                        placeholder="Search..."
+                        onKeyUp={searchKU}
+                      />
+                      <button
+                        className="text-white bg-primary px-4 mt-1 py-1 rounded-md"
+                        onClick={searchProd}
+                      >
+                        Search
+                      </button>
+                    </div>
+                    {collectdata.productdata.length !== 0 ? (
+                      <label className="form-label mt-2">Product List</label>
+                    ) : (
+                      ""
+                    )}
+                    {collectdata.productdata.map((dd: any, i: number) => (
+                      <div className="flex items-center gap-x-1 mb-2">
+                        <input
+                          className="form-input"
+                          type="text"
+                          autoComplete="off"
+                          value={dd.title}
+                        />
+                        <button
+                          className="text-white bg-red-500 px-4 mt-1 py-1 rounded-md"
+                          onClick={() => deleteProd(i)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    ))}
+                    <div className="absolute z-50 shadow-lg rounded-lg top-16 bg-white w-full">
+                      <ul>
+                        {productlist.map((prd: any, i: number) => (
+                          <li className="border-b border-gray-200 p-2">
+                            <div className="flex gap-x-4">
+                              <div>
+                                <img
+                                  src={imageURL + prd.productImages.thumbnail}
+                                  className="w-6 h-6"
+                                />
+                              </div>
+                              <div>
+                                <a href={prd.seoMetaTags.url} target="_blank">
+                                  {prd.productInformation.name}
+                                </a>
+                              </div>
+                              <div className="">
+                                <button
+                                  className="text-blue-500 px-3"
+                                  onClick={() => selectProduct(prd, i)}
+                                >
+                                  Select
+                                </button>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="form-item">
+                    <label className="form-label mb-1">className</label>
+                    <div className="">
+                      <input
+                        className="form-input"
+                        type="text"
+                        name="className"
+                        autoComplete="off"
+                        placeholder=""
+                        value={collectdata.className}
+                        onChange={changeForm}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                className="text-white bg-primary px-4 py-1 rounded-md"
+                onClick={submitForm}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 export const RowElement = (props: elementProps) => {
   const [collectdata, setcollectdata] = useState<any>({
     elementType: "row",

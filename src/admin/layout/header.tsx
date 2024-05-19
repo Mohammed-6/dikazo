@@ -17,52 +17,73 @@ import {
 } from "../types/layout";
 const allData: headerMenuProps[] = [
   {
+    name: "Category",
+    link: "/admin/category",
+    menu: [],
+  },
+  {
+    name: "Grid",
+    link: "/admin/grid",
+    menu: [],
+  },
+  {
+    name: "Menu",
+    link: "/admin/menu",
+    menu: [],
+  },
+  {
+    name: "Order",
+    link: "/admin/order",
+    menu: [],
+  },
+  {
+    name: "Coupon",
+    link: "/admin/order/coupon",
+    menu: [],
+  },
+  {
+    name: "Product",
+    link: "",
+    menu: [
+      {
+        name: "Product",
+        link: "/admin/product",
+      },
+      {
+        name: "Attribute",
+        link: "/admin/product/attribute",
+      },
+      {
+        name: "Brand",
+        link: "/admin/product/brand",
+      },
+      {
+        name: "Category",
+        link: "/admin/product/category",
+      },
+      {
+        name: "Color",
+        link: "/admin/product/color",
+      },
+    ],
+  },
+  {
+    name: "Seller",
+    link: "/admin/seller",
+    menu: [],
+  },
+  {
     name: "User",
-    link: "/user",
-    menu: [],
-  },
-  {
-    name: "Patient",
-    link: "/patient",
-    menu: [],
-  },
-  {
-    name: "Dispense",
-    link: "/dispense",
-    menu: [],
-  },
-  {
-    name: "Case History",
-    link: "/cases",
-    menu: [],
-  },
-  {
-    name: "Follow Up",
-    link: "/followups",
-    menu: [],
-  },
-  {
-    name: "Accounts",
-    link: "/accounts",
-    menu: [],
-  },
-  {
-    name: "Messages",
-    link: "/message",
-    menu: [],
-  },
-  {
-    name: "Change Password",
-    link: "/change-password",
+    link: "/admin/user",
     menu: [],
   },
   //   {
   //     name: "Customers",
-  //     link: "/admin/customer",
+  //     link: "/admin/admin/customer",
   //     menu: [
   //       {
   //         name: "Add Customer",
-  //         link: "/admin/customer/add-customer",
+  //         link: "/admin/admin/customer/add-customer",
   //       },
   //     ],
   //   },
@@ -229,10 +250,30 @@ const DeskMenu = () => {
       <div className="w-full px-[10px]">
         <div className="flex">
           {allData.map((dd) => {
+            const [submenu, setsubmenu] = useState<boolean>(false);
             return (
               <>
-                <div className="text-white text-lg px-3 border-b-0 duration-50 pb-2 border-white hover:border-b-2 hover:pb-[6px]">
-                  {dd.name}
+                <div
+                  className="text-white text-lg px-3 border-b-0 duration-50 pb-2 border-white hover:border-b-2 hover:pb-[6px] relative"
+                  onMouseEnter={() => setsubmenu(true)}
+                  onMouseLeave={() => setsubmenu(false)}
+                >
+                  <Link href={"/" + dd.link}>{dd.name}</Link>
+                  {submenu && dd.menu.length !== 0 ? (
+                    <>
+                      <ul className="absolute top-8 bg-white text-black shadow-lg rounded-md z-30">
+                        {dd.menu.map((ll: any) => {
+                          return (
+                            <li className="border-b p-2">
+                              <Link href={"/" + ll.link}>{ll.name}</Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </>
             );

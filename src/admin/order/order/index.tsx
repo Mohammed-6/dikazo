@@ -230,7 +230,7 @@ const Details = () => {
                             <td className="text-right footable-last-visible">
                               <div className="flex items-center gap-x-3">
                                 <a
-                                  href={"/admin/order/detail/" + ord.ordercode}
+                                  href={"/admin/order/detail/" + ord.orderCode}
                                   title="View"
                                 >
                                   <PencilIcon className="w-6" />

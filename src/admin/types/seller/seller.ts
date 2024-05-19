@@ -3,6 +3,7 @@ export type sellerProps = {
     personalInfomration: {
         name: string,
         email:string,
+        panNo:string,
         gender:string,
         dob:string,
         state:string,

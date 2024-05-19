@@ -47,7 +47,7 @@ const AddEdit = (props: addEditProps) => {
     if (file && file.length > 0) {
       const files = Array.from(file);
       uploadSingleFile(files as any).then((res) =>
-        setcollectdata({ ...collectdata, banner: res.data })
+        setcollectdata({ ...collectdata, banner: res.data.data })
       );
     }
   };
@@ -57,7 +57,7 @@ const AddEdit = (props: addEditProps) => {
     if (file && file.length > 0) {
       const files = Array.from(file);
       uploadSingleFile(files as any).then((res) =>
-        setcollectdata({ ...collectdata, icon: res.data })
+        setcollectdata({ ...collectdata, icon: res.data.data })
       );
     }
   };
@@ -75,6 +75,7 @@ const AddEdit = (props: addEditProps) => {
       });
       setshowtoaster(true);
       setshowpreloader(false);
+      console.log(collectdata);
       return;
     }
     if (collectdata._id !== "" && collectdata._id !== undefined) {
@@ -122,7 +123,7 @@ const AddEdit = (props: addEditProps) => {
                 </div>
               </div>
               <div className="form-item">
-                <label className="form-label mb-1">Banner(200x200)</label>
+                <label className="form-label mb-1">Banner(200x200)*</label>
                 <div className="">
                   <input
                     className="form-input"
@@ -133,7 +134,7 @@ const AddEdit = (props: addEditProps) => {
                 </div>
               </div>
               <div className="form-item">
-                <label className="form-label mb-1">Icon(30x30)</label>
+                <label className="form-label mb-1">Icon(30x30)*</label>
                 <div className="">
                   <input
                     className="form-input"

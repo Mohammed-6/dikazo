@@ -21,6 +21,7 @@ import {
   ButtonElement,
   ImageElement,
   ProductElement,
+  ProductSliderElement,
   RowElement,
   SliderElement,
   TextElement,
@@ -447,6 +448,13 @@ const Details = (props: detailProps) => {
           colid={showelement.colid}
           properties={showelement.properties}
         />
+      ) : showelement.elementType === "productSlider" &&
+        showelement.isShow === true ? (
+        <ProductSliderElement
+          returnData={returnData}
+          colid={showelement.colid}
+          properties={showelement.properties}
+        />
       ) : showelement.elementType === "row" && showelement.isShow === true ? (
         <RowElement
           returnData={returnRowData}
@@ -582,6 +590,9 @@ const Details = (props: detailProps) => {
                                     <option value="button">Button</option>
                                     <option value="slider">Slider</option>
                                     <option value="product">Product</option>
+                                    <option value="productSlider">
+                                      Product Slider
+                                    </option>
                                   </select>
                                 </div>
                                 <div className="col-span-1">

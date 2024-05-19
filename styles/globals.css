@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Gilroy-Regular';
-  src: url('/fonts/Gilroy-Regular.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+  font-family: 'Raleway-Regular';
+  src: url('/fonts/Raleway-Regular.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 } 
 
 body {
-  font-family: 'Gilroy-Regular';
+  font-family: 'Raleway-Regular';
 }
 
 @layer components {

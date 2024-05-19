@@ -28,3 +28,25 @@ export type addressProps = {
 }
 
 export const arrAddressProps:addressProps[] = []
+
+export type sellerFeedbackProps = {
+    sellerId: string,
+    orderId: string,
+    customerId: string,
+    rating: number,
+    isItemArrrived: boolean,
+    itemDesctibed: boolean,
+    sellerPromptService: string,
+    comment: string
+}
+
+export type productFeedbackProps = {
+    productId: string,
+    productStockId: string,
+    orderId: string,
+    customerId: string,
+    rating: number,
+    headline: string,
+    attachment: [],
+    review: string,
+}

@@ -96,3 +96,15 @@ export async function getOrder(data:any){
     const res = await create.post(serverURL + '/v2/get-order-payment/', data);
     return res
 }
+export async function submitSellerFeedback(data:any){
+    const res = await create.post(serverURL + '/v2/submit-seller-feedback/', data);
+    return res
+}
+export async function submitDeliveryFeedback(data:any){
+    const res = await create.post(serverURL + '/v2/submit-delivery-feedback/', data);
+    return res
+}
+export async function submitProductFeedback(data:any){
+    const res = await create.post(serverURL + '/v2/submit-product-feedback/', data);
+    return res
+}

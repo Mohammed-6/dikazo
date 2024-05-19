@@ -61,6 +61,7 @@ export type productProps = {
         convertVarient: []
     },
     productStocks:{
+        _id?: "",
         unitPrice: number, // mrp
         sellingPrice: number,
         sellerPrice: number,

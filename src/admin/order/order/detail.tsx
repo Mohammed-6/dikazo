@@ -1,15 +1,39 @@
-import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
-import React from "react";
+import {} from "@heroicons/react/24/solid";
+import React, { FormEvent, useEffect, useState } from "react";
 import Layout from "../../layout";
+import { orderDetail } from "../../query/order/order";
+import { useRouter } from "next/router";
+import { Preloader, Toaster, imageURL, serverURL } from "../../data/stuff";
+import axios from "axios";
+import { toaster } from "../../types/basic";
+import { XCircleIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+const create = axios.create();
 
 const OrderDetail = () => {
+  const router = useRouter();
+  const [orderdetail, setorderdetail] = useState<any>();
+  const [loading, setloading] = useState<boolean>(false);
+
+  useEffect(() => {
+    // console.log(router.query);
+    if (router.query.orderid !== undefined && router.query.order !== "") {
+      orderDetail(router.query.orderid as string)
+        .then((res) => {
+          setorderdetail(res.data.data);
+          setloading(true);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [router.isReady]);
   return (
     <>
       <Layout>
         <div className="card">
           <div className="card-header">Order Details</div>
           <div className="card-body">
-            <MoreDetail />
+            {loading ? <MoreDetail alldata={orderdetail} /> : ""}
           </div>
         </div>
       </Layout>
@@ -17,9 +41,186 @@ const OrderDetail = () => {
   );
 };
 
-const MoreDetail = () => {
+type moreDetailProps = {
+  alldata: any;
+};
+const MoreDetail = (props: moreDetailProps) => {
+  const [orderdetail, setorderdetail] = useState<any>();
+  const [subtotal, setsubtotal] = useState<number>(0);
+  const [discount, setdiscount] = useState<number>(0);
+  const [showpreloader, setshowpreloader] = useState<boolean>(false);
+  const [showtoaster, setshowtoaster] = useState<boolean>(false);
+  const [toasterdata, settoasterdata] = useState<toaster>({
+    type: "",
+    message: "",
+  });
+  useEffect(() => {
+    setorderdetail(props.alldata);
+    let pp = 0;
+    props.alldata.productDetail !== undefined &&
+      props.alldata.productDetail.map((dd: any, i: number) => {
+        const old = pp;
+        const kl = dd.productDetail.quantity * dd.productDetail.price;
+        pp = old + kl;
+        if (i === props.alldata.productDetail.length - 1) {
+          setsubtotal(pp);
+        }
+      });
+    if (props.alldata.promotionDetail.code !== undefined) {
+      if (
+        props.alldata.promotionDetail.discountType === "percent" &&
+        props.alldata.amountTotal
+      ) {
+        var totalValue: any =
+          props.alldata.amountTotal -
+          (props.alldata.amountTotal * props.alldata.promotionDetail.discount) /
+            100;
+
+        setdiscount(props.alldata.amountTotal - totalValue);
+      } else if (
+        props.alldata.promotionDetail.discountType === "amount" &&
+        props.alldata.amountTotal
+      ) {
+        setdiscount(props.alldata.promotionDetail.discount);
+      }
+    }
+  }, []);
+  function convertMongoDateToHumanReadable(mongoDate: string) {
+    const date = new Date(mongoDate);
+    const options: any = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    };
+    return date.toLocaleDateString("en-US", options);
+  }
+  const setShippingPartner = (e: React.FormEvent<HTMLSelectElement>) => {
+    setshowpreloader(true);
+    const evt = e.currentTarget;
+    if (evt.value === "goswift") {
+      create
+        .post(serverURL + "/goswift/generate/" + orderdetail?.orderCode)
+        .then((response) => {
+          setorderdetail(response.data.data);
+          settoasterdata(response.data);
+          setshowtoaster(true);
+          setshowpreloader(false);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+  // Function to generate a random alphanumeric ID
+  function generateRandomId(length: number) {
+    const charset =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+    return result;
+  }
+
+  // Function to convert PDF data to a downloadable file
+  function convertPDFtoDownload(pdfData: any) {
+    // Generate a random alphanumeric ID
+    const fileId = generateRandomId(10); // Adjust the length as needed
+
+    // Create a Blob object from the PDF data
+    const blob = new Blob([pdfData], { type: "application/pdf" });
+
+    // Create a temporary <a> element to trigger the download
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `file_${fileId}.pdf`; // Set the filename with the random ID
+    a.style.display = "none";
+    document.body.appendChild(a);
+
+    // Trigger the click event to start the download
+    a.click();
+
+    // Clean up
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  }
+
+  function download(filename: any, text: any) {
+    var element = document.createElement("a");
+    element.setAttribute(
+      "href",
+      "data:application/pdf;charset=utf-8," + encodeURIComponent(text)
+    );
+    element.setAttribute("target", "_blank");
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+
+  // function test () {
+  //     Api(`tempFileDownload/report`, 'Get',"",3).then((data) => {
+  //         console.log(data);
+  //         download("test",data)
+  //         const file = new Blob([ data ], { type: 'application/pdf' });
+
+  //         //Build a URL from the file
+  //         const fileURL = URL.createObjectURL(file);
+  //         //Open the URL on new Window
+  //         window.open(fileURL);
+  //     });
+  // }
+
+  const downloadWaybill = (id: string) => {
+    if (id === "undefined") {
+      return;
+    }
+    create
+      .get(serverURL + "/goswift/label/" + id, { responseType: "arraybuffer" })
+      .then((response) => {
+        settoasterdata(response.data);
+        convertPDFtoDownload(response.data.data);
+        // console.log(response.data.data);
+        setshowtoaster(true);
+        setshowpreloader(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const cancelShipment = (id: string) => {
+    if (id === "undefined") {
+      return;
+    }
+    create
+      .post(serverURL + "/goswift/cancel/" + id)
+      .then((response) => {
+        settoasterdata(response.data);
+        setshowtoaster(true);
+        setshowpreloader(false);
+      })
+      .catch((error) => {
+        // console.error(error);
+        settoasterdata(error);
+        setshowtoaster(true);
+        setshowpreloader(false);
+      });
+  };
+
   return (
     <>
+      {showpreloader ? <Preloader /> : ""}
+      {showtoaster ? (
+        <Toaster type={toasterdata.type} message={toasterdata.message} />
+      ) : (
+        ""
+      )}
       <div className="">
         <div className="flex-auto p-6">
           <div className="flex flex-wrap  gutters-5">
@@ -29,12 +230,13 @@ const MoreDetail = () => {
               <label htmlFor="assign_deliver_boy">
                 Assign Shipping Partner
               </label>
-              <input
-                type="text"
-                className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
-                value=""
-                disabled
-              />
+              <select
+                className="w-full rounded-md border-gray-300"
+                onChange={setShippingPartner}
+              >
+                <option>Select Delivery Partner</option>
+                <option value="goswift">Goswift</option>
+              </select>
             </div>
 
             <div className="md:w-1/4 pr-4 pl-4 ml-auto">
@@ -43,46 +245,19 @@ const MoreDetail = () => {
                 className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded aiz-selectpicker"
                 data-minimum-results-for-search="Infinity"
                 id="update_payment_status"
+                value={orderdetail?.paymentStatus}
+                disabled
               >
                 <option value="unpaid">Unpaid</option>
                 <option value="paid">Paid</option>
               </select>
-              <div className=" absolute left-0 z-50 float-left hidden list-reset	 py-2 mt-1 text-base bg-white border border-gray-300 rounded overflow-hidden">
-                <div
-                  className="inner opacity-100 block overflow-y-auto"
-                  aria-activedescendant="bs-select-1-1"
-                >
-                  <ul
-                    className=" absolute left-0 z-50 float-left list-reset	my-0 py-2 mt-1 text-base bg-white border border-gray-300 rounded inner opacity-100 block"
-                    role="presentation"
-                  >
-                    <li>
-                      <a
-                        role="option"
-                        className="block w-full py-1 px-6 font-normal text-gray-900 whitespace-no-wrap border-0"
-                        id="bs-select-1-0"
-                      >
-                        <span className="text">Unpaid</span>
-                      </a>
-                    </li>
-                    <li className="selected active">
-                      <a
-                        role="option"
-                        className="block w-full py-1 px-6 font-normal text-gray-900 whitespace-no-wrap border-0 active selected"
-                      >
-                        <span className="text">Paid</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
             </div>
             <div className="md:w-1/4 pr-4 pl-4 ml-auto">
               <label htmlFor="update_delivery_status">Delivery Status</label>
               <input
                 type="text"
                 className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
-                value="delivered"
+                value={orderdetail?.orderStatus}
                 disabled
               />
             </div>
@@ -108,16 +283,23 @@ const MoreDetail = () => {
             </svg>
           </div>
           <div className="flex flex-wrap">
-            <div className="relative flex-grow max-w-full flex-1 px-0 md:text-left text-center">
-              <span className="font-bold">Paul K. Jensen</span>
+            <div className="relative flex-grow max-w-full flex-1 px-0 md:text-left text-center lg:max-w-lg">
+              <span className="font-bold">
+                {orderdetail?.addressDetail.name}
+              </span>
               <br />
-              customer@example.com
+              {orderdetail?.addressDetail.email}
               <br />
-              201-287-7714
+              {orderdetail?.addressDetail.mobile}
               <br />
-              3947 West Side Avenue Hackensack, NJ 07601, College, Alaska - 1254
+              {orderdetail?.addressDetail.address},{" "}
+              {orderdetail?.addressDetail.state} -{" "}
+              {orderdetail?.addressDetail.pincode}
               <br />
-              United States
+              {orderdetail?.addressDetail.locality}
+              {orderdetail?.addressDetail.city !== ""
+                ? `, ${orderdetail?.addressDetail.city}`
+                : ""}
             </div>
             <div className="md:w-1/3 pr-4 pl-4 ml-auto">
               <table className="w-full">
@@ -126,7 +308,7 @@ const MoreDetail = () => {
                     <td className="text-bold">Order #</td>
                     <td className="text-teal-500 text-bold text-right">
                       {" "}
-                      20220912-10085522
+                      {orderdetail?.orderCode}
                     </td>
                   </tr>
                   <tr>
@@ -139,15 +321,17 @@ const MoreDetail = () => {
                   </tr>
                   <tr>
                     <td className="text-bold">Order date </td>
-                    <td className="text-right">12-09-2022 10:08 AM</td>
+                    <td className="text-right">
+                      {convertMongoDateToHumanReadable(orderdetail?.created_at)}
+                    </td>
                   </tr>
                   <tr>
                     <td className="text-bold">Total amount</td>
-                    <td className="text-right">$999.000</td>
+                    <td className="text-right">₹{orderdetail?.amountTotal}</td>
                   </tr>
                   <tr>
                     <td className="text-bold">Payment method</td>
-                    <td className="text-right">Cash On Delivery</td>
+                    <td className="text-right">{orderdetail?.paymentMethod}</td>
                   </tr>
                   <tr>
                     <td className="text-bold">Additional Info</td>
@@ -185,53 +369,91 @@ const MoreDetail = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="border border-slate-600 p-2">1</td>
-                    <td
-                      className="footable-first-visible border border-slate-600 py-2"
-                      style={{ display: "table-cell" }}
-                    >
-                      <span className="footable-toggle fooicon fooicon-plus"></span>
-                      <a
-                        href="https://demo.activeitzone.com/ecommerce/product/apple-iphone-14-pro-128gb-512gb-deep-purple-unlocked"
-                        target="_blank"
-                      >
-                        <img
-                          height="50"
-                          src="https://demo.activeitzone.com/ecommerce/public/uploads/all/vxCXmeSpPOpczUjh0RVX1I0jXrFPUFTdZCXNNReY.webp"
-                        />
-                      </a>
-                    </td>
-                    <td className="footable-last-visible border border-slate-600 p-2 table-cell">
-                      <strong>
-                        <a
-                          href="https://demo.activeitzone.com/ecommerce/product/apple-iphone-14-pro-128gb-512gb-deep-purple-unlocked"
-                          target="_blank"
-                          className="text-gray-700"
+                  {orderdetail?.productDetail !== undefined &&
+                    orderdetail?.productDetail.map((dd: any, k: number) => (
+                      <tr>
+                        <td className="border border-slate-600 p-2">{k + 1}</td>
+                        <td
+                          className="footable-first-visible border border-slate-600 py-2"
+                          style={{ display: "table-cell" }}
                         >
-                          SAMSUNG Galaxy S23+ Plus Cell Phone, Unlocked Android
-                          Smartphone, 512GB, 50MP Camera, Night Mode, 8K Video,
-                          Long Battery Life, Fastest Mobile Processor, Adaptive
-                          Display, US Version, 2023, Green
-                        </a>
-                      </strong>
-                      <small>128GB</small>
-                      <br />
-                      <small>SKU:</small>
-                    </td>
-                    <td className="border border-slate-600 py-2">
-                      Home Delivery
-                    </td>
-                    <td className="text-center border border-slate-600 py-2">
-                      1
-                    </td>
-                    <td className="text-center border border-slate-600 py-2">
-                      $999.000
-                    </td>
-                    <td className="text-center border border-slate-600 py-2">
-                      $999.000
-                    </td>
-                  </tr>
+                          <span className="footable-toggle fooicon fooicon-plus"></span>
+                          <a
+                            href={"/product/" + dd.productDetail.seoTitle}
+                            target="_blank"
+                          >
+                            <img
+                              height="50"
+                              src={imageURL + dd.productDetail.images[0]}
+                            />
+                          </a>
+                        </td>
+                        <td className="footable-last-visible border border-slate-600 p-2 table-cell">
+                          <strong>
+                            <a
+                              href={"/product/" + dd.productDetail.seoTitle}
+                              target="_blank"
+                              className="text-gray-700"
+                            >
+                              {dd.productDetail.name}
+                            </a>
+                          </strong>
+                          <br />
+                          {dd.productDetail.attribute.attribute !== undefined &&
+                            dd.productDetail.attribute.attribute.map(
+                              (ll: any, i: number) => (
+                                <small>
+                                  {ll}:{" "}
+                                  {dd.productDetail.attribute.variation[i]}
+                                </small>
+                              )
+                            )}
+                          <br />
+                          <div className="flex items-center justify-between">
+                            <div className="">
+                              <small>SKU: {dd.productDetail.sku}</small>
+                            </div>
+                            <div className="">
+                              <div className="flex gap-x-2">
+                                <button
+                                  className="bg-gray-500 py-1 px-2 rounded-md"
+                                  onClick={() =>
+                                    downloadWaybill(
+                                      orderdetail?.shippingDetail[k].tracking_id
+                                    )
+                                  }
+                                >
+                                  <ArrowDownTrayIcon className="w-6 stroke-white" />
+                                </button>
+                                <button
+                                  className="bg-red-500 py-1 px-2 rounded-md"
+                                  onClick={() =>
+                                    cancelShipment(
+                                      orderdetail?.shippingDetail[k]
+                                        ?.tracking_id
+                                    )
+                                  }
+                                >
+                                  <XCircleIcon className="w-6 stroke-white" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="border border-slate-600 py-2">
+                          {orderdetail?.addressDetail.type} Delivery
+                        </td>
+                        <td className="text-center border border-slate-600 py-2">
+                          {dd.productDetail.quantity}
+                        </td>
+                        <td className="text-center border border-slate-600 py-2">
+                          ₹{dd.productDetail.price}
+                        </td>
+                        <td className="text-center border border-slate-600 py-2">
+                          ₹{dd.productDetail.quantity * dd.productDetail.price}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -244,31 +466,33 @@ const MoreDetail = () => {
                     <td>
                       <strong className="text-gray-700">Sub Total :</strong>
                     </td>
-                    <td>$999.000</td>
+                    <td>₹{subtotal}</td>
                   </tr>
                   <tr>
                     <td>
                       <strong className="text-gray-700">Tax :</strong>
                     </td>
-                    <td>$0.000</td>
+                    <td>₹0.000</td>
                   </tr>
                   <tr>
                     <td>
                       <strong className="text-gray-700">Shipping :</strong>
                     </td>
-                    <td>$0.000</td>
+                    <td>₹0.000</td>
                   </tr>
                   <tr>
                     <td>
                       <strong className="text-gray-700">Coupon :</strong>
                     </td>
-                    <td>$0.000</td>
+                    <td>₹{discount?.toFixed(2)}</td>
                   </tr>
                   <tr>
                     <td>
                       <strong className="text-gray-700">Total :</strong>
                     </td>
-                    <td className="text-gray-700 h5">$999.000</td>
+                    <td className="text-gray-700 h5">
+                      ₹{orderdetail?.amountTotal}
+                    </td>
                   </tr>
                 </tbody>
               </table>

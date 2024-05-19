@@ -22,6 +22,7 @@ const Content = (props: addEditProps) => {
     personalInfomration: {
       name: "",
       email: "",
+      panNo: "",
       gender: "",
       dob: "",
       state: "",
@@ -72,6 +73,17 @@ const Content = (props: addEditProps) => {
 
   const changeForm = (e: React.FormEvent<HTMLInputElement>) => {
     const event = e.target as HTMLInputElement;
+    setcollectdata({
+      ...collectdata,
+      personalInfomration: {
+        ...collectdata?.personalInfomration,
+        [event.name]: event.value,
+      },
+    });
+  };
+
+  const changeSelectForm = (e: React.FormEvent<HTMLSelectElement>) => {
+    const event = e.target as HTMLSelectElement;
     setcollectdata({
       ...collectdata,
       personalInfomration: {
@@ -219,17 +231,33 @@ const Content = (props: addEditProps) => {
                       </div>
                     </div>
                     <div className="form-item">
-                      <label className="form-label mb-1">Gender</label>
+                      <label className="form-label mb-1">Pan No*</label>
                       <div className="">
                         <input
                           className="form-input"
                           type="text"
-                          name="gender"
+                          name="panNo"
                           autoComplete="off"
                           placeholder=""
-                          value={collectdata?.personalInfomration?.gender}
+                          value={collectdata?.personalInfomration?.panNo}
                           onChange={changeForm}
                         />
+                      </div>
+                    </div>
+                    <div className="form-item">
+                      <label className="form-label mb-1">Gender</label>
+                      <div className="">
+                        <select
+                          className="form-input"
+                          name="gender"
+                          autoComplete="off"
+                          value={collectdata?.personalInfomration?.gender}
+                          onChange={changeSelectForm}
+                        >
+                          <option value={""}>Select</option>
+                          <option value={"Male"}>Male</option>
+                          <option value={"Female"}>Female</option>
+                        </select>
                       </div>
                     </div>
                     <div className="form-item">

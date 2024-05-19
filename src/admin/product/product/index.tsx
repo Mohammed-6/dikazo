@@ -375,11 +375,13 @@ const Details = () => {
                           <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
                             {k + 1}
                           </td>
-                          <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                          <td className="px-6 py-4 text-sm text-gray-800 whitespace-break-spaces">
                             <div className="flex gap-x-2 items-center">
                               <div className="">
                                 <img
-                                  src={dd.productInformation.name}
+                                  src={
+                                    serverURL + "/" + dd.productImages.thumbnail
+                                  }
                                   className="w-16 h-16"
                                 />
                               </div>
@@ -830,9 +832,9 @@ const ImportForm = (props: exportImportPorps) => {
                   variantName: dd[27],
                   sku: dd[1],
                   slug: "",
-                  sellerPrice: Number.isNaN(dd[8]) ? parseInt(dd[8]):0,
-                  sellingPrice: Number.isNaN(dd[9]) ? parseInt(dd[9]):0,
-                  mrp: Number.isNaN(dd[7]) ?parseInt(dd[7]):0,
+                  sellerPrice: Number.isNaN(dd[8]) ? parseInt(dd[8]) : 0,
+                  sellingPrice: Number.isNaN(dd[9]) ? parseInt(dd[9]) : 0,
+                  mrp: Number.isNaN(dd[7]) ? parseInt(dd[7]) : 0,
                   gst: dd[12],
                   platformFee: dd[10],
                   logisticFee: 0,
@@ -925,9 +927,9 @@ const ImportForm = (props: exportImportPorps) => {
                   variantName: "main",
                   sku: dd[1],
                   slug: "",
-                  sellerPrice: Number.isNaN(dd[8]) ? parseInt(dd[8]):0,
-                  sellingPrice: Number.isNaN(dd[9]) ? parseInt(dd[9]):0,
-                  mrp: Number.isNaN(dd[7]) ?parseInt(dd[7]):0,
+                  sellerPrice: Number.isNaN(dd[8]) ? parseInt(dd[8]) : 0,
+                  sellingPrice: Number.isNaN(dd[9]) ? parseInt(dd[9]) : 0,
+                  mrp: Number.isNaN(dd[7]) ? parseInt(dd[7]) : 0,
                   gst: dd[12],
                   platformFee: dd[10],
                   logisticFee: 0,

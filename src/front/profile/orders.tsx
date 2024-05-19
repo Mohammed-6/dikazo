@@ -126,9 +126,12 @@ export const SingleOrder = (props: singleOrderProps) => {
             <div className="text-sm text-gray-500 flex flex-col items-end">
               <div className="uppercase">ORDER # {props.data.orderCode}</div>
               <div className="flex">
-                <button className="text-blue-500 border-r border-gray-300 pr-3">
+                <Link
+                  href={"/profile/order-details?order_id=" + props.data._id}
+                  className="text-blue-500 border-r border-gray-300 pr-3"
+                >
                   View order details
-                </button>
+                </Link>
                 <button className="text-blue-500 pl-3">Invoice</button>
               </div>
             </div>
