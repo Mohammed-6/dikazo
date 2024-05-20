@@ -334,12 +334,13 @@ const Content = () => {
     if (e.name == "images") {
       const tmp: any = [...collectdata.productImages.images];
       tmp.push(e.val);
-      console.log(tmp);
+      // console.log(tmp);
+      const tt = collectdata.productImages.images.concat(e.val);
       setcollectdata({
         ...collectdata,
         productImages: {
           ...collectdata.productImages,
-          [e.name]: [...collectdata.productImages.images, e.val],
+          [e.name]: tt,
         },
       });
     } else {
@@ -1085,6 +1086,7 @@ const ProductVariation = (props: componentProps) => {
     console.log(props.stockData);
     if (props.stockData) {
       setconvertvarient(props.stockData);
+      props.returnData({ name: "productStock", val: props.stockData });
     }
     if (props.stockData === undefined || props.stockData.length === 0) {
       const dd = [
