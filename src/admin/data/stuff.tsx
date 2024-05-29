@@ -318,4 +318,4 @@ export const serverHeader = {
 // export const serverURL = "https://cos-api.exllab.in";
 export const serverURL = "http://localhost:4002";
 
-export const imageURL = "https://d1t3sch6xgtfd4.cloudfront.net/";
+export const imageURL = "http://localhost:4002/";

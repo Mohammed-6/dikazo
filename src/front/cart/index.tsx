@@ -444,7 +444,10 @@ const ProductCartGrid = (props: cartItemComponentProps) => {
         <div className="grid grid-cols-12 gap-x-6">
           <div className="col-span-3">
             <div className="relative">
-              <img src={imageURL + props.stock?.images[0]} className="" />
+              <img
+                src={imageURL + props.data.productId?.productImages.thumbnail}
+                className=""
+              />
               <div className="absolute top-1 left-3">
                 <input
                   type="checkbox"
@@ -470,8 +473,8 @@ const ProductCartGrid = (props: cartItemComponentProps) => {
             <p className="text-sm">
               Sold by:{" "}
               {
-                props.data.productId.productInformation?.seller
-                  .personalInfomration.name
+                props.data.productId.productInformation?.seller.shopInformation
+                  .shopName
               }
             </p>
             <p className="hidden">

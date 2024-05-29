@@ -200,7 +200,7 @@ const Content = () => {
                               {ord.productDetail.name}
                             </Link>
                             <div className="">
-                              Sold by: {ord.shopInformation?.name}
+                              Sold by: {ord.shopInformation?.shopName}
                             </div>
                             <div className="">
                               Variant: {ord.productDetail?.variantName}
@@ -256,6 +256,11 @@ const Content = () => {
             ))}
           </div>
         )}
+        <Invoice
+          closeWindow={closeSellerFeedback}
+          shopId={shopid}
+          order={collectdata}
+        />
         {showsellerfeedback ? (
           <SellerFeedback
             closeWindow={closeSellerFeedback}
@@ -282,11 +287,290 @@ const Content = () => {
   );
 };
 
+type invoiceProps = {
+  closeWindow: Function;
+  shopId: string;
+  order: any;
+};
+const Invoice = (props: invoiceProps) => {
+  function formatDateToDDMMYYYY(date: Date) {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based in JavaScript
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  }
+
+  let productdata: any = [];
+  let sellerData: any = {};
+  props.order.productDetail !== undefined &&
+    props.order.productDetail.map((prod: any) => {
+      const bb = {
+        description: prod.productDetail.name,
+        unitPrice: prod.productDetail.price,
+        quantity: prod.productDetail.quantity,
+        netAmount: prod.productDetail.price,
+        taxRate: "5%",
+        taxType: "IGST",
+        taxAmount: 28.29,
+        totalAmount: prod.productDetail.price + 28.29,
+      };
+      sellerData = {
+        name: prod.shopInformation.shopName,
+        address: prod.shopInformation.shopAddress,
+        panNo: prod.shopInformation.gst,
+        gstNo: prod.shopInformation.gst,
+      };
+      productdata.push(bb);
+    });
+
+  const invoiceData = {
+    orderNumber: props.order.orderCode,
+    invoiceNumber: "IN-2834",
+    orderDate: formatDateToDDMMYYYY(new Date(props.order.created_at)),
+    invoiceDate: formatDateToDDMMYYYY(new Date()),
+    items: productdata,
+    totalTaxAmount: 28.29,
+    totalAmount: props.order.amountTotal,
+    amountInWords: "Five Hundred Ninety-four only",
+    reverseCharge: "No",
+    paymentDetails: [props.order.paymentInformation],
+    sellerDetails: sellerData,
+    billingAddress: {
+      name: props.order.addressDetail?.name,
+      address:
+        props.order.addressDetail?.address +
+        ", " +
+        props.order.addressDetail?.locality +
+        ", " +
+        props.order.addressDetail?.city +
+        ", " +
+        props.order.addressDetail?.state +
+        ", " +
+        props.order.addressDetail?.pincode,
+      stateCode: 36,
+    },
+    shippingAddress: {
+      name: props.order.addressDetail?.name,
+      address:
+        props.order.addressDetail?.address +
+        ", " +
+        props.order.addressDetail?.locality +
+        ", " +
+        props.order.addressDetail?.city +
+        ", " +
+        props.order.addressDetail?.state +
+        ", " +
+        props.order.addressDetail?.pincode,
+      stateCode: 36,
+    },
+    placeOfSupply: props.order.addressDetail?.state,
+    placeOfDelivery: props.order.addressDetail?.state,
+    paymentMethod: props.order.paymentMethod,
+    orderId: props.order.orderDetail?.id,
+  };
+  return (
+    <>
+      <div className="">
+        <div style={{ padding: "0 30px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div>
+              <img
+                src="https://biyaan.in/assets/images/logo.png"
+                style={{ height: "80px", width: "auto" }}
+              />
+            </div>
+            <div style={{ fontWeight: "600" }}>
+              <h1>Tax Invoice/Bill of Supply/Cash Memo</h1>
+              <p>(Original for Recipient)</p>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              margin: "20px 0",
+            }}
+          >
+            <div>
+              <h2>Seller Details:</h2>
+              <p>Sold By: {invoiceData.sellerDetails.name}</p>
+              <p>Address: {invoiceData.sellerDetails.address}</p>
+            </div>
+            <div>
+              <h2>Billing Address:</h2>
+              <p>Name: {invoiceData.billingAddress.name}</p>
+              <p>Address: {invoiceData.billingAddress.address}</p>
+              <p>State/UT Code: {invoiceData.billingAddress.stateCode}</p>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              margin: "20px 0",
+            }}
+          >
+            <div>
+              <p>PAN No: {invoiceData.sellerDetails.panNo}</p>
+              <p>GST Registration No: {invoiceData.sellerDetails.gstNo}</p>
+            </div>
+            <div style={{ whiteSpace: "pre-line" }}>
+              <h2>Shipping Address</h2>
+              <p>Name: {invoiceData.shippingAddress.name}</p>
+              <p>Address: {invoiceData.shippingAddress.address}</p>
+              <p>State/UT Code: {invoiceData.shippingAddress.stateCode}</p>
+              <div>
+                <p>Place of Supply: {invoiceData.placeOfSupply}</p>
+                <p>Place of Delivery: {invoiceData.placeOfDelivery}</p>
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              margin: "20px 0",
+            }}
+          >
+            <div>
+              <h2>Order Details</h2>
+              <p>Order Number: {invoiceData.orderNumber}</p>
+              <p>Order Date: {invoiceData.orderDate}</p>
+            </div>
+            <div>
+              <p>Invoice Number: {invoiceData.invoiceNumber}</p>
+              <p>Invoice Date: {invoiceData.invoiceDate}</p>
+            </div>
+          </div>
+          <div>
+            <table
+              border={1}
+              cellPadding="10"
+              style={{ border: "1px solid #e2e2e2" }}
+            >
+              <thead>
+                <tr>
+                  <th style={{ border: "1px solid #e2e2e2" }}>Description</th>
+                  <th style={{ border: "1px solid #e2e2e2" }}>Unit Price</th>
+                  <th style={{ border: "1px solid #e2e2e2" }}>Quantity</th>
+                  <th style={{ border: "1px solid #e2e2e2" }}>Net Amount</th>
+                  <th style={{ border: "1px solid #e2e2e2" }}>Tax Rate</th>
+                  <th style={{ border: "1px solid #e2e2e2" }}>Tax Type</th>
+                  <th style={{ border: "1px solid #e2e2e2" }}>Tax Amount</th>
+                  <th style={{ border: "1px solid #e2e2e2" }}>Total Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {invoiceData.items.map((item: any, index: number) => (
+                  <tr key={index}>
+                    <td style={{ border: "1px solid #e2e2e2" }}>
+                      {item.description}
+                    </td>
+                    <td style={{ border: "1px solid #e2e2e2" }}>
+                      ₹{item.unitPrice.toFixed(2)}
+                    </td>
+                    <td style={{ border: "1px solid #e2e2e2" }}>
+                      {item.quantity}
+                    </td>
+                    <td style={{ border: "1px solid #e2e2e2" }}>
+                      ₹{item.netAmount.toFixed(2)}
+                    </td>
+                    <td style={{ border: "1px solid #e2e2e2" }}>
+                      {item.taxRate}
+                    </td>
+                    <td style={{ border: "1px solid #e2e2e2" }}>
+                      {item.taxType}
+                    </td>
+                    <td style={{ border: "1px solid #e2e2e2" }}>
+                      ₹{item.taxAmount.toFixed(2)}
+                    </td>
+                    <td style={{ border: "1px solid #e2e2e2" }}>
+                      ₹{item.totalAmount.toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
+                <tr>
+                  <td colSpan={6}>TOTAL</td>
+                  <td
+                    style={{
+                      border: "1px solid #e2e2e2",
+                      backgroundColor: "#e2e2e2",
+                    }}
+                  >
+                    ₹{invoiceData.totalTaxAmount}
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid #e2e2e2",
+                      backgroundColor: "#e2e2e2",
+                    }}
+                  >
+                    ₹{invoiceData?.totalAmount}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan={8}
+                    style={{
+                      border: "1px solid #e2e2e2",
+                    }}
+                  >
+                    Amount in Words: <br />
+                    {invoiceData.amountInWords}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p>
+              Whether tax is payable under reverse charge:{" "}
+              {invoiceData.reverseCharge}
+            </p>
+          </div>
+          <div>
+            <h2>Payment Details</h2>
+            <table>
+              <tr>
+                <td
+                  style={{
+                    border: "1px solid #e2e2e2",
+                    padding: "10px",
+                  }}
+                >
+                  Transaction ID: {invoiceData?.orderId}
+                </td>
+                <td
+                  style={{
+                    border: "1px solid #e2e2e2",
+                    padding: "10px",
+                  }}
+                >
+                  Date & Time: {invoiceData.orderDate}
+                </td>
+                <td
+                  style={{
+                    border: "1px solid #e2e2e2",
+                    padding: "10px",
+                  }}
+                >
+                  Mode of Payment: {invoiceData.paymentMethod}
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 type feedbackProps = {
   closeWindow: Function;
   shopId: string;
   order: any;
 };
+
 const SellerFeedback = (props: feedbackProps) => {
   const [rating, setrating] = useState<number>(0);
   const [starrating, setstarrating] = useState<number>(0);

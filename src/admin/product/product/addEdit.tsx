@@ -1350,6 +1350,23 @@ const ProductVariation = (props: componentProps) => {
     settconvertvarient(temp);
     props.returnData({ name: "productStock", val: temp });
   };
+
+  const uploadMImage = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {
+    const file = e.target.files;
+    // const evt = e.currentTarget;
+    if (file && file.length > 0) {
+      const files = Array.from(file);
+      uploadMultipleFile(files as any).then((res) => {
+        // props.returnData({ name: evt.name, val: res.data.data })
+        const temp = [...convertvarient];
+        temp[i]["images"] = temp[i]["images"].concat(res.data.data);
+        setconvertvarient(temp);
+        console.log(temp);
+        settconvertvarient(temp);
+        props.returnData({ name: "productStock", val: temp });
+      });
+    }
+  };
   return (
     <>
       <div className="">
@@ -1656,6 +1673,20 @@ const ProductVariation = (props: componentProps) => {
                           name="discount"
                           value={cv.discount}
                           onChange={(e) => updateVariant(e, i)}
+                        />
+                      </div>
+                      <div className="">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 pt-2">
+                          Images
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="file"
+                          multiple
+                          className="border-gray-500 w-full rounded-md"
+                          name="images"
+                          onChange={(e) => uploadMImage(e, i)}
+                          accept="png,jpg,jpeg,gif,webp"
                         />
                       </div>
                     </div>

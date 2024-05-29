@@ -1393,7 +1393,7 @@ export const ProductElement = (props: elementProps) => {
       title: dd.productInformation.name,
       seoURL: dd.seoMetaTags.url,
       brand: dd.productInformation.brand.name,
-      seller: dd.productInformation.seller.personalInfomration.name,
+      seller: dd.productInformation.seller.shopInformation.shopName,
       mrp: stocklist[i].mrp,
       sellingPrice: stocklist[i].sellingPrice,
     });
@@ -1433,7 +1433,7 @@ export const ProductElement = (props: elementProps) => {
                               <div>
                                 <img
                                   src={imageURL + prd.productImages.thumbnail}
-                                  className="w-6 h-6"
+                                  className="w-6 h-6 object-fit"
                                 />
                               </div>
                               <div>
@@ -1762,6 +1762,7 @@ export const ProductSliderElement = (props: elementProps) => {
     </>
   );
 };
+
 export const RowElement = (props: elementProps) => {
   const [collectdata, setcollectdata] = useState<any>({
     elementType: "row",

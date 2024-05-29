@@ -225,12 +225,12 @@ const CheckoutView = () => {
       .then((res) => {
         // console.log(res.data);
         const options = {
-          key: "rzp_test_s7rXzSSkEG43th",
+          key: "rzp_test_KRHgb1TJ7w5Y2Q",
           amount: "50000",
           currency: "INR",
-          name: "Dikazo Online Shopping",
+          name: "Biyaan Technologies",
           description: "incoming order",
-          image: "https://www.dikazo.com/assets/images/dikazo-logo-main.png",
+          image: "https://biyaan.in/assets/images/logo.png",
           order_id: res.data.data.id,
           handler: function (response: any) {
             // alert(response.razorpay_payment_id);
@@ -1231,7 +1231,10 @@ const ProductCartGrid = (props: productGridProps) => {
       <div className="py-3 border-b-2 border-gray-200">
         <div className="grid grid-cols-12 gap-x-6">
           <div className="col-span-3">
-            <img src={imageURL + props.stock?.images[0]} className="" />
+            <img
+              src={imageURL + props.data.productId.productImages.thumbnail}
+              className=""
+            />
           </div>
           <div className="col-span-9">
             <h5 className="font-bold text-lg">
@@ -1246,8 +1249,8 @@ const ProductCartGrid = (props: productGridProps) => {
             <p className="text-sm">
               Sold by:{" "}
               {
-                props.data.productId.productInformation?.seller
-                  .personalInfomration.name
+                props.data.productId.productInformation?.seller.shopInformation
+                  .shopName
               }
             </p>
             <p className="hidden">
