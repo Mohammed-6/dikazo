@@ -3,17 +3,25 @@ import Layout from "../layout";
 import ProfileLayout from "./layout";
 import { toaster } from "@/src/admin/types/basic";
 import { getProfileOrder } from "../query/profile";
-import { Preloader, Toaster, imageURL } from "@/src/admin/data/stuff";
+import {
+  Preloader,
+  Toaster,
+  imageURL,
+  serverHeader,
+  serverURL,
+} from "@/src/admin/data/stuff";
 import { SingleOrder, formatDate } from "./orders";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { StarIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { productFeedbackProps, sellerFeedbackProps } from "../types/customer";
 import {
+  downloadOrderInvoice,
   submitDeliveryFeedback,
   submitProductFeedback,
   submitSellerFeedback,
 } from "../query/customer";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
 const OrderDetails = () => {
   return (
     <>
@@ -107,6 +115,33 @@ const Content = () => {
     setproductfeedback(true);
     setshopid(val);
   };
+  function downloadInvoice(id: string) {
+    setshowpreloader(true);
+    downloadOrderInvoice(id).then((response) => {
+      downloadPDF(
+        serverURL + "/public/invoice/invoice_" + collectdata.orderCode + ".pdf",
+        "invoice_" + collectdata.orderCode + ".pdf"
+      );
+      setshowpreloader(false);
+    });
+  }
+  function downloadPDF(url: string, filename = "downloaded.pdf") {
+    // Create a hidden anchor element
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.download = filename;
+    link.style.display = "none";
+
+    // Append the anchor to the document body (optional)
+    // document.body.appendChild(link); // Uncomment if needed
+
+    // Simulate a click to initiate download
+    link.click();
+
+    // Remove the anchor element (optional)
+    // document.body.removeChild(link); // Uncomment if needed
+  }
   return (
     <>
       <>
@@ -127,8 +162,21 @@ const Content = () => {
                 </div>
                 <div className="pl-3">Order# {collectdata.orderCode}</div>
               </div>
-              <div className="">
-                <h3 className="text-xl">Invoice</h3>
+              <div
+                className="flex items-center gap-x-2"
+                title="Download invoice"
+              >
+                <div>
+                  <button
+                    className="text-xl text-blue-500"
+                    onClick={() => downloadInvoice(collectdata._id)}
+                  >
+                    Invoice
+                  </button>
+                </div>
+                <div>
+                  <ArrowDownTrayIcon className="w-5 stroke-blue-500 font-bold" />
+                </div>
               </div>
             </div>
             <div className="border border-gray-300 rounded-md p-3 my-3">
@@ -256,11 +304,11 @@ const Content = () => {
             ))}
           </div>
         )}
-        <Invoice
+        {/* <Invoice
           closeWindow={closeSellerFeedback}
           shopId={shopid}
           order={collectdata}
-        />
+        /> */}
         {showsellerfeedback ? (
           <SellerFeedback
             closeWindow={closeSellerFeedback}
@@ -302,22 +350,33 @@ const Invoice = (props: invoiceProps) => {
 
   let productdata: any = [];
   let sellerData: any = {};
+  let taxAmt = 0;
   props.order.productDetail !== undefined &&
     props.order.productDetail.map((prod: any) => {
+      let tax =
+        (prod.productDetail.price *
+          prod.productDetail.quantity *
+          prod.productDetail.gst) /
+        100;
+      taxAmt += tax;
       const bb = {
         description: prod.productDetail.name,
         unitPrice: prod.productDetail.price,
         quantity: prod.productDetail.quantity,
         netAmount: prod.productDetail.price,
-        taxRate: "5%",
-        taxType: "IGST",
-        taxAmount: 28.29,
-        totalAmount: prod.productDetail.price + 28.29,
+        taxRate: prod.productDetail.gst + "%",
+        taxType:
+          props.order.addressDetail?.stateCode ===
+          prod.shopInformation.stateCode
+            ? "SGST"
+            : "IGST",
+        taxAmount: tax,
+        totalAmount: prod.productDetail.price * prod.productDetail.quantity,
       };
       sellerData = {
         name: prod.shopInformation.shopName,
         address: prod.shopInformation.shopAddress,
-        panNo: prod.shopInformation.gst,
+        panNo: prod.shopInformation.panNo,
         gstNo: prod.shopInformation.gst,
       };
       productdata.push(bb);
@@ -329,7 +388,7 @@ const Invoice = (props: invoiceProps) => {
     orderDate: formatDateToDDMMYYYY(new Date(props.order.created_at)),
     invoiceDate: formatDateToDDMMYYYY(new Date()),
     items: productdata,
-    totalTaxAmount: 28.29,
+    totalTaxAmount: taxAmt,
     totalAmount: props.order.amountTotal,
     amountInWords: "Five Hundred Ninety-four only",
     reverseCharge: "No",
@@ -347,7 +406,7 @@ const Invoice = (props: invoiceProps) => {
         props.order.addressDetail?.state +
         ", " +
         props.order.addressDetail?.pincode,
-      stateCode: 36,
+      stateCode: props.order.addressDetail?.stateCode,
     },
     shippingAddress: {
       name: props.order.addressDetail?.name,
@@ -361,13 +420,14 @@ const Invoice = (props: invoiceProps) => {
         props.order.addressDetail?.state +
         ", " +
         props.order.addressDetail?.pincode,
-      stateCode: 36,
+      stateCode: props.order.addressDetail?.stateCode,
     },
     placeOfSupply: props.order.addressDetail?.state,
     placeOfDelivery: props.order.addressDetail?.state,
     paymentMethod: props.order.paymentMethod,
     orderId: props.order.orderDetail?.id,
   };
+
   return (
     <>
       <div className="">
@@ -497,7 +557,7 @@ const Invoice = (props: invoiceProps) => {
                       backgroundColor: "#e2e2e2",
                     }}
                   >
-                    ₹{invoiceData.totalTaxAmount}
+                    ₹{taxAmt}
                   </td>
                   <td
                     style={{

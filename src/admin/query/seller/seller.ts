@@ -27,3 +27,8 @@ export async function updateSeller(data:sellerProps){
     const res = await create.post(serverURL + '/update-seller', data);
     return res
 }
+
+export async function goswiftAddress(data:any){
+    const res = await create.post(serverURL + '/goswift/add-address', data);
+    return res
+}

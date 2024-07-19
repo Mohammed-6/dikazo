@@ -76,13 +76,16 @@ export type productProps = {
         externalLink: string,
         externalLinkText:string,
     },
+    addtionalIformation:addtionalProps|any,
     productDescription:string,
+    aboutItem:[],
     keyDescription:string,
     pdfSpecification:string,
     seoMetaTags:{
         url:string,
         title: string,
         description: string,
+        keyword: string,
         image: string,
     },
     category:[],
@@ -161,3 +164,8 @@ export type exportImportPorps = {
     alldata: loadResourceProps
     returnData: Function
 }
+export type addtionalSProps = {
+    name: string,
+    information: [{name: string, description: string}]
+}
+export type addtionalProps = [addtionalSProps]

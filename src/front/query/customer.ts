@@ -62,6 +62,16 @@ export async function addAddress(data:any){
     return res
 }
 
+export async function getPincodeDetails(pincode:any){
+    const res = await create.get('https://api.postalpincode.in/pincode/'+pincode);
+    return res
+}
+
+export async function downloadOrderInvoice(id:any){
+    const res = await create.post(serverURL+'/v2/download-invoice', {orderid: id});
+    return res
+}
+
 export async function updateAddress(data:any){
     const res = await create.post(serverURL + '/update-address/', data);
     return res

@@ -14,6 +14,7 @@ import {
   filterProduct,
   exportProduct,
   importProduct,
+  importKeywords,
 } from "../../query/product/product";
 import Layout from "../../layout/index";
 import Link from "next/link";
@@ -156,6 +157,29 @@ const Details = () => {
   const toogleShowImport = () => {
     setshowimport(!showimport);
   };
+
+  const importKeyword = () => {
+    setshowpreloader(true);
+    importKeywords()
+      .then((keyword) => {
+        console.log(keyword);
+        setshowpreloader(false);
+        settoasterdata({
+          type: "success",
+          message: "Keyword data fetch successfully",
+        });
+        setshowtoaster(true);
+      })
+      .catch((error) => {
+        console.error(error);
+        setshowpreloader(false);
+        settoasterdata({
+          type: "error",
+          message: "Error occured while importing keyword",
+        });
+        setshowtoaster(true);
+      });
+  };
   return (
     <>
       {deleteaction ? (
@@ -185,6 +209,11 @@ const Details = () => {
               <Link href="/admin/product/add">
                 <button className="btn btn-primary">Add Product</button>
               </Link>
+              <div className="">
+                <button className="btn btn-danger" onClick={importKeyword}>
+                  Import keyword
+                </button>
+              </div>
               <div className="">
                 <button className="btn btn-danger" onClick={toogleShowExport}>
                   Export

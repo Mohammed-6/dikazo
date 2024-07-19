@@ -29,7 +29,7 @@ import {
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const generateRandomAlphanumeric = (length: number) => {
+export const generateRandomAlphanumeric = (length: number) => {
   const alphanumericChars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
@@ -41,7 +41,11 @@ const generateRandomAlphanumeric = (length: number) => {
 
   return result;
 };
-const Structure = () => {
+type structureProps = {
+  getProductDescriptionId?: string;
+  forProductDescription?: string;
+};
+const Structure = (props: structureProps) => {
   const router = useRouter();
   const [structureid, setstructureid] = useState<string>();
   const [structurename, setstructurename] = useState<string>();
@@ -57,15 +61,18 @@ const Structure = () => {
       const colte = {
         structureId: structureId,
       };
+      // console.log(colte);
       createContent(colte).then((res: any) => {
-        console.log(res.data);
         setloading(true);
       });
       getStructure_(colte).then((res: any) => {
         setstructurename(res.data.data.name);
       });
     }
-    if (router.pathname === "/admin/grid/add") {
+    if (
+      router.pathname === "/admin/grid/add" ||
+      router.pathname === "/admin/product/add"
+    ) {
       const structureId = generateRandomAlphanumeric(7);
       setstructureid(structureId);
       const colte = {
@@ -76,7 +83,24 @@ const Structure = () => {
         setloading(true);
       });
     }
-    console.log(router.pathname);
+    if (props.forProductDescription === "old") {
+      // console.log(props.forProductDescription);
+      const structureId = props.getProductDescriptionId;
+      setstructureid(structureId);
+      const colte = {
+        structureId: structureId,
+      };
+      if (structureId !== "") {
+        createContent(colte).then((res: any) => {
+          setloading(true);
+        });
+
+        getStructure_(colte).then((res: any) => {
+          setstructurename(res.data.data.name);
+        });
+      }
+    }
+    // console.log(router.pathname);
   }, [router.isReady]);
   const changeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const evt = e.currentTarget;
@@ -90,34 +114,51 @@ const Structure = () => {
         console.error(err);
       });
   };
+  const editProductPattern = /^\/admin\/product\/edit\/[^\/]+$/;
+
+  const isEditProductPage = editProductPattern.test(router.pathname);
+  console.log(isEditProductPage, props);
   return (
     <>
-      <Layout>
-        {loading ? (
-          <>
-            {" "}
-            <Link
-              href="/admin/grid"
-              className="bg-primary text-white px-3 py-1 m-3 rounded-md"
-            >
-              Back
-            </Link>
-            <div className="p-3">
-              <label className="font-bold">Structure Name</label>
-              <br />
-              <input
-                type="text"
-                onChange={changeForm}
-                className="w-[50%]"
-                value={structurename}
-              />
-            </div>
-            <Content structureid={structureid} parent="main" />
-          </>
+      {router.pathname === "/admin/product/add" || isEditProductPage ? (
+        // for product description
+        props.getProductDescriptionId !== "" ? (
+          <Content structureid={props.getProductDescriptionId} parent="main" />
         ) : (
           ""
-        )}
-      </Layout>
+        )
+      ) : (
+        <Layout>
+          {loading ? (
+            <>
+              {" "}
+              <Link
+                href="/admin/grid"
+                className="bg-primary text-white px-3 py-1 m-3 rounded-md"
+              >
+                Back
+              </Link>
+              <div className="p-3">
+                <label className="font-bold">Structure Name</label>
+                <br />
+                <input
+                  type="text"
+                  onChange={changeForm}
+                  className="w-[50%]"
+                  value={structurename}
+                />
+              </div>
+              {structureid !== undefined ? (
+                <Content structureid={structureid} parent="main" />
+              ) : (
+                ""
+              )}
+            </>
+          ) : (
+            ""
+          )}
+        </Layout>
+      )}
     </>
   );
 };
@@ -134,6 +175,7 @@ const Content = (props: contentProps) => {
       structureId: props.structureid,
       version: 0,
     };
+    console.log(colte);
     getStructure(colte).then((res) => {
       console.log([...collectdata, ...res.data.data]);
       setcollectdata([...collectdata, ...res.data.data]);

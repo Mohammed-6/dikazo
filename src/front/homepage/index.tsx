@@ -33,7 +33,7 @@ const Homepage = () => {
     <>
       <Layout>
         {loading ? (
-          <Content
+          <PageContent
             structureid={structureid}
             structure={structure}
             parent="main"
@@ -46,7 +46,7 @@ const Homepage = () => {
   );
 };
 
-const Content = (props: contentProps) => {
+export const PageContent = (props: contentProps) => {
   const [loading, setloading] = useState<boolean>(true);
   const [collectdata, setcollectdata] = useState<any>([]);
   useEffect(() => {
@@ -65,9 +65,7 @@ const Content = (props: contentProps) => {
           {collectdata.map((rw: any) => {
             return (
               <>
-                <div
-                  className={`${`grid-cols-12 gap-x-[${rw.rowStyle?.gapX}] gap-y-[${rw.rowStyle?.gapY}] text-[${rw.rowStyle?.color}]-${rw.rowStyle?.colorWeight} bg-[${rw.rowStyle?.bgColor}]-${rw.rowStyle?.bgColorWeight} ${rw.rowStyle?.roundedValue} text-[${rw.rowStyle?.fontSize}] ${rw.rowStyle?.fontWeight} ml-[${rw.rowStyle?.marginLeft}] mr-[${rw.rowStyle?.marginRight}] mt-[${rw.rowStyle?.marginTop}] mb-[${rw.rowStyle?.marginBottom}] pl-[${rw.rowStyle?.paddingLeft}] pr-[${rw.rowStyle?.paddingRight}] pt-[${rw.rowStyle?.paddingTop}] pb-[${rw.rowStyle?.paddingBottom}] height-[${rw.rowStyle?.height}] weight-[${rw.rowStyle?.width}] ${rw.rowStyle?.className}`}`}
-                >
+                <div className={`${`grid-cols-12`}`}>
                   <Details
                     parent={rw.parent}
                     edit={true}
@@ -107,12 +105,10 @@ const Details = (props: detailProps) => {
         <div className="">
           {row.map((rw: rowGridProps, i: number) => (
             <>
-              <div className={`grid`}>
+              <div className={`grid grid-cols-12 gap-x-3`}>
                 {rw.grid.map((rr: any, x: number) => (
                   <>
-                    <div
-                    // className={`border-2 border-dashed col-span-${rr.col}`}
-                    >
+                    <div className={`col-span-${rr.col}`}>
                       <div className="grid">
                         {rr.cols !== undefined &&
                           rr.cols.map((gr: any, g: number) => {
@@ -160,7 +156,7 @@ const Details = (props: detailProps) => {
                       {rr.grid !== undefined && rr.grid !== null
                         ? rr.grid.map((rg: any) => (
                             <>
-                              <Content
+                              <PageContent
                                 parent={rg.colid}
                                 structureid={mstructureid}
                                 structurename={rg.parent}

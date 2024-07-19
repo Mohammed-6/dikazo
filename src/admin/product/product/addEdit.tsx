@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
 import Layout from "../../layout";
@@ -12,6 +12,8 @@ import {
   updateVariation,
 } from "../../query/product/product";
 import {
+  addtionalProps,
+  addtionalSProps,
   componentProps,
   customTagsProps,
   individualVariantProps,
@@ -32,7 +34,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { toaster } from "../../types/basic";
-import { MiniPreLoader, Preloader } from "../../data/stuff";
+import { MiniPreLoader, Preloader, imageURL } from "../../data/stuff";
+import Structure, { generateRandomAlphanumeric } from "../../grid/structure";
 
 const AddEdit = () => {
   return (
@@ -99,13 +102,16 @@ const Content = () => {
       externalLink: "",
       externalLinkText: "",
     },
+    addtionalIformation: [],
     productDescription: "",
+    aboutItem: [],
     keyDescription: "",
     pdfSpecification: "",
     seoMetaTags: {
       url: "",
       title: "",
       description: "",
+      keyword: "",
       image: "",
     },
     category: [],
@@ -311,10 +317,16 @@ const Content = () => {
       pdfSpecification: e,
     });
   };
-  const formReturnDESC = (e: any) => {
+  const formReturnDESC = (e: any, name: string) => {
     setcollectdata({
       ...collectdata,
-      productDescription: e,
+      [name]: e,
+    });
+  };
+  const formReturnAddtionalInfo = (e: any) => {
+    setcollectdata({
+      ...collectdata,
+      addtionalIformation: e,
     });
   };
   const formReturnSTCK = (e: any) => {
@@ -1104,6 +1116,10 @@ const ProductVariation = (props: componentProps) => {
           sellerPrice: 0,
           sellingPrice: 0,
           dicount: 0,
+          height: 0,
+          width: 0,
+          length: 0,
+          weight: 0,
         },
       ];
       setconvertvarient([...convertvarient, ...dd]);
@@ -1312,6 +1328,10 @@ const ProductVariation = (props: componentProps) => {
           sellerPrice: tconvertvarient[filter].sellerPrice,
           sellingPrice: tconvertvarient[filter].sellingPrice,
           dicount: tconvertvarient[filter].dicount,
+          height: tconvertvarient[filter].height,
+          width: tconvertvarient[filter].width,
+          length: tconvertvarient[filter].length,
+          weight: tconvertvarient[filter].weight,
         };
         tempvar.push(dd);
       } else {
@@ -1329,6 +1349,10 @@ const ProductVariation = (props: componentProps) => {
           sellerPrice: 0,
           sellingPrice: 0,
           dicount: 0,
+          height: 0,
+          width: 0,
+          length: 0,
+          weight: 0,
         };
         tempvar.push(dd);
       }
@@ -1366,6 +1390,15 @@ const ProductVariation = (props: componentProps) => {
         props.returnData({ name: "productStock", val: temp });
       });
     }
+  };
+
+  const removeImage = (i: number, e: number) => {
+    const temp = [...convertvarient];
+    const tt = temp[i]["images"].filter((_: any, ii: number) => ii !== e);
+    temp[i]["images"] = tt;
+    setconvertvarient(temp);
+    // console.log(temp);
+    props.returnData({ name: "productStock", val: temp });
   };
   return (
     <>
@@ -1675,20 +1708,90 @@ const ProductVariation = (props: componentProps) => {
                           onChange={(e) => updateVariant(e, i)}
                         />
                       </div>
-                      <div className="">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 pt-2">
-                          Images
-                          <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="file"
-                          multiple
-                          className="border-gray-500 w-full rounded-md"
-                          name="images"
-                          onChange={(e) => uploadMImage(e, i)}
-                          accept="png,jpg,jpeg,gif,webp"
-                        />
-                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4">
+                    <div className=""></div>
+                    <div className="">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 pt-2">
+                        Images
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="file"
+                        multiple
+                        className="border-gray-500 w-full rounded-md"
+                        name="images"
+                        onChange={(e) => uploadMImage(e, i)}
+                        accept="png,jpg,jpeg,gif,webp"
+                      />
+                    </div>
+                    <div className="col-span-2 grid grid-cols-8 gap-x-2">
+                      {cv.images !== undefined &&
+                        cv.images.map((img: string, x: number) => (
+                          <>
+                            <div className="border border-black/50 rounded-lg relative">
+                              <img
+                                src={imageURL + img}
+                                className="w-auto h-auto object-cover rounded-lg"
+                              />
+                              <div className="">
+                                <XMarkIcon
+                                  className="w-5 bg-black/50 stroke-white rounded-full p-1 absolute -right-2 -top-2"
+                                  onClick={() => removeImage(i, x)}
+                                />
+                              </div>
+                            </div>
+                          </>
+                        ))}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-3">
+                    <div className="">
+                      <label className="">Weight(grams)</label>
+                      <input
+                        type="text"
+                        className="w-full rounded-md"
+                        placeholder=""
+                        name="weight"
+                        defaultValue={cv.weight}
+                        onChange={(e) => updateVariant(e, i)}
+                      />
+                    </div>
+                    <div className="">
+                      <label className="">Length(cm)</label>
+                      <input
+                        type="text"
+                        className="w-full rounded-md"
+                        placeholder=""
+                        name="length"
+                        defaultValue={cv.length}
+                        onChange={(e) => updateVariant(e, i)}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-3">
+                    <div className="">
+                      <label className="">Height(cm)</label>
+                      <input
+                        type="text"
+                        className="w-full rounded-md"
+                        placeholder=""
+                        name="height"
+                        defaultValue={cv.height}
+                        onChange={(e) => updateVariant(e, i)}
+                      />
+                    </div>
+                    <div className="">
+                      <label className="">Width(cm)</label>
+                      <input
+                        type="text"
+                        className="w-full rounded-md"
+                        placeholder=""
+                        name="width"
+                        defaultValue={cv.width}
+                        onChange={(e) => updateVariant(e, i)}
+                      />
                     </div>
                   </div>
                 </>
@@ -1925,52 +2028,248 @@ const ProductStocks = (props: componentProps) => {
 };
 
 const ProductDescription = (props: componentProps) => {
+  const router = useRouter();
+  const [addtional, setaddtional] = useState<addtionalProps>([
+    {
+      name: "",
+      information: [{ name: "", description: "" }],
+    },
+  ]);
+  const [structureid, setstructureid] = useState<string>("");
+  const [structurestate, setstructurestate] = useState<string>(""); // new or old
+  const [aboutitem, setaboutitem] = useState<any>([]);
+
+  useEffect(() => {
+    addtional;
+    setaddtional(props.alldata.addtionalIformation);
+    setaboutitem(props.alldata.aboutItem);
+    if (router.query.editid !== "" && router.query.editid !== undefined) {
+      setstructureid(props.alldata.productDescription);
+      setstructurestate("old");
+    } else {
+      const str_id = generateRandomAlphanumeric(7);
+      setstructureid(str_id);
+      setstructurestate("new");
+      props.returnData(str_id, "productDescription");
+    }
+  }, [router.isReady]);
+
+  const changeAddtionalName = (
+    e: React.FormEvent<HTMLInputElement>,
+    i: number
+  ) => {
+    const evt = e.target as HTMLInputElement;
+    const temp: addtionalProps = [...addtional];
+    temp[i].name = evt.value;
+    setaddtional(temp);
+  };
+
+  const changeAddtionalN = (
+    e: React.FormEvent<HTMLInputElement>,
+    i: number,
+    x: number
+  ) => {
+    const evt = e.target as HTMLInputElement;
+    const temp: addtionalProps = [...addtional];
+    temp[i].information[x].name = evt.value;
+    setaddtional(temp);
+    props.returnData(temp, "addtionalIformation");
+  };
+
+  const changeAddtionalD = (
+    e: React.FormEvent<HTMLInputElement>,
+    i: number,
+    x: number
+  ) => {
+    const evt = e.target as HTMLInputElement;
+    const temp: addtionalProps = [...addtional];
+    temp[i].information[x].description = evt.value;
+    setaddtional(temp);
+    props.returnData(temp, "addtionalIformation");
+  };
+  const addAddtional = () => {
+    const dd = {
+      name: "",
+      information: [{ name: "", description: "" }],
+    };
+    setaddtional([...addtional, dd]);
+    props.returnData([...addtional, dd], "addtionalIformation");
+  };
+  const removeAddtional = (i: number) => {
+    const filter = [...addtional] as addtionalProps;
+    filter.splice(i, 1);
+    setaddtional(filter);
+  };
+  const addAddtionalInfo = (i: number) => {
+    const dd: any = { name: "", description: "" };
+    const temp: any = [...addtional];
+    temp[i].information = [...temp[i].information, dd];
+    setaddtional(temp);
+    props.returnData(temp, "addtionalIformation");
+  };
+  const removeAddtionalInfo = (i: number, x: number) => {
+    const temp: any = [...addtional];
+    const filter: any = [...temp[i].information];
+    filter.splice(x, 1);
+    temp[i].information = filter;
+    setaddtional(temp);
+    props.returnData(temp, "addtionalIformation");
+  };
+  const addAboutitem = () => {
+    const dd = "";
+    setaboutitem([...aboutitem, dd]);
+    props.returnData([...aboutitem, dd], "aboutItem");
+  };
+  const removeAboutitem = (i: number) => {
+    const temp = [...aboutitem];
+    const filter = temp.filter((iem, ix) => i !== ix);
+    setaboutitem(filter);
+    console.log(filter);
+    props.returnData(filter, "aboutItem");
+  };
+  const aboutItemChange = (
+    e: React.FormEvent<HTMLTextAreaElement>,
+    i: number
+  ) => {
+    const evt = e.target as HTMLTextAreaElement;
+    const temp = [...aboutitem];
+    temp[i] = evt.value;
+    setaboutitem(temp);
+    props.returnData(temp, "aboutItem");
+  };
   return (
     <>
       <div className="">
         <div className="card">
           <div className="card-header">Product Description</div>
           <div className="card-body">
-            <div className="flex">
-              <div className="w-1/5">Description</div>
-              <div className="w-4/5">
-                <Editor
-                  //   onInit={(evt, editor) => (editorRef.current = editor)}
-                  value={props.alldata.productDescription}
-                  init={{
-                    height: 400,
-                    menubar: true,
-                    plugins: [
-                      "advlist",
-                      "autolink",
-                      "lists",
-                      "link",
-                      "image",
-                      "charmap",
-                      "preview",
-                      "anchor",
-                      "searchreplace",
-                      "visualblocks",
-                      "code",
-                      "fullscreen",
-                      "insertdatetime",
-                      "media",
-                      "table",
-                      "code",
-                      "help",
-                      "wordcount",
-                    ],
-                    toolbar:
-                      "undo redo | blocks | " +
-                      "bold italic forecolor | alignleft aligncenter " +
-                      "alignright alignjustify | bullist numlist outdent indent | " +
-                      "removeformat | help",
-                    content_style: "body {font-size:14px }",
-                  }}
-                  onEditorChange={(e) => props.returnData(e)}
-                />
+            <div className="my-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold">Addtional Information</h2>
+                </div>
+                <div>
+                  <button className="btn btn-success" onClick={addAddtional}>
+                    Add
+                  </button>
+                </div>
+              </div>
+
+              <br />
+              {addtional.map((dd, i) => (
+                <>
+                  <div className="grid grid-cols-12 gap-x-3 items-center">
+                    <div className="col-span-10">
+                      <label>Addtional {i}</label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={dd.name}
+                        onChange={(e) => changeAddtionalName(e, i)}
+                        onKeyUp={(e) => changeAddtionalName(e, i)}
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <label className="opacity-0">0</label>
+                      <br />
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => addAddtionalInfo(i)}
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div className="col-span-1">
+                      <label className="opacity-0">0</label>
+                      <br />
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => removeAddtional(i)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+
+                  {dd.information.map((info, x) => (
+                    <>
+                      <div className="grid grid-cols-12 gap-x-3 items-center">
+                        <div className="col-span-5">
+                          <label>Name-{x}</label>
+                          <input
+                            type="text"
+                            className="form-input"
+                            value={info.name}
+                            onChange={(e) => changeAddtionalN(e, i, x)}
+                            onKeyUp={(e) => changeAddtionalN(e, i, x)}
+                          />
+                        </div>
+                        <div className="col-span-5">
+                          <label>Description-{x}</label>
+                          <input
+                            type="text"
+                            className="form-input"
+                            value={info.description}
+                            onChange={(e) => changeAddtionalD(e, i, x)}
+                            onKeyUp={(e) => changeAddtionalD(e, i, x)}
+                          />
+                        </div>
+                        <div className="col-span-1">
+                          <label className="opacity-0">0</label>
+                          <br />
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => removeAddtionalInfo(i, x)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  ))}
+                </>
+              ))}
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold">About the item</h2>
+              </div>
+              <div>
+                <button className="btn btn-success" onClick={addAboutitem}>
+                  Add
+                </button>
               </div>
             </div>
+            {aboutitem.map((info: any, x: number) => (
+              <>
+                <div className="grid grid-cols-12 gap-x-3 items-center">
+                  <div className="col-span-10">
+                    <label>About item-{x}</label>
+                    <textarea
+                      className="w-full rounded-md h-16"
+                      onChange={(e) => aboutItemChange(e, x)}
+                      onKeyUp={(e) => aboutItemChange(e, x)}
+                      value={info}
+                    ></textarea>
+                  </div>
+                  <div className="col-span-1">
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => removeAboutitem(x)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </>
+            ))}
+            <div className="flex">
+              <div className="text-xl font-bold">Product Description</div>
+            </div>
+            <Structure
+              forProductDescription={structurestate}
+              getProductDescriptionId={structureid}
+            />
           </div>
         </div>
       </div>
@@ -2085,6 +2384,22 @@ const SEOMetaTags = (props: componentProps) => {
                 rows={10}
                 name="description"
                 defaultValue={props.alldata.seoMetaTags.description}
+                onChange={changeForm1}
+                onKeyUp={changeForm1KU}
+              ></textarea>
+            </div>
+          </div>
+          <div className="flex items-center py-2">
+            <div className="w-1/5">
+              <label className="">Keyword</label>
+            </div>
+            <div className="w-3/5">
+              <textarea
+                className="w-full rounded-md border p-2"
+                placeholder=""
+                rows={5}
+                name="keyword"
+                defaultValue={props.alldata.seoMetaTags.keyword}
                 onChange={changeForm1}
                 onKeyUp={changeForm1KU}
               ></textarea>

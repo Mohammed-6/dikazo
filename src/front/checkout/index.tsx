@@ -12,12 +12,14 @@ import {
   confirmOrder,
   createOrder,
   getCartItem,
+  getPincodeDetails,
   listAddress,
   updateAddress,
 } from "../query/customer";
 import {
   AlertUserNotification,
   Preloader,
+  gstStates,
   imageURL,
 } from "@/src/admin/data/stuff";
 import { useRouter } from "next/router";
@@ -429,6 +431,7 @@ const AddressList = (props: addressListProps) => {
       city: "",
       state: "",
       type: "",
+      stateCode: 0,
     },
   });
   const [showpreloader, setshowpreloader] = useState<boolean>(true);
@@ -481,6 +484,7 @@ const AddressList = (props: addressListProps) => {
         city: "",
         state: "",
         type: "",
+        stateCode: 0,
       },
     });
   };
@@ -648,6 +652,7 @@ export const AddEditAddress = (props: addeditaddressProps) => {
       city: "",
       state: "",
       type: "",
+      stateCode: 0,
     },
   });
   const [showtoaster, setshowtoaster] = useState<boolean>(false);
@@ -673,6 +678,11 @@ export const AddEditAddress = (props: addeditaddressProps) => {
       ...collectdata,
       addressDetail: { ...collectdata.addressDetail, [evt.name]: evt.value },
     });
+    if (evt.name === "pincode") {
+      if (evt.value.length >= 6) {
+        getPincode(evt.value);
+      }
+    }
   };
   const formSubmit = () => {
     setshowtoaster(false);
@@ -737,6 +747,58 @@ export const AddEditAddress = (props: addeditaddressProps) => {
   };
   const hideCoupon = () => {
     props.hideCoupon();
+  };
+  function searchByKey(jsonData: any, searchValue: string) {
+    // Validate input (optional)
+    if (typeof jsonData !== "object" || jsonData === null) {
+      throw new Error("Invalid JSON data provided.");
+    }
+
+    if (typeof searchValue !== "string") {
+      throw new Error("Search value must be a string.");
+    }
+
+    // Search for the value in the object
+    for (const key in jsonData) {
+      if (jsonData[key] === searchValue) {
+        return key;
+      }
+    }
+
+    // If not found, return null or undefined (adjust as needed)
+    return null; // You can change this to 'Value not found' or undefined
+  }
+
+  const getPincode = (pincode: string) => {
+    getPincodeDetails(pincode).then((detail: any) => {
+      const colte = detail.data[0];
+      // console.log(colte);
+      const gstState = gstStates;
+      const key: any = searchByKey(gstState, colte.PostOffice[0].State);
+      if (colte.Status === "Success") {
+        if (colte.PostOffice.length > 0) {
+          setcollectdata({
+            ...collectdata,
+            addressDetail: {
+              ...collectdata.addressDetail,
+              state: colte.PostOffice[0].State,
+              city: colte.PostOffice[0].Name,
+              pincode: colte.PostOffice[0].Pincode,
+              stateCode: key,
+            },
+          });
+          setshowtoaster(false);
+        } else {
+          setshowtoaster(true);
+          settoasterdata({ type: "error", message: "Wrong pincode" });
+          return;
+        }
+      } else {
+        setshowtoaster(true);
+        settoasterdata({ type: "error", message: "Wrong pincode" });
+        return;
+      }
+    });
   };
   return (
     <>
@@ -852,7 +914,8 @@ export const AddEditAddress = (props: addeditaddressProps) => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5"
                       placeholder=""
                       name="state"
-                      onChange={changeForm1}
+                      disabled
+                      // onChange={changeForm1}
                       value={collectdata.addressDetail.state}
                     />
                   </div>

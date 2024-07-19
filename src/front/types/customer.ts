@@ -23,7 +23,8 @@ export type addressProps = {
         locality: string,
         city: string,
         state: string,
-        type: string
+        type: string,
+        stateCode: number,
     },
 }
 

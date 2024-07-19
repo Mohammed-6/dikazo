@@ -6,9 +6,11 @@ export type sellerProps = {
         panNo:string,
         gender:string,
         dob:string,
+        pincode: number,
         state:string,
         city:string,
         personalAddress:string,
+        stateCode: number
     },
     bankAccountInformation: {
         bankName: string,
@@ -19,6 +21,10 @@ export type sellerProps = {
     shopInformation: {
         shopName: string,
         shopAddress:string,
+        pincode: number,
+        state:string,
+        city:string,
+        stateCode: number
         shopPhone:string,
         gst: string,
         trademark:string,

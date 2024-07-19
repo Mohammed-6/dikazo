@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { sellerProps, addEditProps } from "../types/seller/seller";
-import { createSeller, editSeller, updateSeller } from "../query/seller/seller";
+import {
+  createSeller,
+  editSeller,
+  goswiftAddress,
+  updateSeller,
+} from "../query/seller/seller";
 import { toaster } from "../types/basic";
-import { Preloader, Toaster } from "../data/stuff";
+import { Preloader, Toaster, gstStates } from "../data/stuff";
 import { useRouter } from "next/router";
 import { Country, State, City } from "country-state-city";
 import Layout from "../layout";
 import Link from "next/link";
+import { getPincodeDetails } from "@/src/front/query/customer";
 
 const AddEdit = (props: addEditProps) => {
   return (
@@ -25,9 +31,11 @@ const Content = (props: addEditProps) => {
       panNo: "",
       gender: "",
       dob: "",
+      pincode: 0,
       state: "",
       city: "",
       personalAddress: "",
+      stateCode: 0,
     },
     bankAccountInformation: {
       bankName: "",
@@ -38,6 +46,10 @@ const Content = (props: addEditProps) => {
     shopInformation: {
       shopName: "",
       shopAddress: "",
+      pincode: 0,
+      state: "",
+      city: "",
+      stateCode: 0,
       shopPhone: "",
       gst: "",
       trademark: "",
@@ -80,6 +92,11 @@ const Content = (props: addEditProps) => {
         [event.name]: event.value,
       },
     });
+    if (event.name === "pincode") {
+      if (event.value.length >= 6) {
+        getPincode(event.value);
+      }
+    }
   };
 
   const changeSelectForm = (e: React.FormEvent<HTMLSelectElement>) => {
@@ -113,6 +130,11 @@ const Content = (props: addEditProps) => {
         [event.name]: event.value,
       },
     });
+    if (event.name === "pincode") {
+      if (event.value.length >= 6) {
+        getPincodeShop(event.value);
+      }
+    }
   };
 
   const changeForm3 = (e: React.FormEvent<HTMLInputElement>) => {
@@ -165,22 +187,138 @@ const Content = (props: addEditProps) => {
       setshowpreloader(false);
       return;
     }
+    // goswift data
+    const goswiftData = {
+      alias: collectdata.shopInformation.shopName,
+      phone: parseInt(collectdata.shopInformation.shopPhone),
+      address_line1: collectdata.shopInformation.shopAddress,
+      address_line2: "",
+      pincode: collectdata.shopInformation.pincode,
+      city: collectdata.shopInformation.city,
+      state: collectdata.shopInformation.state,
+      country: "India",
+    };
     // console.log(colte);
     if (router.query.edit !== "" && router.query.editid !== undefined) {
-      updateSeller(collectdata).then((resp) => {
+      updateSeller(collectdata).then(async (resp) => {
         settoasterdata(resp.data);
         setshowtoaster(true);
+        await goswiftAddress(goswiftData).then((ress) => {
+          if (ress.data.type === "error") {
+            settoasterdata({
+              type: "error",
+              message: ress.data.data.description,
+            });
+            setshowtoaster(true);
+          } else {
+            router.push("/admin/seller");
+          }
+        });
         setshowpreloader(false);
-        router.push("/admin/seller");
       });
     } else {
-      createSeller(collectdata).then((resp) => {
+      createSeller(collectdata).then(async (resp) => {
         settoasterdata(resp.data);
         setshowtoaster(true);
+        await goswiftAddress(goswiftData).then((ress) => {
+          if (ress.data.type === "error") {
+            settoasterdata({
+              type: "error",
+              message: ress.data.data.description,
+            });
+            setshowtoaster(true);
+          } else {
+            router.push("/admin/seller");
+          }
+        });
         setshowpreloader(false);
-        router.push("/admin/seller");
       });
     }
+  };
+
+  function searchByKey(jsonData: any, searchValue: string) {
+    // Validate input (optional)
+    if (typeof jsonData !== "object" || jsonData === null) {
+      throw new Error("Invalid JSON data provided.");
+    }
+
+    if (typeof searchValue !== "string") {
+      throw new Error("Search value must be a string.");
+    }
+
+    // Search for the value in the object
+    for (const key in jsonData) {
+      if (jsonData[key] === searchValue) {
+        return key;
+      }
+    }
+
+    // If not found, return null or undefined (adjust as needed)
+    return null; // You can change this to 'Value not found' or undefined
+  }
+
+  const getPincode = (pincode: string) => {
+    getPincodeDetails(pincode).then((detail: any) => {
+      const colte = detail.data[0];
+      // console.log(colte);
+      const gstState = gstStates;
+      const key: any = searchByKey(gstState, colte.PostOffice[0].State);
+      if (colte.Status === "Success") {
+        if (colte.PostOffice.length > 0) {
+          setcollectdata({
+            ...collectdata,
+            personalInfomration: {
+              ...collectdata.personalInfomration,
+              state: colte.PostOffice[0].State,
+              city: colte.PostOffice[0].Name,
+              pincode: colte.PostOffice[0].Pincode,
+              stateCode: key,
+            },
+          });
+          setshowtoaster(false);
+        } else {
+          setshowtoaster(true);
+          settoasterdata({ type: "error", message: "Wrong pincode" });
+          return;
+        }
+      } else {
+        setshowtoaster(true);
+        settoasterdata({ type: "error", message: "Wrong pincode" });
+        return;
+      }
+    });
+  };
+
+  const getPincodeShop = (pincode: string) => {
+    getPincodeDetails(pincode).then((detail: any) => {
+      const colte = detail.data[0];
+      // console.log(colte);
+      const gstState = gstStates;
+      const key: any = searchByKey(gstState, colte.PostOffice[0].State);
+      if (colte.Status === "Success") {
+        if (colte.PostOffice.length > 0) {
+          setcollectdata({
+            ...collectdata,
+            shopInformation: {
+              ...collectdata.shopInformation,
+              state: colte.PostOffice[0].State,
+              city: colte.PostOffice[0].Name,
+              pincode: colte.PostOffice[0].Pincode,
+              stateCode: key,
+            },
+          });
+          setshowtoaster(false);
+        } else {
+          setshowtoaster(true);
+          settoasterdata({ type: "error", message: "Wrong pincode" });
+          return;
+        }
+      } else {
+        setshowtoaster(true);
+        settoasterdata({ type: "error", message: "Wrong pincode" });
+        return;
+      }
+    });
   };
 
   return (
@@ -275,55 +413,45 @@ const Content = (props: addEditProps) => {
                       </div>
                     </div>
                     <div className="form-item">
-                      <label className="form-label mb-1">State</label>
+                      <label className="form-label mb-1">Pincode</label>
                       <div className="">
-                        <select
-                          className="w-full rounded-md"
-                          name="state"
-                          onChange={changeCEForm}
-                          value={collectdata?.personalInfomration?.state}
-                        >
-                          <option
-                            value={collectdata?.personalInfomration?.state}
-                          >
-                            {collectdata?.personalInfomration?.state === ""
-                              ? "Select State"
-                              : collectdata?.personalInfomration?.state}
-                          </option>
-                          {states.map((state: any) => (
-                            <option
-                              selected={
-                                collectdata?.personalInfomration?.state ==
-                                state.name
-                                  ? true
-                                  : false
-                              }
-                              value={state.name + "-" + state.isoCode}
-                            >
-                              {state.name}
-                            </option>
-                          ))}
-                        </select>
+                        <input
+                          className="form-input"
+                          type="text"
+                          name="pincode"
+                          autoComplete="off"
+                          placeholder=""
+                          value={collectdata?.personalInfomration?.pincode}
+                          onChange={changeForm}
+                        />
                       </div>
                     </div>
                     <div className="form-item">
                       <label className="form-label mb-1">City</label>
                       <div className="">
-                        <select
-                          className="w-full rounded-md"
+                        <input
+                          className="form-input"
+                          type="text"
                           name="city"
-                          onChange={changeCEForm}
+                          autoComplete="off"
+                          placeholder=""
                           value={collectdata?.personalInfomration?.city}
-                        >
-                          <option
-                            value={collectdata?.personalInfomration?.city}
-                          >
-                            {collectdata?.personalInfomration?.city}
-                          </option>
-                          {cities.map((state: any) => (
-                            <option value={state.name}>{state.name}</option>
-                          ))}
-                        </select>
+                          onChange={changeForm}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-item">
+                      <label className="form-label mb-1">State</label>
+                      <div className="">
+                        <input
+                          className="form-input"
+                          type="text"
+                          name="state"
+                          autoComplete="off"
+                          placeholder=""
+                          value={collectdata?.personalInfomration?.state}
+                          onChange={changeForm}
+                        />
                       </div>
                     </div>
                     <div className="form-item">
@@ -438,6 +566,63 @@ const Content = (props: addEditProps) => {
                           value={collectdata?.shopInformation?.shopAddress}
                           onChange={formChangeTXT}
                         ></textarea>
+                      </div>
+                    </div>
+
+                    <div className="form-item">
+                      <label className="form-label mb-1">Shop Phone</label>
+                      <div className="">
+                        <input
+                          className="form-input"
+                          type="number"
+                          name="shopPhone"
+                          autoComplete="off"
+                          placeholder=""
+                          value={collectdata?.shopInformation?.shopPhone}
+                          onChange={changeForm2}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-item">
+                      <label className="form-label mb-1">Pincode</label>
+                      <div className="">
+                        <input
+                          className="form-input"
+                          type="text"
+                          name="pincode"
+                          autoComplete="off"
+                          placeholder=""
+                          value={collectdata?.shopInformation?.pincode}
+                          onChange={changeForm2}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-item">
+                      <label className="form-label mb-1">City</label>
+                      <div className="">
+                        <input
+                          className="form-input"
+                          type="text"
+                          name="city"
+                          autoComplete="off"
+                          placeholder=""
+                          value={collectdata?.shopInformation?.city}
+                          onChange={changeForm2}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-item">
+                      <label className="form-label mb-1">State</label>
+                      <div className="">
+                        <input
+                          className="form-input"
+                          type="text"
+                          name="state"
+                          autoComplete="off"
+                          placeholder=""
+                          value={collectdata?.shopInformation?.state}
+                          onChange={changeForm2}
+                        />
                       </div>
                     </div>
                     <div className="form-item">

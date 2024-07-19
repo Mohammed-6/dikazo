@@ -15,14 +15,13 @@ import { calculatePercentage, imageURL } from "@/src/admin/data/stuff";
 
 export const ImageElement = (props: elementProps) => {
   const alldata = props.data;
+
+  const styles = `h-[${alldata.height}] w-[${alldata.width}] max-h-[${alldata.maxHeight}] max-w-[${alldata.maxWidth}] border-[${alldata.border}] rounded-[${alldata.borderRadius}] object-[${alldata.objectFit}] shadow-${alldata.boxShadow} opacity-[${alldata.opacity}] `;
   return (
     <>
       <div className={`${alldata.className}`}>
         <Link href={alldata.link !== undefined ? alldata.link : ""}>
-          <img
-            src={alldata.imageWebUrl}
-            className={`h-${alldata.height} w-${alldata.width} max-h-${alldata.maxHeight} max-w-${alldata.maxWidth} border-${alldata.border} rounded-${alldata.borderRadius} object-${alldata.objectFit} shadow-${alldata.boxShadow} opacity-${alldata.opacity} `}
-          />
+          <img src={alldata.imageWebUrl} className={styles} />
         </Link>
       </div>
     </>
@@ -138,7 +137,7 @@ export const ProductGridElement = (props: elementProps) => {
 
   return (
     <>
-      <div className="group shadow-none group-hover:shadow-lg duration-100 bg-white rounded-lg m-2">
+      <div className="group shadow-lg hover:shadow-xl hover:cursor-pointer duration-300 bg-white rounded-xl m-2">
         <div className="">
           <div className="relative z-0 group-hover:cursor-pointer">
             <a href={`/product/` + alldata.seoURL}>
@@ -148,7 +147,7 @@ export const ProductGridElement = (props: elementProps) => {
               />
             </a>
             <div className="absolute bg-red-500 top-3 left-3 text-xs px-2 py-1 text-white z-10 rounded-full font-semibold">
-              {calculatePercentage(alldata?.mrp, alldata?.sellingPrice)}% OFF
+              {calculatePercentage(alldata?.sellingPrice, alldata?.mrp)}% OFF
             </div>
             <div className="absolute inset-0 bg-black/10 z-10 rounded-tl-lg rounded-tr-lg duration-100 opacity-0 group-hover:opacity-100"></div>
             <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 duration-300 z-20">
@@ -162,7 +161,7 @@ export const ProductGridElement = (props: elementProps) => {
               </div>
             </div>
           </div>
-          <div className="p-2">
+          <div className="p-3">
             <div className="text-xs">{alldata.brand}</div>
             <div className="textmd font-semibold">
               <a href={`/product/` + alldata.seoURL}>{alldata.title}</a>

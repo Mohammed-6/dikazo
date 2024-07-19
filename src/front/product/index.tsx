@@ -33,11 +33,13 @@ import {
 
 import LoginSetup from "../category/product";
 import { buyNowProduct, wishlistProduct } from "../query/customer";
+import { PageContent } from "../homepage";
+import { getPageData } from "../query/homepage";
 const Product = () => {
   return (
     <>
       <Layout>
-        <div className="bg-gray-100">
+        <div className="">
           <Content />
         </div>
       </Layout>
@@ -87,7 +89,7 @@ const Content = () => {
   return (
     <>
       {showpreloader1 ? <Preloader /> : ""}
-      <div className="p-standard px-36">
+      <div className="p-standard px-10">
         {showpreloader ? (
           <Preloader />
         ) : (
@@ -469,190 +471,224 @@ const ProductDetails = (props: productDetailsComponentProps) => {
         ""
       )}
       {showlogin ? <LoginSetup hidePopup={showLogin} /> : ""}
-      <div className="">
-        <div className="">{/* Brand: <b>{productdata.brd[0].name}</b> */}</div>
-        <div className="font-semibold text-xl py-2">
-          {productdata?.productInformation.name}
-        </div>
-        {productstock.map((stk, i) => (
-          <>
-            {i === currentvariant ? (
-              <div className="flex items-center font-bold gap-x-2 py-3">
-                <div className="text-primary text-md">₹{stk.sellingPrice}</div>
-                {calculatePercentage(stk.sellingPrice, stk.mrp) > 0 ? (
-                  <>
-                    <div className="text-md text-gray-300">
-                      <del>₹{stk.mrp}</del>
-                    </div>
-
-                    <div className="bg-red-500 text-xs px-2 py-1 text-white rounded-full font-semibold">
-                      {calculatePercentage(stk.sellingPrice, stk.mrp)}% OFF
-                    </div>
-                  </>
-                ) : (
-                  ""
-                )}
-              </div>
-            ) : (
-              ""
-            )}
-          </>
-        ))}
-        <div className="flex gap-x-0 items-center">
-          <div className="text-xs font-semibold">Ratings:&nbsp; </div>
-          <StarIcon className="w-4 fill-gray-500 stroke-gray-500" />
-          <StarIcon className="w-4 fill-gray-500 stroke-gray-500" />
-          <StarIcon className="w-4 fill-gray-500 stroke-gray-500" />
-          <StarIcon className="w-4 fill-gray-500 stroke-gray-500" />
-          <StarIcon className="w-4 fill-gray-500 stroke-gray-500" />
-          <div className="text-sm font-semibold">&nbsp;(0.0 Rating)</div>
-        </div>
-        <div className="hidden">
-          <div className="flex items-center gap-x-3 my-4 custom-number-input h-10 w-32">
-            <label
-              htmlFor="custom-input-number"
-              className="w-full text-gray-700 text-sm font-semibold"
-            >
-              Quantity
-            </label>
-            <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
-              <button
-                onClick={decreaseQty}
-                data-action="decrement"
-                className=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
-              >
-                <span className="m-auto text-2xl font-thin">−</span>
-              </button>
-              <input
-                type="number"
-                className="outline-none focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700"
-                name="custom-input-number"
-                value={qty}
-              ></input>
-              <button
-                onClick={increaseQty}
-                data-action="increment"
-                className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer"
-              >
-                <span className="m-auto text-2xl font-thin">+</span>
-              </button>
-            </div>
+      <div className="grid grid-cols-2">
+        <div className="">
+          <div className="">
+            {/* Brand: <b>{productdata.brd[0].name}</b> */}
           </div>
-        </div>
-        {productdata?.productVariation.attributes.map(
-          (attr: any, i: number) => (
-            <div className="pt-4">
-              <div className="font-semibold text-lg">Select {attr}</div>
-              <div className="flex overflow-auto gap-x-2 pb-5">
-                {productdata.productVariation.variation[i] !== undefined &&
-                  productdata.productVariation.variation[i].map(
-                    (v: any, x: number) => (
-                      <div
-                        className={`border-2 border-gray-200 h-auto w-auto py-2 px-4 text-md bg-white text-center font-semibold whitespace-nowrap hover:cursor-pointer ${
-                          vcombo[i] === v ? "border-2 border-primary" : ""
-                        }`}
-                        onClick={() => selectVariation(v, i)}
-                      >
-                        <div className="flex items-center gap-x-2">
-                          {attr.toLowerCase() === "color"
-                            ? props.color.map((c: any) => (
-                                <>
-                                  {v === c.name ? (
-                                    <div
-                                      className={`h-4 w-4 rounded-full`}
-                                      style={{ background: c.code }}
-                                    ></div>
-                                  ) : (
-                                    ""
-                                  )}
-                                </>
-                              ))
-                            : ""}
-                          <div className="">{v}</div>
+          <div className="font-semibold text-2xl leading-relaxed">
+            {productdata?.productInformation.name}
+          </div>
+          <div className="flex gap-x-0 items-center">
+            <div className="text-xl font-semibold">5.0&nbsp;</div>
+            <StarIcon className="w-6 fill-yellow-500 stroke-yellow-500" />
+            <StarIcon className="w-6 fill-yellow-500 stroke-yellow-500" />
+            <StarIcon className="w-6 fill-yellow-500 stroke-yellow-500" />
+            <StarIcon className="w-6 fill-yellow-500 stroke-yellow-500" />
+            <StarIcon className="w-6 fill-yellow-500 stroke-yellow-500" />
+          </div>
+          <hr className="border border-gray-300 m-2" />
+          {productstock.map((stk, i) => (
+            <>
+              {i === currentvariant ? (
+                <div className="">
+                  <div className="flex items-center font-bold gap-x-5 py-3">
+                    {calculatePercentage(stk.sellingPrice, stk.mrp) > 0 ? (
+                      <>
+                        <div className="text-red-500 text-2xl px-2 py-1">
+                          -{calculatePercentage(stk.sellingPrice, stk.mrp)}%
                         </div>
-                      </div>
-                    )
-                  )}
+
+                        <div className="text-primary text-3xl font-bold relative">
+                          <div className="absolute text-sm -left-2 -top-0">
+                            ₹
+                          </div>
+                          {stk.sellingPrice}
+                        </div>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="text-md text-gray-500">
+                    <del>M.R.P:&nbsp;₹{stk.mrp}</del>
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
+            </>
+          ))}
+          <div className="hidden">
+            <div className="flex items-center gap-x-3 my-4 custom-number-input h-10 w-32">
+              <label
+                htmlFor="custom-input-number"
+                className="w-full text-gray-700 text-sm font-semibold"
+              >
+                Quantity
+              </label>
+              <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
+                <button
+                  onClick={decreaseQty}
+                  data-action="decrement"
+                  className=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
+                >
+                  <span className="m-auto text-2xl font-thin">−</span>
+                </button>
+                <input
+                  type="number"
+                  className="outline-none focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700"
+                  name="custom-input-number"
+                  value={qty}
+                ></input>
+                <button
+                  onClick={increaseQty}
+                  data-action="increment"
+                  className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer"
+                >
+                  <span className="m-auto text-2xl font-thin">+</span>
+                </button>
               </div>
             </div>
-          )
-        )}
-        <div className="grid grid-cols-12 gap-x-3 items-center">
-          <div className="col-span-5">
-            <button
-              className="uppercase w-full items-center bg-primary text-white px-4 py-3 rounded-none font-semibold text-md"
-              onClick={buyNow}
-            >
-              <div className="flex items-center justify-center gap-x-2">
-                <ShoppingBagIcon className="w-8 stroke-white" /> Add to bag
-              </div>
-            </button>
           </div>
-          <div className="col-span-5">
-            <button
-              className="uppercase w-full items-center bg-white border border-gray-300 text-black px-4 py-3 rounded-none font-semibold text-md"
-              onClick={wishlistNow}
-            >
-              <div className="flex items-center justify-center gap-x-2">
-                <HeartIcon className="w-8 stroke-black" /> Wishlist
+          {productdata?.productVariation.attributes.map(
+            (attr: any, i: number) => (
+              <div className="pt-4">
+                <div className="font-semibold text-lg">Select {attr}</div>
+                <div className="flex overflow-auto gap-x-2 pb-5">
+                  {productdata.productVariation.variation[i] !== undefined &&
+                    productdata.productVariation.variation[i].map(
+                      (v: any, x: number) => (
+                        <div
+                          className={`border-2 border-gray-200 h-auto w-auto py-2 px-4 text-md bg-white text-center font-semibold whitespace-nowrap hover:cursor-pointer ${
+                            vcombo[i] === v ? "border-2 border-primary" : ""
+                          }`}
+                          onClick={() => selectVariation(v, i)}
+                        >
+                          <div className="flex items-center gap-x-2">
+                            {attr.toLowerCase() === "color"
+                              ? props.color.map((c: any) => (
+                                  <>
+                                    {v === c.name ? (
+                                      <div
+                                        className={`h-4 w-4 rounded-full`}
+                                        style={{ background: c.code }}
+                                      ></div>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </>
+                                ))
+                              : ""}
+                            <div className="">{v}</div>
+                          </div>
+                        </div>
+                      )
+                    )}
+                </div>
               </div>
-            </button>
-          </div>
+            )
+          )}
+          {productdata?.addtionalIformation.map((addinfo: any, k: number) => (
+            <>
+              {addinfo.information.map((info: any, i: number) => (
+                <>
+                  <div className="grid grid-cols-12 text-[18px] items-start gap-x-6 py-0.5">
+                    <div className="text-bold col-span-3">{info.name}</div>
+                    <div className="col-span-9">{info.description}</div>
+                  </div>
+                </>
+              ))}
+            </>
+          ))}
+          <hr className="border border-gray-300 mr-2" />
+          <div className="pt-3 pb-0 text-bold text-xl">About this item</div>
+          <ul className="list-disc p-2">
+            {productdata?.aboutItem.map((info: any, i: number) => (
+              <>
+                <li className="py-0.5 whitespace-pre-line">{info}</li>
+              </>
+            ))}
+          </ul>
         </div>
-        <div className="">
-          <div className="flex gap-x-2 items-center py-5">
-            <div className="font-semibold">Delivery:</div>
+        <div className="border border-gray-500 rounded-md p-6 mx-2 h-fit">
+          <div className="">
             <div className="">
-              <input
-                type="text"
-                className="bg-gray-200 text-gray-700 rounded-md px-2 py-3"
-                placeholder="Enter your pincode"
-              />
+              <button
+                className="uppercase w-full items-center bg-primary text-white px-4 py-3 rounded-full font-semibold text-md"
+                onClick={buyNow}
+              >
+                <div className="flex items-center justify-center gap-x-2">
+                  <ShoppingBagIcon className="w-8 stroke-white" /> Add to cart
+                </div>
+              </button>
             </div>
-            <div className="">
-              <button className="bg-primary font-semibold text-white px-4 py-3 rounded-md">
-                Check
+            <div className="py-3">
+              <button
+                className="uppercase w-full items-center bg-white border border-gray-300 text-black px-4 py-3 rounded-full font-semibold text-md"
+                onClick={wishlistNow}
+              >
+                <div className="flex items-center justify-center gap-x-2">
+                  <HeartIcon className="w-8 stroke-black" /> Wishlist
+                </div>
               </button>
             </div>
           </div>
-        </div>
-        <div className="">
-          <ul>
-            {productdata?.cod ? (
+          <div className="">
+            <div className="flex gap-x-2 items-center py-5">
+              <div className="font-semibold">Delivery:</div>
+              <div className="">
+                <input
+                  type="text"
+                  className="bg-gray-200 text-gray-700 rounded-md px-2 py-3"
+                  placeholder="Enter your pincode"
+                />
+              </div>
+              <div className="">
+                <button className="bg-primary font-semibold text-white px-4 py-3 rounded-md">
+                  Check
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="">
+            <ul>
+              {productdata?.cod ? (
+                <li>
+                  <div className="flex gap-x-2">
+                    <div>
+                      <CheckIcon className="w-6  stroke-gray-700" />
+                    </div>
+                    <div className="text-sm">
+                      <b>COD</b> Available
+                    </div>
+                  </div>
+                </li>
+              ) : (
+                ""
+              )}
               <li>
                 <div className="flex gap-x-2">
                   <div>
                     <CheckIcon className="w-6  stroke-gray-700" />
                   </div>
                   <div className="text-sm">
-                    <b>COD</b> Available
+                    Shipping all over <b>India</b>
                   </div>
                 </div>
               </li>
-            ) : (
-              ""
-            )}
-            <li>
-              <div className="flex gap-x-2">
-                <div>
-                  <CheckIcon className="w-6  stroke-gray-700" />
+              <li>
+                <div className="flex gap-x-2">
+                  <div>
+                    <CheckIcon className="w-6  stroke-gray-700" />
+                  </div>
+                  <div className="text-sm">
+                    Delivered in 3-6 <b>Working Days</b>
+                  </div>
                 </div>
-                <div className="text-sm">
-                  Shipping all over <b>India</b>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div className="flex gap-x-2">
-                <div>
-                  <CheckIcon className="w-6  stroke-gray-700" />
-                </div>
-                <div className="text-sm">
-                  Delivered in 3-6 <b>Working Days</b>
-                </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </>
@@ -674,54 +710,41 @@ const DetailsReview = (props: productReviewComponentProps) => {
   return (
     <>
       <div className="">
-        <div className="grid grid-cols-2">
-          <div className="">
-            <div className="text-center">
-              <a
-                className={`text-md font-semibold w-auto pb-3 cursor-pointer ${
-                  active
-                    ? "text-primary border-b-2 border-primary"
-                    : "text-gray-700"
-                }`}
-                onClick={() => changeActive()}
-              >
-                Product&nbsp;Details
-              </a>
-            </div>
-          </div>
-          <div className="">
-            <div className="text-center">
-              <a
-                className={`text-md font-semibold w-auto pb-3 cursor-pointer ${
-                  active1
-                    ? "text-primary border-b-2 border-primary"
-                    : "text-gray-700"
-                }`}
-                onClick={() => changeActive1()}
-              >
-                Rating & Reviews
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className="pt-10">
-          {active ? (
-            <DetailsSection bundle={props.bundle} />
-          ) : active1 ? (
-            <ReviewSection />
-          ) : (
-            ""
-          )}
-        </div>
+        <h2 className="text-bold text-xl py-3">Product Description</h2>
+        <DetailsSection bundle={props.bundle} />
       </div>
     </>
   );
 };
 
 const DetailsSection = (props: productReviewComponentProps) => {
+  const [structureid, setstructureid] = useState<string>();
+  const [structure, setstructure] = useState<any>();
+  const [loading, setloading] = useState<boolean>(false);
+  useEffect(() => {
+    getPageData(props.bundle?.productDescription)
+      .then((hm) => {
+        setstructure(hm.data.data);
+        setstructureid(hm.data.structureId);
+        setloading(true);
+      })
+      .catch((error) => {});
+  }, []);
   return (
     <>
-      <div className="pb-10">{props.bundle?.productDescription}</div>
+      {loading ? (
+        <>
+          <PageContent
+            structureid={structureid}
+            structure={structure}
+            parent="main"
+          />
+
+          <ReviewSection />
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 };

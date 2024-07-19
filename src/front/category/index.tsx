@@ -43,22 +43,42 @@ const Content = () => {
   const [currentpage, setcurrentpage] = useState<number>(0);
   useEffect(() => {
     console.log(router.query);
-    if (router.query.category !== "" && router.query.category !== undefined) {
-      loadCategory(router.query.category as string).then((category: any) => {
-        if (category.type === "error") {
-          setshownorecods(true);
-          setshowpreloader(false);
-        } else {
-          console.log(category.data.resource);
-          setproductlist(category.data.data);
-          setresource(category.data.resource);
-          setshownorecods(false);
-          setshowpreloader(false);
+    if (router.query.q !== "" && router.query.q !== undefined) {
+      loadCategory({ category: router.query.category, q: router.query.q }).then(
+        (category: any) => {
+          if (category.type === "error") {
+            setshownorecods(true);
+            setshowpreloader(false);
+          } else {
+            console.log(category.data.resource);
+            setproductlist(category.data.data);
+            setresource(category.data.resource);
+            setshownorecods(false);
+            setshowpreloader(false);
+          }
         }
-      });
+      );
+    } else if (
+      router.query.category !== "" &&
+      router.query.category !== undefined
+    ) {
+      loadCategory({ category: router.query.category, q: "" }).then(
+        (category: any) => {
+          if (category.type === "error") {
+            setshownorecods(true);
+            setshowpreloader(false);
+          } else {
+            console.log(category.data.resource);
+            setproductlist(category.data.data);
+            setresource(category.data.resource);
+            setshownorecods(false);
+            setshowpreloader(false);
+          }
+        }
+      );
     } else {
-      // setshownorecods(true);
-      // setshowpreloader(false);
+      setshownorecods(true);
+      setshowpreloader(false);
     }
   }, [router.isReady]);
 
@@ -289,7 +309,7 @@ const FilterView = (props: filterComponentProps) => {
         {/* brands */}
         <div className="bg-white rounded-lg px-3 py-4 my-2">
           <h2 className="uppercase pb-3 text-md font-semibold">brand</h2>
-          <ul className="h-52 overflow-x-hidden overflow-y-auto">
+          <ul className="max-h-52 overflow-x-hidden overflow-y-auto">
             {props.alldata !== undefined &&
               props.alldata.brand.map((dd) => (
                 <li>
@@ -312,19 +332,19 @@ const FilterView = (props: filterComponentProps) => {
           </ul>
         </div>
         {/* price */}
-        <div className="bg-white rounded-lg px-3 py-4 my-2">
+        <div className="bg-white rounded-lg px-3 py-4 my-2 hidden">
           <h2 className="uppercase pb-3 text-md font-semibold">price</h2>
           <div className="text-center my-6">
             <div className="w-full max-w-md mx-auto mt-8">
-              <Slider
-                range={true}
-                min={props.alldata?.filters.amountSlider.min}
-                max={props.alldata?.filters.amountSlider.max}
-                value={values}
-                onChange={handleOnChange}
-                allowCross={false}
-                marks={{ 0: "0", 100: "100" }}
-              />
+              {/* <Slider
+                  range={true}
+                  min={props.alldata?.filters.amountSlider.min}
+                  max={props.alldata?.filters.amountSlider.max}
+                  value={values}
+                  onChange={handleOnChange}
+                  allowCross={true}
+                  marks={{ 0: values[0], 100: values[1] }}
+                /> */}
               <div className="flex justify-between mt-4">
                 <span>{values[0]}</span>
                 <span>{values[1]}</span>
@@ -362,9 +382,15 @@ const FilterView = (props: filterComponentProps) => {
           </ul>
         </div>
         {/* colors */}
-        <div className="bg-white rounded-lg px-3 py-4 my-2">
+        <div
+          className={`bg-white rounded-lg px-3 py-4 my-2 ${
+            props.alldata !== undefined && props.alldata.color.length > 0
+              ? "block"
+              : "hidden"
+          }`}
+        >
           <h2 className="uppercase pb-3 text-md font-semibold">color</h2>
-          <ul className="h-52 overflow-x-hidden overflow-y-auto">
+          <ul className="max-h-52 overflow-x-hidden overflow-y-auto">
             {props.alldata !== undefined &&
               props.alldata.color.map((dd) => (
                 <li>
@@ -442,11 +468,12 @@ const ProductListCategory = (props: productListComponent) => {
           </div>
         </div>
         <div className="grid grid-cols-4 gap-x-3">
-          {props.alldata.map((item, i) => (
-            <div key={i}>
-              <ProductGrid data={item} />
-            </div>
-          ))}
+          {props.alldata !== undefined &&
+            props.alldata.map((item, i) => (
+              <div key={i}>
+                <ProductGrid data={item} />
+              </div>
+            ))}
           {/* <ProductGridHM /> */}
         </div>
       </div>

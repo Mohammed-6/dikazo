@@ -53,3 +53,8 @@ export async function importProduct(data:any){
     const res = await create.post(serverURL + '/import-product', data);
     return res
 }
+
+export async function importKeywords(){
+    const res = await create.post(serverURL + '/list-keywords');
+    return res
+}

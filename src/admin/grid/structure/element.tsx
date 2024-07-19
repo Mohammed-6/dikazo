@@ -15,7 +15,7 @@ export const ImageElement = (props: elementProps) => {
     maxHeight: "auto",
     maxWidth: "auto",
     border: "0px",
-    borderRadius: 0,
+    borderRadius: "0px",
     objectFit: "contain",
     boxShadow: "none",
     opacity: 100,
@@ -181,19 +181,15 @@ export const ImageElement = (props: elementProps) => {
                   <div className="form-item">
                     <label className="form-label mb-1">Border radius</label>
                     <div className="">
-                      <select
-                        onChange={changeForm}
-                        value={collectdata.borderRadius}
+                      <input
+                        className="form-input"
+                        type="text"
                         name="borderRadius"
-                        className="w-full"
-                      >
-                        <option value="none">None</option>
-                        <option value="xs">Xtra Small</option>
-                        <option value="sm">Small</option>
-                        <option value="md">Medium</option>
-                        <option value="lg">Large</option>
-                        <option value="full">Full</option>
-                      </select>
+                        autoComplete="off"
+                        placeholder=""
+                        value={collectdata.borderRadius}
+                        onChange={changeForm}
+                      />
                     </div>
                   </div>
                   <div className="form-item">
@@ -229,24 +225,15 @@ export const ImageElement = (props: elementProps) => {
                   <div className="form-item">
                     <label className="form-label mb-1">Opacity</label>
                     <div className="">
-                      <select
-                        onChange={changeForm}
-                        value={collectdata.opacity}
+                      <input
+                        className="form-input"
+                        type="text"
                         name="opacity"
-                        className="w-full"
-                      >
-                        <option value=""></option>
-                        <option value="10">0.1</option>
-                        <option value="20">0.2</option>
-                        <option value="30">0.3</option>
-                        <option value="40">0.4</option>
-                        <option value="50">0.5</option>
-                        <option value="60">0.6</option>
-                        <option value="70">0.7</option>
-                        <option value="80">0.8</option>
-                        <option value="90">0.9</option>
-                        <option value="100">1</option>
-                      </select>
+                        autoComplete="off"
+                        placeholder="0.1"
+                        value={collectdata.opacity}
+                        onChange={changeForm}
+                      />
                     </div>
                   </div>
                 </div>

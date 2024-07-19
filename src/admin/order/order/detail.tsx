@@ -6,7 +6,13 @@ import { useRouter } from "next/router";
 import { Preloader, Toaster, imageURL, serverURL } from "../../data/stuff";
 import axios from "axios";
 import { toaster } from "../../types/basic";
-import { XCircleIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import {
+  XCircleIcon,
+  ArrowDownTrayIcon,
+  PlusCircleIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/outline";
+import { downloadOrderInvoice } from "@/src/front/query/customer";
 const create = axios.create();
 
 const OrderDetail = () => {
@@ -96,20 +102,33 @@ const MoreDetail = (props: moreDetailProps) => {
     };
     return date.toLocaleDateString("en-US", options);
   }
-  const setShippingPartner = (e: React.FormEvent<HTMLSelectElement>) => {
+  const setShippingPartner = (k: number, id: string) => {
     setshowpreloader(true);
-    const evt = e.currentTarget;
-    if (evt.value === "goswift") {
+    const event = "goswift";
+    if (event === "goswift") {
       create
-        .post(serverURL + "/goswift/generate/" + orderdetail?.orderCode)
+        .post(serverURL + "/goswift/generate/" + orderdetail?.orderCode, {
+          number: k,
+          mainId: id,
+        })
         .then((response) => {
-          setorderdetail(response.data.data);
-          settoasterdata(response.data);
-          setshowtoaster(true);
-          setshowpreloader(false);
+          if (response.data.type === "success") {
+            setorderdetail(response.data.data);
+            settoasterdata(response.data);
+            setshowtoaster(true);
+            setshowpreloader(false);
+          } else {
+            settoasterdata({
+              type: "error",
+              message: response.data.data.description,
+            });
+            setshowtoaster(true);
+            setshowpreloader(false);
+          }
         })
         .catch((error) => {
           console.error(error);
+          setshowpreloader(false);
         });
     }
   };
@@ -213,6 +232,34 @@ const MoreDetail = (props: moreDetailProps) => {
       });
   };
 
+  function downloadInvoice(id: string) {
+    setshowpreloader(true);
+    downloadOrderInvoice(id).then((response) => {
+      downloadPDF(
+        serverURL + "/public/invoice/invoice_" + orderdetail.orderCode + ".pdf",
+        "invoice_" + orderdetail.orderCode + ".pdf"
+      );
+      setshowpreloader(false);
+    });
+  }
+  function downloadPDF(url: string, filename = "downloaded.pdf") {
+    // Create a hidden anchor element
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.download = filename;
+    link.style.display = "none";
+
+    // Append the anchor to the document body (optional)
+    // document.body.appendChild(link); // Uncomment if needed
+
+    // Simulate a click to initiate download
+    link.click();
+
+    // Remove the anchor element (optional)
+    // document.body.removeChild(link); // Uncomment if needed
+  }
+
   return (
     <>
       {showpreloader ? <Preloader /> : ""}
@@ -230,10 +277,7 @@ const MoreDetail = (props: moreDetailProps) => {
               <label htmlFor="assign_deliver_boy">
                 Assign Shipping Partner
               </label>
-              <select
-                className="w-full rounded-md border-gray-300"
-                onChange={setShippingPartner}
-              >
+              <select className="w-full rounded-md border-gray-300">
                 <option>Select Delivery Partner</option>
                 <option value="goswift">Goswift</option>
               </select>
@@ -416,12 +460,20 @@ const MoreDetail = (props: moreDetailProps) => {
                             <div className="">
                               <div className="flex gap-x-2">
                                 <button
+                                  className="bg-green-500 py-1 px-2 rounded-md"
+                                  onClick={() => setShippingPartner(k, dd._id)}
+                                  title="Create shipment"
+                                >
+                                  <PlusCircleIcon className="w-6 stroke-white" />
+                                </button>
+                                <button
                                   className="bg-gray-500 py-1 px-2 rounded-md"
                                   onClick={() =>
                                     downloadWaybill(
                                       orderdetail?.shippingDetail[k].tracking_id
                                     )
                                   }
+                                  title="Download shipment waybill"
                                 >
                                   <ArrowDownTrayIcon className="w-6 stroke-white" />
                                 </button>
@@ -433,8 +485,15 @@ const MoreDetail = (props: moreDetailProps) => {
                                         ?.tracking_id
                                     )
                                   }
+                                  title="Cancel shipment"
                                 >
                                   <XCircleIcon className="w-6 stroke-white" />
+                                </button>
+                                <button
+                                  className="bg-green-500 py-1 px-2 rounded-md"
+                                  title="Re-attempt shipment"
+                                >
+                                  <ArrowPathIcon className="w-6 stroke-white" />
                                 </button>
                               </div>
                             </div>
@@ -497,13 +556,13 @@ const MoreDetail = (props: moreDetailProps) => {
                 </tbody>
               </table>
               <div className="no-print text-right">
-                <a
-                  href="https://demo.activeitzone.com/ecommerce/invoice/80"
+                <button
+                  onClick={() => downloadInvoice(orderdetail._id)}
                   type="button"
                   className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline btn-icon bg-gray-100 text-gray-800 hover:bg-gray-200"
                 >
                   <ArrowDownTrayIcon className="w-6" />
-                </a>
+                </button>
               </div>
             </div>
           </div>
