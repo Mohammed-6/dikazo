@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../layout";
 import ProfileLayout from "./layout";
 import { toaster } from "@/src/admin/types/basic";
-import { getProfileOrder } from "../query/profile";
+import { getProfileOrder, trackPackage } from "../query/profile";
 import {
   Preloader,
   Toaster,
@@ -142,8 +142,29 @@ const Content = () => {
     // Remove the anchor element (optional)
     // document.body.removeChild(link); // Uncomment if needed
   }
+
+  const [shipment, setshipment] = useState<any>({
+    shippingid: "",
+    show: false,
+  });
+  const trackShipment = (shippingid: string) => {
+    if (shippingid === "" || shippingid === undefined) {
+      return;
+    }
+    console.log(shippingid);
+    setshipment({ shippingid: shippingid, show: true });
+  };
+
+  const hideShipment = () => {
+    setshipment({ ...shipment, show: false });
+  };
   return (
     <>
+      {shipment.show ? (
+        <TrackShipping shippingId={shipment.shippingid} close={hideShipment} />
+      ) : (
+        ""
+      )}
       <>
         {showtoaster ? (
           <Toaster type={toasterdata.type} message={toasterdata.message} />
@@ -269,7 +290,12 @@ const Content = () => {
                       </div>
                       <div className="col-span-3">
                         <div className="">
-                          <button className="border rounded-md block py-1 text-sm w-full shadow-none hover:bg-gray-100 text-center mb-3">
+                          <button
+                            className="border rounded-md block py-1 text-sm w-full shadow-none hover:bg-gray-100 text-center mb-3"
+                            onClick={() =>
+                              trackShipment(ord?.shippingDetail?.tracking_id)
+                            }
+                          >
                             Track package
                           </button>
                           <button className="border rounded-md block py-1 text-sm w-full shadow-none hover:bg-gray-100 text-center mb-1">
@@ -331,6 +357,113 @@ const Content = () => {
           ""
         )}
       </>
+    </>
+  );
+};
+type trackProp = {
+  shippingId: string;
+  close: Function;
+};
+const TrackShipping = (props: trackProp) => {
+  const [collectdata, setcollectdata] = useState<any>();
+  useEffect(() => {
+    trackPackage(props.shippingId)
+      .then((response) => {
+        console.log(response.data.data);
+        setcollectdata(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const convertDate = (ndate: number) => {
+    // Create a Date object from the timestamp (in milliseconds)
+    const timestamp = ndate;
+    const date = new Date(timestamp);
+
+    // Options for formatting the date and time
+    const options: any = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZone: "UTC", // Ensure consistent time zone
+    };
+
+    // Format the date and time according to user's locale
+    const formattedDateTime = date.toLocaleString("en-US", options);
+
+    return formattedDateTime;
+  };
+  const closePopup = () => {
+    props.close();
+  };
+  return (
+    <>
+      <div className="fixed inset-0 bg-black/50 z-20">
+        <div className="mx-auto max-w-2xl">
+          <div className="card">
+            <div className="">
+              <div className="flex items-center justify-between p-4">
+                <div className="text-2xl">Delivery by Goswift</div>
+                <div className="">
+                  <XMarkIcon
+                    className="w-10 p-2 rounded-lg cursor-pointer shadow-lg"
+                    onClick={closePopup}
+                  />
+                </div>
+              </div>
+              <div className="card-body">
+                <div className="py-0 text-xl">
+                  Shipping ID: {props.shippingId}
+                </div>
+                {collectdata !== undefined ? (
+                  <>
+                    <h2 className="text-xl font-bold">
+                      Status: {collectdata.track.status}
+                    </h2>
+                    <table className="my-4">
+                      <thead>
+                        <tr>
+                          <th className="px-4 py-2 border border-r-0 border-gray-400 text-bold">
+                            Time
+                          </th>
+                          <th className="px-4 py-2 border border-r-0 border-gray-400 text-bold">
+                            Status
+                          </th>
+                          <th className="px-4 py-2 border border-r-0 border-gray-400 text-bold">
+                            Description
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {collectdata.track.details.map((dd: any) => (
+                          <tr className="border border-gray-400">
+                            <td className="px-4 py-2 border border-r-0 border-gray-400">
+                              {convertDate(dd.ctime)}
+                            </td>
+                            <td className="px-4 py-2 border border-gray-400">
+                              {dd.status}
+                            </td>
+                            <td className="px-4 py-2 border border-l-0 border-gray-400">
+                              {dd.desc}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

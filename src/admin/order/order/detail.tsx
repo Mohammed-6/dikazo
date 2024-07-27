@@ -6,11 +6,15 @@ import { useRouter } from "next/router";
 import { Preloader, Toaster, imageURL, serverURL } from "../../data/stuff";
 import axios from "axios";
 import { toaster } from "../../types/basic";
+import { jsPDF } from "jspdf";
 import {
   XCircleIcon,
   ArrowDownTrayIcon,
   PlusCircleIcon,
   ArrowPathIcon,
+  QueueListIcon,
+  XMarkIcon,
+  ArrowUturnLeftIcon,
 } from "@heroicons/react/24/outline";
 import { downloadOrderInvoice } from "@/src/front/query/customer";
 const create = axios.create();
@@ -59,6 +63,10 @@ const MoreDetail = (props: moreDetailProps) => {
   const [toasterdata, settoasterdata] = useState<toaster>({
     type: "",
     message: "",
+  });
+  const [shipment, setshipment] = useState<any>({
+    shippingid: "",
+    show: false,
   });
   useEffect(() => {
     setorderdetail(props.alldata);
@@ -195,16 +203,27 @@ const MoreDetail = (props: moreDetailProps) => {
   //     });
   // }
 
-  const downloadWaybill = (id: string) => {
+  const downloadWaybill = async (id: string) => {
     if (id === "undefined") {
       return;
     }
-    create
-      .get(serverURL + "/goswift/label/" + id, { responseType: "arraybuffer" })
-      .then((response) => {
-        settoasterdata(response.data);
-        convertPDFtoDownload(response.data.data);
-        // console.log(response.data.data);
+    await create
+      .get(serverURL + "/goswift/label/" + id, {
+        responseType: "arraybuffer",
+        // responseEncoding: "binary",
+        // headers: {
+        //   "Content-Type": "application/pdf",
+        // },
+      })
+      .then(async (response) => {
+        const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+        const downloadUrl = URL.createObjectURL(pdfBlob);
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.download = Date.now() + ".pdf";
+        link.click();
+        URL.revokeObjectURL(downloadUrl);
+
         setshowtoaster(true);
         setshowpreloader(false);
       })
@@ -219,6 +238,46 @@ const MoreDetail = (props: moreDetailProps) => {
     }
     create
       .post(serverURL + "/goswift/cancel/" + id)
+      .then((response) => {
+        settoasterdata(response.data);
+        setshowtoaster(true);
+        setshowpreloader(false);
+      })
+      .catch((error) => {
+        // console.error(error);
+        settoasterdata(error);
+        setshowtoaster(true);
+        setshowpreloader(false);
+      });
+  };
+
+  const reAttemptShipment = (id: string) => {
+    if (id === "undefined") {
+      return;
+    }
+    create
+      .post(serverURL + "/goswift/ndr/re-attempt/", {
+        action: "Re-Attempt",
+        wbn: id,
+      })
+      .then((response) => {
+        settoasterdata(response.data);
+        setshowtoaster(true);
+        setshowpreloader(false);
+      })
+      .catch((error) => {
+        // console.error(error);
+        settoasterdata(error);
+        setshowtoaster(true);
+        setshowpreloader(false);
+      });
+  };
+  const rtoShipment = (id: string) => {
+    if (id === "undefined") {
+      return;
+    }
+    create
+      .post(serverURL + "/goswift/ndr/re-attempt/", { action: "RTO", wbn: id })
       .then((response) => {
         settoasterdata(response.data);
         setshowtoaster(true);
@@ -260,9 +319,22 @@ const MoreDetail = (props: moreDetailProps) => {
     // document.body.removeChild(link); // Uncomment if needed
   }
 
+  const trackShipment = (shippingid: string) => {
+    setshipment({ shippingid: shippingid, show: true });
+  };
+
+  const closePopup = () => {
+    setshipment({ shippingid: "", show: false });
+  };
+
   return (
     <>
       {showpreloader ? <Preloader /> : ""}
+      {shipment.show ? (
+        <TrackShipping shippingId={shipment.shippingid} close={closePopup} />
+      ) : (
+        ""
+      )}
       {showtoaster ? (
         <Toaster type={toasterdata.type} message={toasterdata.message} />
       ) : (
@@ -459,42 +531,77 @@ const MoreDetail = (props: moreDetailProps) => {
                             </div>
                             <div className="">
                               <div className="flex gap-x-2">
-                                <button
-                                  className="bg-green-500 py-1 px-2 rounded-md"
-                                  onClick={() => setShippingPartner(k, dd._id)}
-                                  title="Create shipment"
-                                >
-                                  <PlusCircleIcon className="w-6 stroke-white" />
-                                </button>
-                                <button
-                                  className="bg-gray-500 py-1 px-2 rounded-md"
-                                  onClick={() =>
-                                    downloadWaybill(
-                                      orderdetail?.shippingDetail[k].tracking_id
-                                    )
-                                  }
-                                  title="Download shipment waybill"
-                                >
-                                  <ArrowDownTrayIcon className="w-6 stroke-white" />
-                                </button>
-                                <button
-                                  className="bg-red-500 py-1 px-2 rounded-md"
-                                  onClick={() =>
-                                    cancelShipment(
-                                      orderdetail?.shippingDetail[k]
-                                        ?.tracking_id
-                                    )
-                                  }
-                                  title="Cancel shipment"
-                                >
-                                  <XCircleIcon className="w-6 stroke-white" />
-                                </button>
-                                <button
-                                  className="bg-green-500 py-1 px-2 rounded-md"
-                                  title="Re-attempt shipment"
-                                >
-                                  <ArrowPathIcon className="w-6 stroke-white" />
-                                </button>
+                                {dd.shippingStatus === false ? (
+                                  <>
+                                    <button
+                                      className="bg-green-500 py-1 px-2 rounded-md"
+                                      onClick={() =>
+                                        setShippingPartner(k, dd._id)
+                                      }
+                                      title="Create shipment"
+                                    >
+                                      <PlusCircleIcon className="w-6 stroke-white" />
+                                    </button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <button
+                                      className="bg-gray-500 py-1 px-2 rounded-md"
+                                      onClick={() =>
+                                        trackShipment(
+                                          dd?.shippingDetail.tracking_id
+                                        )
+                                      }
+                                      title="Download shipment waybill"
+                                    >
+                                      <QueueListIcon className="w-6 stroke-white" />
+                                    </button>
+                                    <button
+                                      className="bg-gray-500 py-1 px-2 rounded-md"
+                                      onClick={() =>
+                                        downloadWaybill(
+                                          dd?.shippingDetail.tracking_id
+                                        )
+                                      }
+                                      title="Download shipment waybill"
+                                    >
+                                      <ArrowDownTrayIcon className="w-6 stroke-white" />
+                                    </button>
+                                    <button
+                                      className="bg-red-500 py-1 px-2 rounded-md"
+                                      onClick={() =>
+                                        cancelShipment(
+                                          dd?.shippingDetail?.tracking_id
+                                        )
+                                      }
+                                      title="Cancel shipment"
+                                    >
+                                      <XCircleIcon className="w-6 stroke-white" />
+                                    </button>
+                                    <button
+                                      className="bg-green-500 py-1 px-2 rounded-md"
+                                      onClick={() =>
+                                        reAttemptShipment(
+                                          dd?.shippingDetail?.tracking_id
+                                        )
+                                      }
+                                      title="Re-attempt shipment"
+                                    >
+                                      <ArrowPathIcon className="w-6 stroke-white" />
+                                    </button>
+                                    <button
+                                      className="bg-green-500 py-1 px-2 rounded-md"
+                                      onClick={() =>
+                                        rtoShipment(
+                                          dd?.shippingDetail?.tracking_id
+                                        )
+                                      }
+                                      title="RTO shipment"
+                                    >
+                                      <ArrowUturnLeftIcon className="w-6 stroke-white" />
+                                    </button>
+                                  </>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -563,6 +670,100 @@ const MoreDetail = (props: moreDetailProps) => {
                 >
                   <ArrowDownTrayIcon className="w-6" />
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+type trackProp = {
+  shippingId: string;
+  close: Function;
+};
+
+const TrackShipping = (props: trackProp) => {
+  const [collectdata, setcollectdata] = useState<any>();
+  useEffect(() => {
+    create
+      .post(serverURL + "/goswift/track/" + props.shippingId)
+      .then((response) => {
+        console.log(response.data.data);
+        setcollectdata(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const convertDate = (ndate: number) => {
+    // Create a Date object from the timestamp (in milliseconds)
+    const timestamp = ndate;
+    const date = new Date(timestamp);
+
+    // Options for formatting the date and time
+    const options: any = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZone: "UTC", // Ensure consistent time zone
+    };
+
+    // Format the date and time according to user's locale
+    const formattedDateTime = date.toLocaleDateString(undefined, options);
+
+    return formattedDateTime;
+  };
+  const closePopup = () => {
+    props.close();
+  };
+  return (
+    <>
+      <div className="fixed inset-0 bg-black/50 z-20">
+        <div className="mx-auto max-w-2xl">
+          <div className="card">
+            <div className="card-header">
+              <div className="flex items-center justify-between">
+                <div className="">Track Shipment</div>
+                <div className="">
+                  <XMarkIcon
+                    className="w-6 cursor-pointer"
+                    onClick={closePopup}
+                  />
+                </div>
+              </div>
+              <div className="card-body">
+                {collectdata !== undefined ? (
+                  <>
+                    <h2 className="text-xl font-bold">
+                      Status: {collectdata.track.status}
+                    </h2>
+                    <table className="my-4">
+                      <tbody>
+                        {collectdata.track.details.map((dd: any) => (
+                          <tr className="border border-gray-400">
+                            <td className="px-4 py-2 border border-r-0 border-gray-400">
+                              {convertDate(dd.ctime)}
+                            </td>
+                            <td className="px-4 py-2 border border-gray-400">
+                              {dd.status}
+                            </td>
+                            <td className="px-4 py-2 border border-l-0 border-gray-400">
+                              {dd.desc}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>
