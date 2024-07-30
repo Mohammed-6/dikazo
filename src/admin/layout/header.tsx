@@ -197,7 +197,7 @@ const Header = () => {
                       <div className="absolute top-10 right-0 w-[200px] z-20">
                         <ul className="bg-white shadow-lg p-2 rounded-md">
                           <li className="py-1 hover:cursor-pointer">
-                            {/* <Link href="/support">Support</Link> */}
+                            {/* <Link href="support">Support</Link> */}
                           </li>
                           <li className="border-t py-1 hover:cursor-pointer">
                             <a onClick={() => logout()}>Logout</a>
@@ -258,14 +258,14 @@ const DeskMenu = () => {
                   onMouseEnter={() => setsubmenu(true)}
                   onMouseLeave={() => setsubmenu(false)}
                 >
-                  <Link href={"/" + dd.link}>{dd.name}</Link>
+                  <Link href={"" + dd.link}>{dd.name}</Link>
                   {submenu && dd.menu.length !== 0 ? (
                     <>
                       <ul className="absolute top-8 bg-white text-black shadow-lg rounded-md z-30">
                         {dd.menu.map((ll: any) => {
                           return (
                             <li className="border-b p-2">
-                              <Link href={"/" + ll.link}>{ll.name}</Link>
+                              <Link href={"" + ll.link}>{ll.name}</Link>
                             </li>
                           );
                         })}
@@ -369,7 +369,7 @@ const Sidebar = () => {
               {allData.map((data) => (
                 <div className="py-3">
                   <span className="text-black font-semibold text-lg">
-                    <Link href={"/" + data.link}>{data.name}</Link>
+                    <Link href={"" + data.link}>{data.name}</Link>
                   </span>
                 </div>
               ))}

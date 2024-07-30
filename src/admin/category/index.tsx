@@ -67,7 +67,7 @@ const Details = () => {
             <div className="">
               <div className="flex gap-x-2">
                 <div className="">
-                  <Link href={"/admin/category/add"}>
+                  <Link href={"admin/category/add"}>
                     <button className="btn btn-primary">Add Category</button>
                   </Link>
                 </div>

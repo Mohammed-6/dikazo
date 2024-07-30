@@ -81,7 +81,7 @@ const Details = () => {
             <div className="">
               <div className="flex gap-x-2">
                 <div className="">
-                  <Link href={"/admin/grid/add"}>
+                  <Link href={"admin/grid/add"}>
                     <button className="btn btn-primary">Add Structure</button>
                   </Link>
                 </div>

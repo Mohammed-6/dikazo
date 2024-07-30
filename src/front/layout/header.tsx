@@ -150,7 +150,7 @@ const SearchHeader = () => {
           </div>
           <div className="flex items-center justify-end gap-x-3 font-semibold text-sm">
             <div className="pr-4">
-              <Link href="/cart">
+              <Link href="cart">
                 <div className="flex items-center gap-x-1">
                   <div className="">
                     <ShoppingBagIcon className="w-5" />

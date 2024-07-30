@@ -87,7 +87,7 @@ export const ProductGridHM = () => {
           </div>
           <div className="p-2 text-center">
             <div className="textmd font-semibold">
-              <Link href="/product/mens-light-weight-leather-belt">
+              <Link href="product/mens-light-weight-leather-belt">
                 Men's light weight leather belt
               </Link>
             </div>

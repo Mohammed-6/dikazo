@@ -356,7 +356,9 @@ export const gstStates = {
   "38": "Ladakh",
   "97": "Other Territory",
 };
-// export const serverURL = "https://cos-api.exllab.in";
+
 export const serverURL = "http://localhost:4004";
+// export const serverURL = "https:cdn.mariosega.com";
 
 export const imageURL = "http://localhost:4004/";
+// export const imageURL = "https:cdn.mariosega.com/";

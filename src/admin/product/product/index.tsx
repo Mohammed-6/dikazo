@@ -206,7 +206,7 @@ const Details = () => {
             <div className="">Product List</div>
 
             <div className="flex items-center gap-x-2">
-              <Link href="/admin/product/add">
+              <Link href="admin/product/add">
                 <button className="btn btn-primary">Add Product</button>
               </Link>
               <div className="">

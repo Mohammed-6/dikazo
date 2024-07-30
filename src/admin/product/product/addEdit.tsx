@@ -26,7 +26,11 @@ import {
   variationRowProp,
 } from "../../types/product/product";
 import { CalendarIcon } from "@heroicons/react/24/solid";
-import { uploadMultipleFile, uploadSingleFile } from "../../query/upload";
+import {
+  uploadMultipleFile,
+  uploadSingleFile,
+  uploadThumbnailFile,
+} from "../../query/upload";
 import {
   ArrowRightIcon,
   CheckIcon,
@@ -930,7 +934,7 @@ const ProductImages = (props: componentProps) => {
     const file = e.target.files;
     if (file && file.length > 0) {
       const files = Array.from(file);
-      uploadSingleFile(files as any).then((res) =>
+      uploadThumbnailFile(files as any).then((res) =>
         props.returnData({ name: evt.name, val: res.data.data })
       );
     }
@@ -951,7 +955,7 @@ const ProductImages = (props: componentProps) => {
         <div className="card">
           <div className="card-header">Product Images</div>
           <div className="card-body">
-            <div className="flex items-center py-2">
+            <div className="flex items-center py-2 hidden">
               <div className="w-1/5">
                 <label className="">
                   Gallery Images (600x600)
@@ -2088,7 +2092,7 @@ const ProductDescription = (props: componentProps) => {
     props.returnData(temp, "addtionalIformation");
   };
   const addAddtional = () => {
-    const dd = {
+    const dd: addtionalSProps = {
       name: "",
       information: [{ name: "", description: "" }],
     };

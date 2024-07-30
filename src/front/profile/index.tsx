@@ -31,7 +31,7 @@ const Content = () => {
       <div className="p-4">
         <div className="grid grid-cols-3 gap-4">
           <div className="">
-            <Link href="/profile/orders">
+            <Link href="profile/orders">
               <div className="border border-gray-300 h-[250px] flex items-center justify-center w-full duration-200 hover:bg-gray-100 hover:cursor-pointer">
                 <div className="text-center">
                   <div className="flex justify-center">
@@ -46,7 +46,7 @@ const Content = () => {
             </Link>
           </div>
           <div className="">
-            <Link href="/profile/">
+            <Link href="profile/">
               <div className="border border-gray-300 h-[250px] flex items-center justify-center w-full duration-200 hover:bg-gray-100 hover:cursor-pointer">
                 <div className="text-center">
                   <div className="flex justify-center">
@@ -61,7 +61,7 @@ const Content = () => {
             </Link>
           </div>
           <div className="">
-            <Link href="/profile/address">
+            <Link href="profile/address">
               <div className="border border-gray-300 h-[250px] flex items-center justify-center w-full duration-200 hover:bg-gray-100 hover:cursor-pointer">
                 <div className="text-center">
                   <div className="flex justify-center">
@@ -78,7 +78,7 @@ const Content = () => {
             </Link>
           </div>
           <div className="">
-            <Link href="/profile/coupons">
+            <Link href="profile/coupons">
               <div className="border border-gray-300 h-[250px] flex items-center justify-center w-full duration-200 hover:bg-gray-100 hover:cursor-pointer">
                 <div className="text-center">
                   <div className="flex justify-center">
@@ -93,7 +93,7 @@ const Content = () => {
             </Link>
           </div>
           <div className="">
-            <Link href="/profile/">
+            <Link href="profile/">
               <div className="border border-gray-300 h-[250px] flex items-center justify-center w-full duration-200 hover:bg-gray-100 hover:cursor-pointer">
                 <div className="text-center">
                   <div className="flex justify-center">

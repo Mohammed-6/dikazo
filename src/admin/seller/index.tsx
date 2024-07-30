@@ -70,7 +70,7 @@ const Details = () => {
             <div className="">
               <div className="flex gap-x-2">
                 <div className="">
-                  <Link href="/admin/seller/add">
+                  <Link href="admin/seller/add">
                     <button className="btn btn-primary">Add seller</button>
                   </Link>
                 </div>
@@ -142,7 +142,7 @@ const Details = () => {
                             {dd?.personalInfomration?.name}
                           </td>
                           <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                            <Link href={"/admin/seller/edit/" + dd._id}>
+                            <Link href={"admin/seller/edit/" + dd._id}>
                               <button className="btn btn-primary">Edit</button>
                             </Link>
                             <button
